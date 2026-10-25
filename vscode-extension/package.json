@@ -229,8 +229,7 @@
           "default": [
             {
               "name": "Shared skills",
-              "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/main/skills-library",
-              "auth": "github"
+              "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/main/skills-library"
             }
           ],
           "items": {
