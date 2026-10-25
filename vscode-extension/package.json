@@ -5,6 +5,9 @@
   "version": "0.2.0",
   "publisher": "tharaka-chathuranga",
   "license": "MIT",
+  "icon": "media/icon.png",
+  "preview": true,
+  "galleryBanner": { "color": "#B4532F", "theme": "dark" },
   "repository": {
     "type": "git",
     "url": "https://github.com/Tharaka-Chathuranga/claude-skills",
