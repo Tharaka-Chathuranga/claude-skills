@@ -67,8 +67,11 @@ t.rich('terms', { link: (chunks) => <Link href="/terms">{chunks}</Link> });
 
 Check which locales are RTL in the project config (Arabic, Hebrew, Persian, Urdu are common). When adding UI:
 
-- Logical CSS: `margin-inline-start`, `padding-inline-end`, `inset-inline-start`, `text-align: start` — not
-  left/right. In MUI, `ms`/`me`/`ps`/`pe`.
+- Plain CSS: logical properties (`margin-inline-start`, `padding-inline-end`, `inset-inline-start`,
+  `text-align: start`), not left/right.
+- MUI: there are no `ms`/`me`/`ps`/`pe` shorthands (they silently do nothing). With the standard RTL setup
+  (`stylis-plugin-rtl`), physical props (`ml`, `pr`, `left`) are mirrored automatically, so use them as usual;
+  otherwise use full logical keys (`marginInlineStart`). Don't mix the two.
 - `flex-start`/`flex-end`, not `left`/`right`.
 - Mirror directional icons (arrows, chevrons, back buttons); don't mirror logos or media controls.
 - Set `dir` on `<html>` from the active locale.

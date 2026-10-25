@@ -39,7 +39,10 @@ version-specific APIs.
 
 - Responsive values use the object form (`{ xs, sm, md }`); avoid `useMediaQuery` for pure layout changes.
 - Use theme callbacks for computed values: `sx={{ width: (theme) => theme.spacing(30) }}`.
-- Use logical spacing (`ms`/`me`, `ps`/`pe`, `marginInlineStart`) when the app supports RTL.
+- RTL: MUI has no `ms`/`me`/`ps`/`pe` shorthands (`sx={{ ms: 2 }}` silently does nothing). With the standard
+  RTL setup (`stylis-plugin-rtl` in the emotion cache), physical props (`ml`, `pr`, `left`…) are mirrored
+  automatically, so use them normally. The only logical keys MUI understands are full CSS properties
+  (`marginInlineStart`, `paddingInlineEnd`); don't mix both styles in one project.
 - Conditional styles: spread fragments (`sx={[baseSx, isActive && activeSx]}`), not nested ternaries.
 - Follow the project's import style (path imports like `@mui/material/Button` vs named imports); be consistent
   with neighbouring files.
