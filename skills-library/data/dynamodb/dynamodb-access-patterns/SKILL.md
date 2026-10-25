@@ -11,7 +11,8 @@ description: Designs and reviews DynamoDB access — keys and GSIs from access p
    how often) before choosing keys or writing code. The key schema answers that list.
 2. **A repository owns all table access.** Nothing else imports `@aws-sdk/lib-dynamodb`. The repository
    receives the document client and table names through its constructor and returns typed domain
-   records, never `AttributeValue` maps.
+   records, never `AttributeValue` maps. No `process.env.X ?? …` defaults and no module-level client inside
+   a repository file — the handler reads env and builds the client, then injects both.
 3. **Never `Scan` in a request path.** Every read is `GetItem`, `BatchGetItem` or `Query` on the table key
    or a GSI. If a pattern needs a Scan, it needs an index. Scans are for one-off migrations only.
 4. **Every `Query` drains `LastEvaluatedKey`** (or returns it as a page token). A page can be empty while
@@ -19,8 +20,10 @@ description: Designs and reviews DynamoDB access — keys and GSIs from access p
 5. **Never read or write in a loop of single calls.** Many known keys → `BatchGetItem`. Many writes →
    `TransactWriteItems` (atomic) or chunked `BatchWriteItem` (throughput). The only loops allowed are
    chunking, pagination and bounded retry loops.
-6. **Retry unprocessed items.** `BatchGetItem` returns `UnprocessedKeys` and `BatchWriteItem` returns
-   `UnprocessedItems` with HTTP 200 under throttling. Ignoring them silently loses data.
+6. **Chunk batches and retry unprocessed items.** `BatchGetItem` takes at most 100 keys and
+   `BatchWriteItem` 25 requests — chunk every batch. Under throttling they return `UnprocessedKeys` /
+   `UnprocessedItems` with HTTP 200; retry those with capped, jittered backoff. Ignoring them silently
+   loses data.
 7. **Concurrency is enforced by conditions, not by reading first.** Use `ConditionExpression`
    (`attribute_not_exists`, version checks) and atomic `ADD`/`SET` expressions; never read-modify-write.
 8. **Tenant scoping is part of the key.** If the project is multi-tenant (see CLAUDE.md for the tenant
