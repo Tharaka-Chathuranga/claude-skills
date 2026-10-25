@@ -5,8 +5,9 @@
 1. Authorization modes
 2. Rule reference
 3. Multi-tenant patterns
-4. Field-level rules
-5. Common mistakes
+4. Lambda authorizer contract
+5. Field-level rules
+6. Common mistakes
 
 ## 1. Authorization modes
 
@@ -55,7 +56,31 @@ The tenant key and its rules come from the project's CLAUDE.md. Patterns:
   resolvers derive it from identity, never from arguments. A client-sent tenant id may only be compared
   against the derived one.
 
-## 4. Field-level rules
+## 4. Lambda authorizer contract
+
+```
+client ── Authorization: <Cognito ID token>[ + selected tenant] ──▶ authorizer ──▶ { isAuthorized, resolverContext, deniedFields, ttlOverride }
+```
+
+- **Request**: the client sends the ID token in the `Authorization` header, optionally encoded together
+  with the tenant the user has selected (multi-tenant users switch tenants without a new token).
+- **Verify**: the authorizer verifies the Cognito ID token (signature, issuer, audience, expiry), then checks
+  the user holds a role in the requested tenant. A super-admin role may override the tenant check; log it.
+- **`resolverContext`**: string values only — serialise arrays/objects as JSON
+  (`roles: JSON.stringify([{ role, tenantId }])`). Holds the user id, tenant id and role.
+- **`deniedFields`**: operation-level RBAC as `Type.field` strings (`'Mutation.deleteTenant'`), built from a
+  role → denied-operations map kept in its own file.
+- **`ttlOverride: 0`** whenever the decision depends on per-request data (the selected tenant, the operation
+  name); otherwise AppSync caches the first decision for the token and reuses it for other tenants.
+- **Anonymous/public operations** are identified explicitly (e.g. an operation-name prefix like
+  `public…`) and get a guest role with no tenant; every other operation without a valid token is denied.
+- **Claims**: a pre-token-generation trigger can inject role/tenant claims into the ID token, so the
+  authorizer avoids a lookup for the common case. Still verify tenant membership for the requested tenant.
+
+Resolvers and Lambdas read the tenant only from `ctx.identity.resolverContext` /
+`event.identity.resolverContext` — never from arguments or headers.
+
+## 5. Field-level rules
 
 ```ts
 salary: a.float().authorization((allow) => [allow.group('Admin')]),
@@ -65,7 +90,7 @@ Field rules replace (not extend) model rules for that field. A field readable by
 model breaks list queries for those callers if it is required in the selection set — keep sensitive
 fields optional and excluded from default selection sets.
 
-## 5. Common mistakes
+## 6. Common mistakes
 
 - `allow.authenticated()` on tenant data: any user of any tenant can read it.
 - `allow.owner()` without `.to([...])`: owners can change the `owner` field and hand items away.

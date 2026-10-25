@@ -24,6 +24,10 @@ Follow `amplify-backend-standards`. Design keys and indexes from access patterns
 5. **Custom operations return typed custom types**, not `a.json()`, unless the payload is genuinely
    schemaless.
 6. **One model or operation per concept**; when the file gets large, split it into domain fragments.
+7. **Under a Lambda authorizer (`allow.custom()`), generated CRUD is tenant-blind.** The authorizer allows
+   or denies an operation, not a row, so a generated `list`/`get` returns any tenant's items. Disable the
+   generated operations the client must not call (`.disableOperations(['list', 'delete', 'subscriptions'])`)
+   and expose tenant-scoped custom operations or index query fields instead.
 
 ## Models
 
@@ -53,8 +57,25 @@ Order: a
 - Composite identifiers must match the related model's reference fields in order.
 - Name indexes and query fields explicitly; backend code uses the index name, the client the query field.
 - Each GSI adds write cost; add one per real access pattern only.
+- Query fields follow one pattern: `list<Model>By<Field>And<SortKey>` (`listOrdersByCustomerIdAndCreatedAt`).
 - Reusable shapes: `a.customType({...})`; enums: `a.enum([...])` declared once and referenced with
-  `a.ref('Status')`.
+  `a.ref('Status')`. Export the values as a const array and spread it, so code reuses the same list:
+  `export const ORDER_STATUSES = ['PENDING', 'PAID'] as const;` → `status: a.enum([...ORDER_STATUSES])`.
+
+## Tenant-prefixed key attributes
+
+When an index must be scoped to a tenant and the natural partition key isn't, add a composite string
+attribute whose value starts with the tenant, named with a `Key` suffix:
+
+```ts
+tenantCustomerKey: a.string(),          // `${tenantId}#${customerId}`
+…
+index('tenantCustomerKey').sortKeys(['createdAt']).queryField('listOrdersByTenantCustomerKeyAndCreatedAt'),
+```
+
+The resolver or Lambda that writes the row computes the key from the trusted tenant (never from client
+input), and every read builds it the same way from a shared helper. Items without the attribute are absent
+from the index — backfill before switching readers.
 
 ## Custom operations
 
@@ -99,6 +120,9 @@ changing it; verify the generated `Schema` type is unchanged by typechecking fro
 - Every new list path has a test or manual check that it uses the index query field, not `list` + filter.
 
 ## Where to look
+
+- **TTL (expiring rows) or DynamoDB streams on a model table** → read
+  [reference/table-settings.md](reference/table-settings.md)
 
 - **Choosing or reviewing authorization rules, multi-tenant scoping, auth modes** → read
   [reference/authorization.md](reference/authorization.md)
