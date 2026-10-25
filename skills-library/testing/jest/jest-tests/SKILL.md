@@ -20,9 +20,21 @@ description: Writes behaviour-first Jest unit and component tests — React Test
 
 ## Where tests go
 
-Follow the neighbouring files: colocated `<subject>.test.ts` or `__tests__/<subject>.test.ts`. Use the
-project's path aliases (they are mapped in the Jest config); add a mapping there rather than writing deep
-relative imports. ESM-only dependencies that fail to parse need adding to `transformIgnorePatterns`.
+Follow the neighbouring files: colocated `<subject>.test.ts` or `__tests__/<subject>.test.ts`.
+
+## Config gotchas
+
+- Every tsconfig path alias needs a `moduleNameMapper` entry; add the mapping rather than writing deep
+  relative imports.
+- ESM-only packages fail to parse until they are excepted in `transformIgnorePatterns`.
+- Modules that read env vars at import time: set `process.env.X` before importing them (top of the file or a
+  setup file, then `await import()` / `jest.isolateModules`), not in `beforeEach`.
+
+## If Jest runs in the node environment
+
+Check `testEnvironment` in the Jest config. With `node` (no jsdom), test pure logic there — utils, services,
+reducers, mappers. Don't add React Testing Library render tests unless the project configures jsdom; cover
+rendering and interaction with Storybook play functions instead (see `storybook-stories`).
 
 ## Shape
 

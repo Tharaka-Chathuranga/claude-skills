@@ -6,7 +6,8 @@ description: Writes Storybook stories in CSF with one story per meaningful compo
 # Storybook stories
 
 Check `.storybook/main.*` for the framework package (e.g. `@storybook/react-vite`, `@storybook/nextjs`) and
-import `Meta`/`StoryObj` from it. Check the installed version for where test utilities come from
+import `Meta`/`StoryObj` from it — the package in story imports must match `.storybook/main` (e.g.
+`@storybook/nextjs` vs `@storybook/nextjs-vite`). Check the installed version for where test utilities come from
 (`storybook/test` or `@storybook/test`).
 
 ## Rules
@@ -63,4 +64,5 @@ export const SubmitsEmail: Story = {
 ## Running
 
 Run play functions headless with the project's Storybook test runner or the Vitest addon if configured, and
-report the result. Build Storybook if the project's CI does.
+report the result. If neither is configured, play functions only run interactively in the Storybook UI —
+say so in your report instead of claiming they passed. Build Storybook if the project's CI does.
