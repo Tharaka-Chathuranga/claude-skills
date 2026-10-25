@@ -1,0 +1,6 @@
+{
+  "name": "DynamoDB",
+  "description": "Access-pattern-first DynamoDB design: keys and GSIs, Query and batch limits, conditional and transactional writes, repositories.",
+  "detect": { "dependencies": ["@aws-sdk/client-dynamodb"] },
+  "requires": ["core/quality"]
+}
