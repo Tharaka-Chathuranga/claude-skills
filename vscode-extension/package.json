@@ -1,0 +1,303 @@
+{
+  "name": "claude-skills",
+  "displayName": "Claude Skills",
+  "description": "Pick Claude Code skill modules for your tech stack from shared libraries, with dependencies, presets and a token budget.",
+  "version": "0.2.0",
+  "publisher": "tharaka-chathuranga",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tharaka-Chathuranga/claude-skills-vscode"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "claude",
+    "claude code",
+    "skills",
+    "ai"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claude-skills",
+          "title": "Claude Skills",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "claude-skills": [
+        {
+          "id": "claudeSkills.library",
+          "name": "Library"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "claudeSkills.refresh",
+        "title": "Refresh",
+        "category": "Claude Skills",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "claudeSkills.sync",
+        "title": "Install and Update Skills",
+        "category": "Claude Skills",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "claudeSkills.suggest",
+        "title": "Suggest Modules for This Project",
+        "category": "Claude Skills",
+        "icon": "$(sparkle)"
+      },
+      {
+        "command": "claudeSkills.findModule",
+        "title": "Find Module",
+        "category": "Claude Skills",
+        "icon": "$(search)"
+      },
+      {
+        "command": "claudeSkills.applyPreset",
+        "title": "Apply Preset",
+        "category": "Claude Skills",
+        "icon": "$(layers)"
+      },
+      {
+        "command": "claudeSkills.showAllModules",
+        "title": "Show All Modules",
+        "category": "Claude Skills",
+        "icon": "$(list-tree)"
+      },
+      {
+        "command": "claudeSkills.showRelevantModules",
+        "title": "Show Only Added and Detected Modules",
+        "category": "Claude Skills",
+        "icon": "$(filter)"
+      },
+      {
+        "command": "claudeSkills.openManifest",
+        "title": "Open skills.json",
+        "category": "Claude Skills",
+        "icon": "$(json)"
+      },
+      {
+        "command": "claudeSkills.addModule",
+        "title": "Add Module",
+        "category": "Claude Skills",
+        "icon": "$(add)"
+      },
+      {
+        "command": "claudeSkills.removeModule",
+        "title": "Remove Module",
+        "category": "Claude Skills",
+        "icon": "$(remove)"
+      },
+      {
+        "command": "claudeSkills.excludeItem",
+        "title": "Exclude from This Project",
+        "category": "Claude Skills",
+        "icon": "$(circle-slash)"
+      },
+      {
+        "command": "claudeSkills.includeItem",
+        "title": "Include Again",
+        "category": "Claude Skills",
+        "icon": "$(add)"
+      },
+      {
+        "command": "claudeSkills.openItem",
+        "title": "Open",
+        "category": "Claude Skills",
+        "icon": "$(go-to-file)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "claudeSkills.suggest",
+          "when": "view == claudeSkills.library",
+          "group": "navigation@1"
+        },
+        {
+          "command": "claudeSkills.findModule",
+          "when": "view == claudeSkills.library",
+          "group": "navigation@2"
+        },
+        {
+          "command": "claudeSkills.sync",
+          "when": "view == claudeSkills.library",
+          "group": "navigation@3"
+        },
+        {
+          "command": "claudeSkills.refresh",
+          "when": "view == claudeSkills.library",
+          "group": "navigation@4"
+        },
+        {
+          "command": "claudeSkills.applyPreset",
+          "when": "view == claudeSkills.library",
+          "group": "1_choose@1"
+        },
+        {
+          "command": "claudeSkills.showAllModules",
+          "when": "view == claudeSkills.library && !claudeSkills.showAll",
+          "group": "1_choose@2"
+        },
+        {
+          "command": "claudeSkills.showRelevantModules",
+          "when": "view == claudeSkills.library && claudeSkills.showAll",
+          "group": "1_choose@2"
+        },
+        {
+          "command": "claudeSkills.openManifest",
+          "when": "view == claudeSkills.library",
+          "group": "2_files@1"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "claudeSkills.addModule",
+          "when": "view == claudeSkills.library && viewItem =~ /^module\\.(detected|available)$/",
+          "group": "inline"
+        },
+        {
+          "command": "claudeSkills.removeModule",
+          "when": "view == claudeSkills.library && viewItem == module.added",
+          "group": "inline"
+        },
+        {
+          "command": "claudeSkills.openItem",
+          "when": "view == claudeSkills.library && viewItem =~ /^item\\.(installed|outdated|local)$/",
+          "group": "inline"
+        },
+        {
+          "command": "claudeSkills.includeItem",
+          "when": "view == claudeSkills.library && viewItem == item.excluded",
+          "group": "inline"
+        },
+        {
+          "command": "claudeSkills.excludeItem",
+          "when": "view == claudeSkills.library && viewItem =~ /^item\\.(installed|outdated|pending)$/"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "claudeSkills.addModule",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.removeModule",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.excludeItem",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.includeItem",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.openItem",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claude Skills",
+      "properties": {
+        "claudeSkills.sources": {
+          "type": "array",
+          "markdownDescription": "Skill libraries to read until a project has its own `.claude/skills.json`. `url` is the raw-content base of a branch or tag, e.g. `https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/v1.0.0`. Set `auth` to `github` for private repos.",
+          "default": [
+            {
+              "name": "Shared skills",
+              "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/main",
+              "auth": "github"
+            }
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "url"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Label shown in the sidebar."
+              },
+              "url": {
+                "type": "string",
+                "description": "Base URL that contains index.json and skills/."
+              },
+              "auth": {
+                "type": "string",
+                "enum": [
+                  "github"
+                ],
+                "description": "Send your GitHub token (needed for private repos)."
+              }
+            }
+          }
+        },
+        "claudeSkills.installScope": {
+          "type": "string",
+          "enum": [
+            "workspace",
+            "user"
+          ],
+          "enumDescriptions": [
+            "Use <project>/.claude: skills.json, skills/ and agents/. Commit the folder so teammates get the same set.",
+            "Use ~/.claude so your chosen modules apply to every project you open."
+          ],
+          "default": "workspace",
+          "description": "Where skills are installed."
+        },
+        "claudeSkills.autoSuggest": {
+          "type": "boolean",
+          "default": true,
+          "description": "Offer detected modules, and missing or updated skills, when you open a project."
+        },
+        "claudeSkills.budgetWarningTokens": {
+          "type": "number",
+          "default": 3000,
+          "minimum": 0,
+          "description": "Warn when the chosen skills add more than this many tokens (estimated) to every Claude session."
+        },
+        "claudeSkills.showAllModules": {
+          "type": "boolean",
+          "default": false,
+          "description": "List every module in the library, not just the ones added to or detected in this project."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "package": "vsce package",
+    "publish:vscode": "vsce publish",
+    "publish:openvsx": "ovsx publish"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.0",
+    "@types/vscode": "~1.85.0",
+    "@vscode/vsce": "^3.2.0",
+    "ovsx": "^0.10.0",
+    "typescript": "^5.6.0"
+  }
+}
