@@ -9,17 +9,25 @@ description: Reads and writes Amplify Data from the frontend with generateClient
 
 1. **Calls live in a services module, never in components.** Component → hook → service → client. The
    project's CLAUDE.md says where services go; default to a `services.ts` beside the feature.
-2. **One typed client.** `generateClient<Schema>()` once at module scope (or the project's client
-   helper). Never cast results to `any`; types come from `Schema`.
+2. **Typed clients from one helper module.** `generateClient<Schema>()` once per client kind (or the
+   project's client helpers): one for signed-in users, one for guest/anonymous pages that call only public
+   operations, and the server client for SSR. Types come from `Schema`; the only cast allowed is the TS2590
+   escape hatch below.
 3. **Filter with keys, not `filter`.** Lists that filter or sort by a field use the secondary-index query
    field (`client.models.Order.listOrdersByCustomer`). `list({ filter })` scans the table and pages can
    come back empty while more data exists. Never fetch everything and filter in the browser.
 4. **Paginate with `nextToken`.** Any list that can exceed one page passes `limit` and `nextToken`.
-5. **Check `errors` as well as `data`.** A response can resolve with `errors` set and `data` null.
+5. **Check `errors` as well as `data`.** A response can resolve with `errors` set and `data` null:
+   `if (errors?.length || !data) throw new Error(errors?.[0]?.message ?? '<operation> failed')` — a
+   descriptive error, never a silent `null`.
 6. **Tenant scoping.** If the project is multi-tenant (tenant key in CLAUDE.md), take the tenant from the
    app's auth/tenant context, pass it to every scoped call, and reset feature state when it changes. The
    backend derives the tenant from the token; a mismatched argument is a bug, not a fallback.
-7. **Select only what you render** with `selectionSet`.
+7. **Select only what you render** with `selectionSet`, declared as an `as const` array next to the service,
+   with the result type built from it (`SelectionSet<…>` or `Pick<Schema['Order']['type'], 'id' | 'status'>`).
+8. **Long-running operations return a job id.** A mutation that starts AI generation, an export or other
+   slow work returns `{ jobId }`; the client polls a status query or subscribes, rather than awaiting a
+   request that can hit the 30 s AppSync timeout.
 
 ## Setup
 
@@ -35,8 +43,23 @@ import type { Schema } from '@/amplify/data/resource';
 const client = generateClient<Schema>();
 ```
 
+Inside a Lambda, the Data API client follows `amplify-lambda` (memoised async factory, called in the
+handler; prefer direct DynamoDB repositories in hot paths).
+
 Server-side rendering (Next.js): use `generateServerClientUsingCookies` /
 `generateServerClientUsingReqRes` from `@aws-amplify/adapter-nextjs/data`, never the browser client.
+
+Guest/anonymous pages: a separate client (e.g. `authMode: 'lambda'` with a public/guest token, or
+`'identityPool'`) that only calls operations the backend marks public. Keep the clients in one helper module
+and export getters (`getAuthClient()`, `getGuestClient()`); services pick one.
+
+## TS2590: "Expression produces a union type that is too complex to represent"
+
+The generated client's types can exceed the compiler's limit on large schemas (often on `client.models.X.list`
+with a selection set). The sanctioned escape hatch: **one** typed wrapper or proxy in the client helper module
+that loosens the problematic call signatures, used by every service. Re-type the result immediately in the
+service (`as Order[]` / a `SelectionSet` type) so nothing untyped leaves it. Never scatter `as any` or
+`@ts-ignore` across services or components.
 
 ## Service functions
 
@@ -94,4 +117,4 @@ key fields as the list.
 - [ ] Lists use index query fields and `nextToken`; no client-side filtering of full tables.
 - [ ] `errors` checked on every call; loading, empty and error states render.
 - [ ] Tenant-scoped calls take the tenant from context and reset on change.
-- [ ] No `any` casts on results.
+- [ ] No `any` casts on results outside the single TS2590 wrapper; results re-typed in the service.
