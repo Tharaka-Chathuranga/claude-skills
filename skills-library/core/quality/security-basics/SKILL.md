@@ -17,6 +17,9 @@ The tenant key's name and where it comes from are in CLAUDE.md (e.g. `organizati
 - **Every** read, write, key, index lookup, file path, cache key and queue message is scoped by
   it. A lookup by id alone must still check that the record belongs to the caller's tenant.
 - No tenant-specific data in process-level globals, module-scope caches or shared temp files.
+- **Storage**: object keys for tenant data are tenant-prefixed (`tenants/{tenantId}/…`) and the bucket's
+  access rules enforce the prefix per tenant. A rule like "any authenticated user" on a flat prefix lets
+  any signed-in user of any tenant read every file under it.
 - Test the other-tenant case: a request authenticated as tenant A for tenant B's id returns
   not-found or forbidden.
 
