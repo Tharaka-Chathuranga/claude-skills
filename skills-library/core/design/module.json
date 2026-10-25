@@ -1,0 +1,6 @@
+{
+  "name": "Software design",
+  "description": "Design principles, patterns and anti-patterns for structuring code, with a reviewer agent that flags both under- and over-design.",
+  "detect": { "always": true },
+  "requires": []
+}
