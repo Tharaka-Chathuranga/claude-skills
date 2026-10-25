@@ -12,6 +12,9 @@ A single quality gate and a code-health ratchet for any Node project, configured
 | `ratchet.mjs` | Per-file debt counts that may only go down: file size over `maxFileLines` and each `forbiddenPatterns` entry, plus optional locale-key parity. Commands: `check <files>`, `update`, `report [--top N]`, `--help`. |
 | `quality.config.json` | Template config. Copy to the repo root and edit. Same file as `templates/quality.config.json`. |
 | `baseline.json` | Created by `ratchet.mjs update` next to the scripts (or at `baselinePath`). Commit it. |
+| `templates/quality.config.amplify.json` | Preset for a Next.js + Amplify Gen 2 repo: frontend and backend typecheck steps, blocking lint on `src/`, advisory lint on backend folders, CloudFormation validation only when `amplify/` changed, locale parity on `messages/` with `en` as source. |
+| `templates/pre-push` | Husky hook running `npm run quality`; skipped when `CI`, `AMPLIFY_CI` or `AWS_EXECUTION_ENV` is set. Copy to `.husky/pre-push`. |
+| `templates/claude-settings.json` | Claude Code permissions to merge into `.claude/settings.json`: allows read-only git, lint, typecheck, test and quality commands; asks before deploy/sandbox/push; denies reading `.env*` and token/credential files. |
 
 ## Install
 
@@ -29,8 +32,13 @@ A single quality gate and a code-health ratchet for any Node project, configured
 
 4. Run `npm run quality:baseline` once and commit `scripts/quality/baseline.json`. Existing debt is
    now recorded; new debt fails the gate.
-5. Optional: run `npm run quality` in a pre-push hook and in CI (fetch the base branch first:
-   `git fetch origin main --depth=50`).
+5. Optional: run `npm run quality` in a pre-push hook (`templates/pre-push`) and in CI (fetch the base
+   branch first: `git fetch origin main --depth=50`).
+
+Adopting the kit in a repo that already has a ratchet baseline: legacy keys are read as aliases —
+`lineCap` for `maxFileLines` (config and baseline), `i18nMissing` for `localesMissing`, and the metric
+`eslintDisable` for `lintDisable` — so the existing baseline keeps working. The next `update` rewrites it
+with the kit's names.
 
 ## Using it
 
@@ -74,6 +82,29 @@ A step is either `{ "name", "builtin": "ratchet" | "boundaries" }` or a command:
 | `onlyIfCodeChanged` | Skip when no code file changed. |
 
 Skipped steps are listed with their reason in the summary, so "green" never hides a skipped step.
+
+**Several typecheck projects.** A root `tsc --noEmit` skips folders the root tsconfig excludes (often the
+backend). Either add one step per project, or call the project's script if it already checks them all:
+
+```json
+{ "name": "typecheck-frontend", "run": ["npx", "tsc", "--noEmit", "-p", "tsconfig.json"], "onlyIfCodeChanged": true },
+{ "name": "typecheck-backend", "run": ["npx", "tsc", "--noEmit", "-p", "amplify/tsconfig.json"], "onlyIfCodeChanged": true }
+// or
+{ "name": "typecheck", "run": ["npm", "run", "tsc"], "requiresScript": "tsc", "onlyIfCodeChanged": true }
+```
+
+**Blocking in one area, advisory in another.** Use the same tool in two steps with `paths`, and mark the
+one for the area with old debt `advisory`. If the ESLint config ignores that area, pass `--no-ignore` so
+the files are linted at all:
+
+```json
+{ "name": "lint", "run": ["npx", "eslint", "--no-warn-ignored"], "passFiles": true, "paths": ["src/"] },
+{ "name": "lint-backend", "run": ["npx", "eslint", "--no-ignore"], "passFiles": true, "paths": ["amplify/"], "advisory": true }
+```
+
+**Formatting** is scoped to code files by default (`passFiles` without `passAllChanged`), so Prettier
+doesn't fail on changed JSON fixtures, lockfiles or Markdown the project never formatted. Add
+`passAllChanged: true` only if the whole repo is Prettier-clean.
 Swap the template's commands for your stack, e.g. `["npx", "vitest", "related", "--run"]` for
 Vitest, or a `dependency-cruiser` / `eslint-plugin-boundaries` run in place of the built-in
 `boundaries` step.
