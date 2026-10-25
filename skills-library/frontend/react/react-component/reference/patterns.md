@@ -85,7 +85,8 @@ For components with related parts that share implicit state: tabs, accordions, m
   feature flags, a compound component's internal state.
 - Split contexts by update frequency: one for state, one for stable actions, so action-only consumers don't
   re-render. Memoise the provider `value`.
-- Server data belongs in the data-fetching library's cache, not in a hand-rolled context.
+- Server data belongs in the project's data library cache if it has one; otherwise in a feature hook using
+  the sanctioned hand-rolled pattern (see `react-hook`), exposed through one provider, not scattered state.
 - Before adding context, try composition: pass the already-built element as `children` so intermediate
   components never see the prop.
 - Each context gets a `useX()` accessor that throws outside its provider; don't export the raw context.

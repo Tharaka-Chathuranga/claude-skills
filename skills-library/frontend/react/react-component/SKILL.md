@@ -18,7 +18,9 @@ skill; general code rules follow `code-quality`; types follow `type-safety`.
 4. **Private until reused.** A component used in one place lives under its parent's `components/`. Promote
    it to the shared folder when a second consumer appears.
 5. **No hardcoded user-facing strings** if the project uses an i18n library (see its i18n skill).
-6. **Every new component gets a test and, if the project uses Storybook, a story** — unless the user says otherwise.
+6. **Test by kind, following the project's setup.** Logic (utils, hooks' pure parts, reducers) gets unit
+   tests. Rendering and interaction are covered by component tests where the test runner has a DOM (jsdom),
+   or by Storybook stories with play functions where it doesn't. Add a story if the project uses Storybook.
 
 ## Where it goes
 
@@ -100,3 +102,6 @@ Run type-check, lint and the new/affected tests, then the project's quality gate
 
 - **Choosing how to structure a component** (container/presentational, compound components, render props vs
   hooks, controlled vs uncontrolled, context vs prop drilling) → read [reference/patterns.md](reference/patterns.md)
+- **Laying out a whole feature or page** (view, provider, services, parts by region, UI states) → the
+  `react-feature-structure` skill
+- **Building a form or create/edit dialog** → the `react-forms` skill

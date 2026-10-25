@@ -10,9 +10,10 @@ Backend data calls follow the project's data-access skill (e.g. `amplify-client-
 
 ## Rules
 
-1. **Server data goes through the project's data library** (React Query, SWR, or the framework's loader) —
-   never `useEffect` + `fetch` + `useState`. The query key includes every variable the request depends on.
-   Return the library's `data/error/isLoading` instead of copying them into local state.
+1. **Server data goes through the project's data library if it has one** (React Query, SWR, the framework's
+   loader). The query key includes every variable the request depends on; return the library's
+   `data/error/isLoading` instead of copying them into local state. **If the project has none**, use the
+   hand-rolled fetch pattern below — never an ad hoc `useEffect` + `useState` without its guards.
 2. **Never silence `react-hooks/exhaustive-deps`.** Fix the cause: move the function inside the effect, read
    the latest value from a ref, or stabilise the dependency upstream.
 3. **Every subscription, timer, listener, observer, socket and in-flight request is cleaned up** in the
@@ -70,6 +71,40 @@ useEffect(() => {
   Use the framework's `useEffectEvent` instead if the project's React version provides it.
 - Reset state when an identity prop changes by giving the component a `key`, not with an effect.
 - Mutations: use the data library's mutation hook and invalidate the affected keys; don't refetch manually.
+
+## Hand-rolled fetching (no data library)
+
+```ts
+const [state, setState] = useState<State>({ items: [], nextToken: null, isLoading: true, error: null });
+const requestIdRef = useRef(0);
+
+const load = useCallback(async (nextToken: string | null) => {
+  if (!tenantId) return;
+  const requestId = ++requestIdRef.current;
+  setState((s) => ({ ...s, isLoading: true }));
+  try {
+    const page = await listOrders(tenantId, nextToken);            // service call, not the client
+    if (requestId !== requestIdRef.current) return;                // stale response
+    setState((s) => ({
+      items: nextToken ? [...s.items, ...page.items] : page.items, // load more appends
+      nextToken: page.nextToken, isLoading: false, error: null,
+    }));
+  } catch (error) {
+    if (requestId !== requestIdRef.current) return;
+    setState((s) => ({ ...s, isLoading: false, error: toMessage(error) })); // keep last good items
+  }
+}, [tenantId]);
+
+useEffect(() => {
+  void load(null);
+  return () => { requestIdRef.current += 1; };                     // ignore responses after unmount
+}, [load]);
+
+const loadMore = () => state.nextToken && load(state.nextToken);
+```
+
+Fetch in a callback, guard against stale responses with a request id (or a `cancelled` flag in the effect),
+invalidate on unmount, keep the last good data on error, and append pages for `nextToken`-style load more.
 
 ## Pitfalls to check
 
