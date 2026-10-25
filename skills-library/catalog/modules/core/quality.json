@@ -1,6 +1,6 @@
 {
   "id": "core/quality",
-  "version": "5cb3e3264fb6",
+  "version": "7a6654897f2f",
   "skills": [
     {
       "name": "architecture-boundaries",
@@ -57,7 +57,7 @@
     {
       "name": "security-basics",
       "description": "Baseline security for any stack — input validation at trust boundaries, server-side authorisation, tenant isolation, secrets, least privilege, injection and safe logging. Use when handling user input, adding an endpoint, query, upload or permission check, touching auth, secrets or tenant data, or when asked \"is this secure\" or \"can another tenant see this\".",
-      "version": "9b59fab33200",
+      "version": "ae7885d00cf6",
       "files": [
         "SKILL.md"
       ],

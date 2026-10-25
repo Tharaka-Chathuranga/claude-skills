@@ -1,6 +1,6 @@
 {
   "id": "core/workflow",
-  "version": "727769c151ed",
+  "version": "cdeafe25487a",
   "skills": [
     {
       "name": "code-review-standards",
@@ -15,7 +15,7 @@
     {
       "name": "commit-and-pr",
       "description": "Writes Conventional Commits messages, splits work into small reviewable commits and PRs, and structures the PR description. Use when asked to \"commit this\", \"write a commit message\", \"open a PR\", \"create a pull request\" or \"write the PR description\".",
-      "version": "30db6ffb1b41",
+      "version": "86939bfb9351",
       "files": [
         "SKILL.md"
       ],

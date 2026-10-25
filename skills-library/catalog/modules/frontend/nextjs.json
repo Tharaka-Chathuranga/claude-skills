@@ -1,11 +1,11 @@
 {
   "id": "frontend/nextjs",
-  "version": "30ee21ecaed2",
+  "version": "b0613aca620c",
   "skills": [
     {
       "name": "nextjs-routing",
       "description": "Builds Next.js App Router routes — server vs client components with the \"use client\" boundary pushed down, layouts, loading and error boundaries, route handlers, metadata, dynamic params and caching/revalidation choices. Use when asked to \"add a page\", \"add a route\", \"add an API route\", \"why is this page not updating\", \"fix hydration error\", or when editing page.tsx, layout.tsx or route.ts.",
-      "version": "1d34ad0d815a",
+      "version": "9787c54309cb",
       "files": [
         "SKILL.md"
       ],
@@ -15,7 +15,7 @@
     {
       "name": "nextjs-server-action",
       "description": "Writes Next.js server actions with schema-validated input, auth and tenant checks inside the action, a typed discriminated result, revalidatePath/revalidateTag, and data access delegated to a service module. Use when asked to \"add a server action\", \"handle this form submit on the server\", \"add a mutation\", or when creating a file with \"use server\".",
-      "version": "da7dec99d719",
+      "version": "260474dc136c",
       "files": [
         "SKILL.md"
       ],

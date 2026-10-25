@@ -1,11 +1,11 @@
 {
   "id": "frontend/mui",
-  "version": "ebb700e90a06",
+  "version": "33c43bd7c0c5",
   "skills": [
     {
       "name": "mui-components",
       "description": "Builds UI with Material UI (MUI) using theme tokens instead of hardcoded values, sx vs styled, responsive props, form controls, accessibility and shared style fragments. Use when writing or reviewing components that import @mui/material, when asked to \"style this\", \"make it responsive\", \"match the theme\", \"add a form field\", or when a review flags hardcoded colours or spacing.",
-      "version": "97f78afa029c",
+      "version": "eebec90e8e5b",
       "files": [
         "SKILL.md"
       ],

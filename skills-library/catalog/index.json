@@ -45,7 +45,7 @@
         "always": true
       },
       "requires": [],
-      "version": "5cb3e3264fb6",
+      "version": "7a6654897f2f",
       "skills": [
         "architecture-boundaries",
         "code-quality",
@@ -69,7 +69,7 @@
         "core/quality",
         "core/playbooks"
       ],
-      "version": "727769c151ed",
+      "version": "cdeafe25487a",
       "skills": [
         "code-review-standards",
         "commit-and-pr",
@@ -138,7 +138,7 @@
         "core/quality",
         "languages/typescript"
       ],
-      "version": "c8ae80b965ec",
+      "version": "38ee69848bb4",
       "skills": [
         "amplify-client-data"
       ],
@@ -158,7 +158,7 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "ebb700e90a06",
+      "version": "33c43bd7c0c5",
       "skills": [
         "mui-components"
       ],
@@ -178,7 +178,7 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "d36fe489719a",
+      "version": "216c60fa09fa",
       "skills": [
         "add-i18n-strings"
       ],
@@ -198,7 +198,7 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "30ee21ecaed2",
+      "version": "b0613aca620c",
       "skills": [
         "nextjs-routing",
         "nextjs-server-action"
@@ -220,14 +220,16 @@
         "core/quality",
         "core/design"
       ],
-      "version": "058a8c1ab8a3",
+      "version": "f4c22218707b",
       "skills": [
         "react-component",
+        "react-feature-structure",
+        "react-forms",
         "react-hook",
         "react-performance"
       ],
       "agents": [],
-      "listingTokens": 341
+      "listingTokens": 586
     },
     {
       "id": "backend/amplify-gen2",
@@ -246,7 +248,7 @@
         "backend/aws-lambda",
         "data/dynamodb"
       ],
-      "version": "5ca08a7f12f2",
+      "version": "d26d88ca7bb9",
       "skills": [
         "amplify-backend-standards",
         "amplify-data-model",
@@ -266,12 +268,13 @@
         "core/quality",
         "core/design"
       ],
-      "version": "f00348d569ca",
+      "version": "7f9368c483d3",
       "skills": [
-        "lambda-standards"
+        "lambda-standards",
+        "llm-functions"
       ],
       "agents": [],
-      "listingTokens": 118
+      "listingTokens": 254
     },
     {
       "id": "data/dynamodb",
@@ -286,7 +289,7 @@
       "requires": [
         "core/quality"
       ],
-      "version": "82f8ef617764",
+      "version": "293e79fb3cc4",
       "skills": [
         "dynamodb-access-patterns"
       ],
@@ -306,7 +309,7 @@
       "requires": [
         "core/quality"
       ],
-      "version": "adc283ccba34",
+      "version": "1d34a91b0c7b",
       "skills": [
         "jest-tests"
       ],
@@ -346,7 +349,7 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "7999e354ffab",
+      "version": "1cc3cc66f70a",
       "skills": [
         "storybook-stories"
       ],
