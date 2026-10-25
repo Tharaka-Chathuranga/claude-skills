@@ -83,7 +83,7 @@ Projects record their choice in `.claude/skills.json`, committed to the repo:
 ```json
 {
   "sources": {
-    "shared": { "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/v1.0.0" },
+    "shared": { "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/library-v1.0.0/skills-library" },
     "acme": { "url": "https://raw.githubusercontent.com/acme/claude-skills-acme/main", "auth": "github" }
   },
   "modules": {

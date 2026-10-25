@@ -46,7 +46,7 @@ CI runs the same build on every pull request and rebuilds `catalog/` on every pu
 
 ## Releases
 
-Tag releases (`v1.0.0`, `v1.1.0`, ...). Projects pin a tag in their `.claude/skills.json` source URL and upgrade by
+Tag releases (`library-v1.0.0`, `library-v1.1.0`, ...). Projects pin a tag in their `.claude/skills.json` source URL and upgrade by
 changing it in a pull request, so a library change never reaches a project unexpectedly.
 
 ## Sharing
@@ -58,4 +58,4 @@ changing it in a pull request, so a library change never reaches a project unexp
 | Shared skills plus company-only skills | This repo plus a private repo per company with a `company/<name>` module; the extension reads both | Free |
 
 The source URL is the raw-content base of a branch or tag, for example
-`https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/v1.0.0`.
+`https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/library-v1.0.0/skills-library`.

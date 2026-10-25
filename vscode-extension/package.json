@@ -7,7 +7,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Tharaka-Chathuranga/claude-skills-vscode"
+    "url": "https://github.com/Tharaka-Chathuranga/claude-skills",
+    "directory": "vscode-extension"
   },
   "engines": {
     "vscode": "^1.85.0"
@@ -221,11 +222,11 @@
       "properties": {
         "claudeSkills.sources": {
           "type": "array",
-          "markdownDescription": "Skill libraries to read until a project has its own `.claude/skills.json`. `url` is the raw-content base of a branch or tag, e.g. `https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/v1.0.0`. Set `auth` to `github` for private repos.",
+          "markdownDescription": "Skill libraries to read until a project has its own `.claude/skills.json`. `url` is the raw-content base of a branch or tag, e.g. `https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/library-v1.0.0/skills-library`. Set `auth` to `github` for private repos.",
           "default": [
             {
               "name": "Shared skills",
-              "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/main",
+              "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/main/skills-library",
               "auth": "github"
             }
           ],

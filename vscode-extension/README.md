@@ -65,7 +65,7 @@ When a teammate opens the repo, the extension offers to install anything in `ski
 
 ```json
 "claudeSkills.sources": [
-  { "name": "Shared", "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/v1.0.0" },
+  { "name": "Shared", "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/library-v1.0.0/skills-library" },
   { "name": "Acme", "url": "https://raw.githubusercontent.com/acme/claude-skills-acme/main", "auth": "github" }
 ]
 ```

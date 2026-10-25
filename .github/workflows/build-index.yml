@@ -3,10 +3,16 @@ name: Build catalog
 on:
   push:
     branches: [main]
+    paths: ['skills-library/**', '.github/workflows/build-index.yml']
   pull_request:
+    paths: ['skills-library/**', '.github/workflows/build-index.yml']
 
 permissions:
   contents: write
+
+defaults:
+  run:
+    working-directory: skills-library
 
 jobs:
   build:
