@@ -1,0 +1,6 @@
+{
+  "name": "React",
+  "description": "Component and hook structure, React design patterns and render performance.",
+  "detect": { "dependencies": ["react"] },
+  "requires": ["core/quality", "core/design"]
+}

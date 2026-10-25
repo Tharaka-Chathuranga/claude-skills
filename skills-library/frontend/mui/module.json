@@ -1,0 +1,6 @@
+{
+  "name": "MUI",
+  "description": "Building UI with Material UI: theme tokens, styling, responsive layout, forms and accessibility.",
+  "detect": { "dependencies": ["@mui/material"] },
+  "requires": ["frontend/react"]
+}
