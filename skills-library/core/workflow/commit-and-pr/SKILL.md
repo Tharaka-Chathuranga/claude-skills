@@ -26,6 +26,8 @@ Format: [Conventional Commits](https://www.conventionalcommits.org/).
   the reader: `fix(billing): round tax per line, not per invoice`.
 - Body explains **why** and any trade-off; the diff already shows what.
 - Breaking change: `!` after the type/scope and a `BREAKING CHANGE:` footer.
+- Trailers (co-author lines, sign-offs, ticket refs) follow the project's or user's stated preference in
+  CLAUDE.md or memory — including leaving a default co-author trailer out when they say so.
 
 **One logical change per commit.** Separate:
 - refactors / moves from behaviour changes (a move-only commit reviews in seconds);
@@ -48,6 +50,9 @@ changed lines). Split large work into a stack: preparatory refactor → feature 
 
 Before opening: `npm run quality` passes (`quality-gate`), and the diff has had a self-review
 (`code-review-standards`).
+
+**Base branch is project-specific.** Target the integration branch from CLAUDE.md or
+`quality.config.json` (`baseBranch`), e.g. `development` or `develop`, not `main` by assumption.
 
 Title: same format as a commit subject.
 
