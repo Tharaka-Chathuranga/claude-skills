@@ -54,9 +54,11 @@ export function response(ctx) {
 ```
 
 - **Check `ctx.error` first in every `response`**, or a failed write returns `null` as if it worked.
-- Use a small fixed set of error types (`ValidationError`, `UnauthorizedError`, `NotFoundError`,
-  `ConflictError`) — match what the project already uses. Map `ConditionalCheckFailed` and transaction
-  `cancellationReasons` to messages the client can act on.
+- Use one fixed set of error types: `ValidationError`, `UnauthorizedError`, `NotFoundError`,
+  `BadRequestError`, `ConflictError`. Map `ConditionalCheckFailed` and `TransactionCanceled`
+  (`cancellationReasons`) to `ConflictError` with a message the client can act on.
+- Items written by a custom resolver set `__typename: 'Order'` (plus `createdAt`/`updatedAt` via
+  `util.time.nowISO8601()`), so generated types and the Data API resolve them like model-written items.
 
 ## Tenant scoping
 
