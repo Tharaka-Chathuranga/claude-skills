@@ -83,8 +83,21 @@ Ambient values become injected ports: time is a `Clock`, `context.getRemainingTi
 - Optional enrichment never fails the main path: catch, log a warning, continue.
 - For job-tracked work, the handler records the failure on the job before returning or rethrowing.
 
+## LLM calls
+
+- **Explicit timeout** on every model call, below the function's remaining budget. Don't rely on SDK
+  defaults (often minutes).
+- **Decide retries deliberately**: retry transient 429/5xx with backoff at most a couple of times, or set
+  retries to 0 when the job or queue already retries. Write the choice in code, not as an implicit default.
+- **Validate structured output with a schema** (zod), and write the schema's field descriptions as
+  instructions to the model — they are part of the prompt.
+- **Never log full prompts or outputs** that contain user data; log ids, sizes, model and timings.
+- **Attribute token usage per call** (model, input/output tokens, tenant, operation) so cost can be traced.
+
 ## Where to look
 
-- **Writing an SQS, EventBridge or stream consumer, or making a handler idempotent** → read
+- **Writing an SQS, EventBridge or stream consumer, an EventBridge → SQS consumer, an async job worker, or
+  making a handler idempotent** → read
   [reference/retries-and-idempotency.md](reference/retries-and-idempotency.md)
 - **Data access from the function** → the `dynamodb-access-patterns` skill
+- **Function that calls an LLM or runs an AI pipeline** → the `llm-functions` skill
