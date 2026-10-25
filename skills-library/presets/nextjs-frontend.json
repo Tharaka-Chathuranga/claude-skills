@@ -1,0 +1,5 @@
+{
+  "name": "Next.js frontend developer",
+  "description": "React and Next.js App Router with unit and end-to-end tests.",
+  "modules": ["frontend/nextjs", "testing/jest", "testing/playwright"]
+}

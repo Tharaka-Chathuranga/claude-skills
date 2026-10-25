@@ -1,0 +1,5 @@
+{
+  "name": "Amplify backend developer",
+  "description": "Lambdas, data models, resolvers and DynamoDB access on Amplify Gen 2.",
+  "modules": ["backend/amplify-gen2", "testing/jest"]
+}

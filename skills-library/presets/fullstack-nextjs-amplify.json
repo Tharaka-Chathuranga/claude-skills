@@ -1,0 +1,13 @@
+{
+  "name": "Full-stack Next.js + Amplify",
+  "description": "Next.js, MUI and next-intl on the frontend with an Amplify Gen 2 backend.",
+  "modules": [
+    "frontend/nextjs",
+    "frontend/mui",
+    "frontend/next-intl",
+    "frontend/amplify-client",
+    "backend/amplify-gen2",
+    "testing/jest",
+    "testing/storybook"
+  ]
+}
