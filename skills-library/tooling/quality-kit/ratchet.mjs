@@ -11,6 +11,10 @@
  * A file already over the cap may not grow. Run `update` after paying debt down so the lower
  * number becomes the new ceiling.
  *
+ * Legacy key names are read as aliases so a repo can adopt the kit without rewriting its
+ * baseline: `lineCap` = `maxFileLines`, `i18nMissing` = `localesMissing`, metric `eslintDisable` =
+ * `lintDisable`. `update` always writes the kit's names.
+ *
  * Counting is line-based regex, not AST: cheap enough to scan a whole repo in seconds, and
  * consistent, which is all a file-against-its-own-past comparison needs. Node built-ins only.
  */
@@ -22,6 +26,10 @@ import { fileURLToPath } from 'node:url';
 const KIT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const CONFIG_NAME = 'quality.config.json';
 const DEFAULT_MAX_FILE_LINES = 400; // used only when the config omits maxFileLines
+
+/** Legacy metric names → the kit's names, so older baselines and configs keep working. */
+const METRIC_ALIASES = { eslintDisable: 'lintDisable' };
+const canonicalMetric = (name) => METRIC_ALIASES[name] ?? name;
 
 // ---------------------------------------------------------------------------
 // Config
@@ -48,9 +56,10 @@ export function loadConfig() {
     include: raw.include ?? [''],
     exclude: raw.exclude ?? ['node_modules/'],
     codeExtensions: raw.codeExtensions ?? ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'],
-    maxFileLines: raw.maxFileLines ?? DEFAULT_MAX_FILE_LINES,
+    maxFileLines: raw.maxFileLines ?? raw.lineCap ?? DEFAULT_MAX_FILE_LINES,
     forbiddenPatterns: (raw.forbiddenPatterns ?? []).map((entry) => ({
       ...entry,
+      name: canonicalMetric(entry.name),
       regex: new RegExp(entry.pattern, 'g'),
     })),
     locales: raw.locales ?? null,
@@ -153,7 +162,26 @@ export function findMissingLocaleKeys(config) {
 
 export function loadBaseline(config) {
   if (!existsSync(config.baselinePath)) return { files: {}, localesMissing: {} };
-  return JSON.parse(readFileSync(config.baselinePath, 'utf8'));
+  return normalizeBaseline(JSON.parse(readFileSync(config.baselinePath, 'utf8')));
+}
+
+/** Maps legacy baseline keys (lineCap, i18nMissing, eslintDisable) onto the kit's names. */
+function normalizeBaseline(raw) {
+  const { lineCap, i18nMissing, ...rest } = raw;
+  const files = {};
+  for (const [file, metrics] of Object.entries(raw.files ?? {})) {
+    files[file] = {};
+    for (const [name, count] of Object.entries(metrics)) {
+      const key = canonicalMetric(name);
+      files[file][key] = Math.max(files[file][key] ?? 0, count);
+    }
+  }
+  return {
+    ...rest,
+    maxFileLines: raw.maxFileLines ?? lineCap,
+    files,
+    localesMissing: raw.localesMissing ?? i18nMissing ?? {},
+  };
 }
 
 function buildBaseline(config) {
