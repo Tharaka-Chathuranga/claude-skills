@@ -1,0 +1,35 @@
+{
+  "baseBranch": "origin/main",
+  "baseBranchFallbacks": ["main", "origin/master", "master"],
+  "include": ["src/", "amplify/", "shared/"],
+  "exclude": ["node_modules/", "dist/", "build/", "coverage/", ".d.ts", "generated/", ".amplify/", "amplify_outputs"],
+  "codeExtensions": [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"],
+  "maxFileLines": 400,
+  "forbiddenPatterns": [
+    { "name": "any", "pattern": "(:\\s*any\\b|\\bas any\\b|<any>|\\bany\\[\\])", "fix": "type-safety" },
+    { "name": "tsIgnore", "pattern": "@ts-(ignore|nocheck|expect-error)", "fix": "type-safety" },
+    { "name": "lintDisable", "pattern": "eslint-disable", "fix": "fix the rule violation instead of disabling it" },
+    { "name": "consoleLog", "pattern": "\\bconsole\\.log\\(", "fix": "use the project logger, or delete it" },
+    { "name": "debugger", "pattern": "\\bdebugger\\b", "fix": "delete it" }
+  ],
+  "locales": { "dir": "messages", "source": "en" },
+  "layers": {
+    "aliases": { "@/": "src/" },
+    "order": [
+      { "name": "app", "paths": ["src/app/"] },
+      { "name": "features", "paths": ["src/features/"], "isolated": true },
+      { "name": "shared", "paths": ["src/components/", "src/hooks/", "src/lib/", "src/utils/"] }
+    ]
+  },
+  "steps": [
+    { "name": "ratchet", "builtin": "ratchet" },
+    { "name": "boundaries", "builtin": "boundaries" },
+    { "name": "typecheck-frontend", "run": ["npx", "tsc", "--noEmit", "-p", "tsconfig.json"], "requiresFile": "tsconfig.json", "onlyIfCodeChanged": true },
+    { "name": "typecheck-backend", "run": ["npx", "tsc", "--noEmit", "-p", "amplify/tsconfig.json"], "requiresFile": "amplify/tsconfig.json", "onlyIfCodeChanged": true },
+    { "name": "lint", "run": ["npx", "eslint", "--no-warn-ignored"], "passFiles": true, "paths": ["src/"], "requiresPackage": "eslint" },
+    { "name": "lint-backend", "run": ["npx", "eslint", "--no-ignore"], "passFiles": true, "paths": ["amplify/", "shared/"], "advisory": true, "requiresPackage": "eslint" },
+    { "name": "format", "run": ["npx", "prettier", "--check", "--ignore-unknown"], "passFiles": true, "requiresPackage": "prettier" },
+    { "name": "test", "run": ["npx", "jest", "--findRelatedTests", "--passWithNoTests"], "passFiles": true, "requiresPackage": "jest" },
+    { "name": "cfn-validate", "run": ["npm", "run", "validate-cfn"], "requiresScript": "validate-cfn", "onlyIfChanged": ["amplify/"] }
+  ]
+}

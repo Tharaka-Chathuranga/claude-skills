@@ -1,0 +1,11 @@
+#!/bin/sh
+# Husky pre-push hook: runs the quality gate before every push.
+# Install: copy to .husky/pre-push and make it executable (chmod +x .husky/pre-push).
+
+# CI and Amplify build servers run their own checks; skip there.
+if [ -n "$CI" ] || [ -n "$AMPLIFY_CI" ] || [ -n "$AWS_EXECUTION_ENV" ]; then
+  echo "pre-push: CI environment detected, skipping quality gate"
+  exit 0
+fi
+
+npm run quality

@@ -1,0 +1,44 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git ls-files:*)",
+      "Bash(npm run quality:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run tsc:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run test:*)",
+      "Bash(npx tsc --noEmit:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx prettier --check:*)",
+      "Bash(npx jest:*)",
+      "Bash(node scripts/quality/ratchet.mjs report:*)",
+      "Bash(node scripts/quality/ratchet.mjs check:*)"
+    ],
+    "ask": [
+      "Bash(npx ampx:*)",
+      "Bash(npm run sandbox:*)",
+      "Bash(npm run deploy:*)",
+      "Bash(aws lambda update-function-code:*)",
+      "Bash(aws cloudformation:*)",
+      "Bash(git push:*)",
+      "Bash(npm run quality:baseline:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/*token*.json)",
+      "Read(**/credentials*)",
+      "Read(~/.aws/credentials)",
+      "Bash(npx ampx sandbox delete:*)"
+    ]
+  }
+}
