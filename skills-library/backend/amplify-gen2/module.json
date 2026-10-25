@@ -1,0 +1,6 @@
+{
+  "name": "AWS Amplify Gen 2",
+  "description": "Backend functions, data models, AppSync resolvers and deploys for Amplify Gen 2 projects.",
+  "detect": { "dependencies": ["@aws-amplify/backend"] },
+  "requires": ["core/quality", "core/design", "languages/typescript", "backend/aws-lambda", "data/dynamodb"]
+}

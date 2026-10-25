@@ -1,0 +1,5 @@
+{
+  "name": "AWS Lambda",
+  "description": "Runtime rules for Node.js Lambda functions: composition-root handlers, client lifetime, retries, idempotency, batching and logging.",
+  "requires": ["core/quality", "core/design"]
+}
