@@ -1,0 +1,69 @@
+{
+  "id": "core/quality",
+  "version": "5cb3e3264fb6",
+  "skills": [
+    {
+      "name": "architecture-boundaries",
+      "description": "Decides where new code goes and what it may import — layers with one-way dependencies, feature boundaries, public entry files, shared vs feature code, and migrating legacy structure incrementally. Use before creating a folder, feature, module or package, when asking \"where should this live\", when one feature needs code from another, or when asked about \"project structure\", \"layering\" or \"separation of concerns\".",
+      "version": "92592da18a6f",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 125
+    },
+    {
+      "name": "code-quality",
+      "description": "The always-on standard for writing or changing code in any language — small single-purpose units, flat control flow, typed and validated edges, deliberate duplication, why-comments, tests with the change, and a self-review before reporting done. Use for any code-writing task (feature, fix, refactor, script), when asked to \"write clean code\", \"make this maintainable\", \"improve this code\" or \"follow best practices\".",
+      "version": "3675a35208d5",
+      "files": [
+        "SKILL.md",
+        "reference/research-summary.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 123
+    },
+    {
+      "name": "error-handling",
+      "description": "Rules for failures in any stack — handle each error once, typed expected vs unexpected errors, keep the cause, structured logging without secrets or PII, no swallowing, safe user-facing messages. Use when writing try/catch, throwing or returning errors, adding logging, mapping errors to responses, or when asked \"how should I handle this failure\".",
+      "version": "dd0f4cdfb0fa",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 106
+    },
+    {
+      "name": "naming",
+      "description": "Owns naming rules for files, folders, modules, functions, types, variables, constants, booleans and tests — intent-revealing, in the domain's language, one word per concept — and reviews or proposes names with a reason. Use when writing or renaming code, when asked to \"name this\", \"check the names\", \"is this a good name\", or when code is hard to understand even if naming isn't mentioned.",
+      "version": "9f6e11e85519",
+      "files": [
+        "SKILL.md",
+        "reference/sources.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 114
+    },
+    {
+      "name": "performance-scalability",
+      "description": "Stack-agnostic performance and scalability principles — paginate every list, avoid N+1 calls, batch reads and writes, cache deliberately, bound work and concurrency, set timeouts, design for retries, and measure before optimising. Use when writing data access, loops over remote calls, list endpoints, background jobs or caches, or when asked \"will this scale\", \"why is this slow\" or \"optimise this\".",
+      "version": "71c27c58a5e5",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 121
+    },
+    {
+      "name": "security-basics",
+      "description": "Baseline security for any stack — input validation at trust boundaries, server-side authorisation, tenant isolation, secrets, least privilege, injection and safe logging. Use when handling user input, adding an endpoint, query, upload or permission check, touching auth, secrets or tenant data, or when asked \"is this secure\" or \"can another tenant see this\".",
+      "version": "9b59fab33200",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 109
+    }
+  ],
+  "agents": []
+}

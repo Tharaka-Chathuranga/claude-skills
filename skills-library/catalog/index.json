@@ -1,0 +1,392 @@
+{
+  "version": 2,
+  "modules": [
+    {
+      "id": "core/design",
+      "layer": "core",
+      "name": "Software design",
+      "description": "Design principles, patterns and anti-patterns for structuring code, with a reviewer agent that flags both under- and over-design.",
+      "detect": {
+        "always": true
+      },
+      "requires": [],
+      "version": "c554792e3895",
+      "skills": [
+        "software-design"
+      ],
+      "agents": [
+        "design-reviewer"
+      ],
+      "listingTokens": 117
+    },
+    {
+      "id": "core/playbooks",
+      "layer": "core",
+      "name": "Core playbooks",
+      "description": "Step-by-step fixes for quality-gate failures: oversized files and import-boundary violations.",
+      "detect": {
+        "always": true
+      },
+      "requires": [],
+      "version": "e15c17a23227",
+      "skills": [
+        "fix-import-boundary",
+        "split-oversized-file"
+      ],
+      "agents": [],
+      "listingTokens": 225
+    },
+    {
+      "id": "core/quality",
+      "layer": "core",
+      "name": "Core quality standards",
+      "description": "Stack-agnostic coding standard: code quality, architecture boundaries, naming, error handling, security and performance basics.",
+      "detect": {
+        "always": true
+      },
+      "requires": [],
+      "version": "5cb3e3264fb6",
+      "skills": [
+        "architecture-boundaries",
+        "code-quality",
+        "error-handling",
+        "naming",
+        "performance-scalability",
+        "security-basics"
+      ],
+      "agents": [],
+      "listingTokens": 698
+    },
+    {
+      "id": "core/workflow",
+      "layer": "core",
+      "name": "Core workflow",
+      "description": "Quality gate, debt ratchet, code review, commits and PRs, plus a read-only code-reviewer subagent.",
+      "detect": {
+        "always": true
+      },
+      "requires": [
+        "core/quality",
+        "core/playbooks"
+      ],
+      "version": "727769c151ed",
+      "skills": [
+        "code-review-standards",
+        "commit-and-pr",
+        "quality-gate",
+        "quality-ratchet"
+      ],
+      "agents": [
+        "code-reviewer"
+      ],
+      "listingTokens": 417
+    },
+    {
+      "id": "languages/dart",
+      "layer": "languages",
+      "name": "Dart",
+      "description": "Idiomatic Dart and Flutter design: immutable models, sealed classes with pattern matching, mixins, extensions and null safety.",
+      "detect": {
+        "files": [
+          "pubspec.yaml"
+        ]
+      },
+      "requires": [
+        "core/quality",
+        "core/design"
+      ],
+      "version": "357b5cb736db",
+      "skills": [
+        "dart-idioms"
+      ],
+      "agents": [],
+      "listingTokens": 109
+    },
+    {
+      "id": "languages/typescript",
+      "layer": "languages",
+      "name": "TypeScript",
+      "description": "Idiomatic TypeScript design and strict type safety: unions over hierarchies, injected services, validated I/O boundaries.",
+      "detect": {
+        "dependencies": [
+          "typescript"
+        ]
+      },
+      "requires": [
+        "core/quality",
+        "core/design"
+      ],
+      "version": "368de346cf93",
+      "skills": [
+        "type-safety",
+        "typescript-idioms"
+      ],
+      "agents": [],
+      "listingTokens": 221
+    },
+    {
+      "id": "frontend/amplify-client",
+      "layer": "frontend",
+      "name": "Amplify client data",
+      "description": "Reading and writing Amplify Data from the frontend with the typed generated client.",
+      "detect": {
+        "dependencies": [
+          "aws-amplify"
+        ]
+      },
+      "requires": [
+        "core/quality",
+        "languages/typescript"
+      ],
+      "version": "c8ae80b965ec",
+      "skills": [
+        "amplify-client-data"
+      ],
+      "agents": [],
+      "listingTokens": 111
+    },
+    {
+      "id": "frontend/mui",
+      "layer": "frontend",
+      "name": "MUI",
+      "description": "Building UI with Material UI: theme tokens, styling, responsive layout, forms and accessibility.",
+      "detect": {
+        "dependencies": [
+          "@mui/material"
+        ]
+      },
+      "requires": [
+        "frontend/react"
+      ],
+      "version": "ebb700e90a06",
+      "skills": [
+        "mui-components"
+      ],
+      "agents": [],
+      "listingTokens": 114
+    },
+    {
+      "id": "frontend/next-intl",
+      "layer": "frontend",
+      "name": "next-intl",
+      "description": "User-facing strings through next-intl with locale parity, ICU messages and RTL support.",
+      "detect": {
+        "dependencies": [
+          "next-intl"
+        ]
+      },
+      "requires": [
+        "frontend/react"
+      ],
+      "version": "d36fe489719a",
+      "skills": [
+        "add-i18n-strings"
+      ],
+      "agents": [],
+      "listingTokens": 101
+    },
+    {
+      "id": "frontend/nextjs",
+      "layer": "frontend",
+      "name": "Next.js",
+      "description": "App Router routing, server/client component boundaries, caching and server actions.",
+      "detect": {
+        "dependencies": [
+          "next"
+        ]
+      },
+      "requires": [
+        "frontend/react"
+      ],
+      "version": "30ee21ecaed2",
+      "skills": [
+        "nextjs-routing",
+        "nextjs-server-action"
+      ],
+      "agents": [],
+      "listingTokens": 225
+    },
+    {
+      "id": "frontend/react",
+      "layer": "frontend",
+      "name": "React",
+      "description": "Component and hook structure, React design patterns and render performance.",
+      "detect": {
+        "dependencies": [
+          "react"
+        ]
+      },
+      "requires": [
+        "core/quality",
+        "core/design"
+      ],
+      "version": "058a8c1ab8a3",
+      "skills": [
+        "react-component",
+        "react-hook",
+        "react-performance"
+      ],
+      "agents": [],
+      "listingTokens": 341
+    },
+    {
+      "id": "backend/amplify-gen2",
+      "layer": "backend",
+      "name": "AWS Amplify Gen 2",
+      "description": "Backend functions, data models, AppSync resolvers and deploys for Amplify Gen 2 projects.",
+      "detect": {
+        "dependencies": [
+          "@aws-amplify/backend"
+        ]
+      },
+      "requires": [
+        "core/quality",
+        "core/design",
+        "languages/typescript",
+        "backend/aws-lambda",
+        "data/dynamodb"
+      ],
+      "version": "5ca08a7f12f2",
+      "skills": [
+        "amplify-backend-standards",
+        "amplify-data-model",
+        "amplify-deploy",
+        "amplify-lambda",
+        "appsync-js-resolver"
+      ],
+      "agents": [],
+      "listingTokens": 451
+    },
+    {
+      "id": "backend/aws-lambda",
+      "layer": "backend",
+      "name": "AWS Lambda",
+      "description": "Runtime rules for Node.js Lambda functions: composition-root handlers, client lifetime, retries, idempotency, batching and logging.",
+      "requires": [
+        "core/quality",
+        "core/design"
+      ],
+      "version": "f00348d569ca",
+      "skills": [
+        "lambda-standards"
+      ],
+      "agents": [],
+      "listingTokens": 118
+    },
+    {
+      "id": "data/dynamodb",
+      "layer": "data",
+      "name": "DynamoDB",
+      "description": "Access-pattern-first DynamoDB design: keys and GSIs, Query and batch limits, conditional and transactional writes, repositories.",
+      "detect": {
+        "dependencies": [
+          "@aws-sdk/client-dynamodb"
+        ]
+      },
+      "requires": [
+        "core/quality"
+      ],
+      "version": "82f8ef617764",
+      "skills": [
+        "dynamodb-access-patterns"
+      ],
+      "agents": [],
+      "listingTokens": 111
+    },
+    {
+      "id": "testing/jest",
+      "layer": "testing",
+      "name": "Jest",
+      "description": "Behaviour-first unit and component tests with Jest and React Testing Library.",
+      "detect": {
+        "dependencies": [
+          "jest"
+        ]
+      },
+      "requires": [
+        "core/quality"
+      ],
+      "version": "adc283ccba34",
+      "skills": [
+        "jest-tests"
+      ],
+      "agents": [],
+      "listingTokens": 111
+    },
+    {
+      "id": "testing/playwright",
+      "layer": "testing",
+      "name": "Playwright",
+      "description": "Fast, isolated end-to-end user-journey tests with Playwright.",
+      "detect": {
+        "dependencies": [
+          "@playwright/test"
+        ]
+      },
+      "requires": [
+        "core/quality"
+      ],
+      "version": "2cf0c64feba1",
+      "skills": [
+        "e2e-tests"
+      ],
+      "agents": [],
+      "listingTokens": 110
+    },
+    {
+      "id": "testing/storybook",
+      "layer": "testing",
+      "name": "Storybook",
+      "description": "Stories per component state with args, decorators and play-function interaction tests.",
+      "detect": {
+        "files": [
+          ".storybook"
+        ]
+      },
+      "requires": [
+        "frontend/react"
+      ],
+      "version": "7999e354ffab",
+      "skills": [
+        "storybook-stories"
+      ],
+      "agents": [],
+      "listingTokens": 101
+    }
+  ],
+  "presets": [
+    {
+      "id": "amplify-backend",
+      "name": "Amplify backend developer",
+      "description": "Lambdas, data models, resolvers and DynamoDB access on Amplify Gen 2.",
+      "modules": [
+        "backend/amplify-gen2",
+        "testing/jest"
+      ]
+    },
+    {
+      "id": "fullstack-nextjs-amplify",
+      "name": "Full-stack Next.js + Amplify",
+      "description": "Next.js, MUI and next-intl on the frontend with an Amplify Gen 2 backend.",
+      "modules": [
+        "frontend/nextjs",
+        "frontend/mui",
+        "frontend/next-intl",
+        "frontend/amplify-client",
+        "backend/amplify-gen2",
+        "testing/jest",
+        "testing/storybook"
+      ]
+    },
+    {
+      "id": "nextjs-frontend",
+      "name": "Next.js frontend developer",
+      "description": "React and Next.js App Router with unit and end-to-end tests.",
+      "modules": [
+        "frontend/nextjs",
+        "testing/jest",
+        "testing/playwright"
+      ]
+    }
+  ]
+}

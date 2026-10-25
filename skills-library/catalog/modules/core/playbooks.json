@@ -1,0 +1,27 @@
+{
+  "id": "core/playbooks",
+  "version": "e15c17a23227",
+  "skills": [
+    {
+      "name": "fix-import-boundary",
+      "description": "Fixes a layer or feature-boundary violation from the boundary check (the gate's boundaries step, dependency-cruiser, eslint-plugin-boundaries) by moving code down, inverting the dependency, or using the public API. Use when the gate reports an \"upward\" or \"internals of\" import, a boundaries/element-types or no-restricted-paths error, or a circular dependency.",
+      "version": "276f7ad86a83",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 110
+    },
+    {
+      "name": "split-oversized-file",
+      "description": "Splits a file that is over, or about to cross, the line cap (maxFileLines in quality.config.json) into cohesive units without changing behaviour — UI components, services, handlers, data tables, schemas and test files. Use when the ratchet reports \"over the N-line cap\" or \"a file over N may not grow\", when asked to \"split this file\", \"break this up\" or \"this file is too big\".",
+      "version": "c0980f4d939a",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 115
+    }
+  ],
+  "agents": []
+}

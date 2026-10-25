@@ -1,0 +1,18 @@
+{
+  "id": "backend/aws-lambda",
+  "version": "f00348d569ca",
+  "skills": [
+    {
+      "name": "lambda-standards",
+      "description": "Runtime rules for Node.js/TypeScript AWS Lambda functions — handler as composition root, module-scope SDK clients, env validation, idempotency for retried SQS/EventBridge events, partial batch failures, timeouts, memory and structured logging. Use when writing or reviewing a Lambda handler or event consumer, or when asked about \"cold starts\", \"lambda timeout\", \"retries\" or \"duplicate events\".",
+      "version": "81f3f5a8b82c",
+      "files": [
+        "SKILL.md",
+        "reference/retries-and-idempotency.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 118
+    }
+  ],
+  "agents": []
+}

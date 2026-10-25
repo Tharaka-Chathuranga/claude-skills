@@ -1,0 +1,30 @@
+{
+  "id": "core/design",
+  "version": "c554792e3895",
+  "skills": [
+    {
+      "name": "software-design",
+      "description": "Applies design principles (SOLID, composition, dependency injection, pure core) and picks the right design pattern from a symptom-to-pattern table, while guarding against over-engineering. Use when asked \"which pattern\", \"refactor this\", \"this is too coupled\", \"SOLID\", \"design pattern\", \"OOP\", \"how should I structure this\", or before introducing a new abstraction, class hierarchy or layer.",
+      "version": "292dca66e250",
+      "files": [
+        "SKILL.md",
+        "reference/anti-patterns.md",
+        "reference/architectural.md",
+        "reference/behavioral.md",
+        "reference/creational.md",
+        "reference/solid.md",
+        "reference/structural.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 117
+    }
+  ],
+  "agents": [
+    {
+      "name": "design-reviewer",
+      "description": "Reviews a diff or a set of files for software design problems — tight coupling, god objects, missing dependency injection, leaking vendor types, and also needless patterns and pass-through layers. Read-only. Use when asked to \"review the design\", \"is this over-engineered\", \"is this too coupled\", or before merging a change that adds classes, layers or abstractions.",
+      "version": "31c1d648a0f9",
+      "file": "agents/design-reviewer.md"
+    }
+  ]
+}

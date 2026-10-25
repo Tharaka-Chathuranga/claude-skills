@@ -1,0 +1,54 @@
+{
+  "id": "core/workflow",
+  "version": "727769c151ed",
+  "skills": [
+    {
+      "name": "code-review-standards",
+      "description": "Reviews a diff or branch against the core standards — correctness, security and tenant isolation, error handling, boundaries, tests, naming and size — and reports findings by severity with file:line and a concrete failure. Use when asked to \"review my changes\", \"review this PR\", \"check this code\", \"is this ready to merge\", or as a self-check before reporting work complete.",
+      "version": "23fc0ee11e35",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 114
+    },
+    {
+      "name": "commit-and-pr",
+      "description": "Writes Conventional Commits messages, splits work into small reviewable commits and PRs, and structures the PR description. Use when asked to \"commit this\", \"write a commit message\", \"open a PR\", \"create a pull request\" or \"write the PR description\".",
+      "version": "30db6ffb1b41",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 81
+    },
+    {
+      "name": "quality-gate",
+      "description": "Runs the project's single quality gate (npm run quality) over everything the branch changed, reads the output, routes each failure to the right fix, and re-runs until green. Use before reporting any code task complete, before opening a PR, when asked to \"run the checks\", \"check my changes\", \"is this green\", or when a pre-push hook or CI check failed.",
+      "version": "6b4f52da6108",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 106
+    },
+    {
+      "name": "quality-ratchet",
+      "description": "Explains and pays down recorded code-health debt — the per-file baseline of oversized files and forbidden patterns that may only go down — and governs when the baseline may be updated. Use when the ratchet step of npm run quality fails, when asked for a \"tech debt report\", \"code health\", \"what should we clean up\" or \"where is the worst code\", or after a cleanup to lock in lower numbers.",
+      "version": "8004078a5414",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 116
+    }
+  ],
+  "agents": [
+    {
+      "name": "code-reviewer",
+      "description": "Read-only reviewer that examines the current branch diff against the project's quality, security, error-handling, boundary, performance, testing and naming standards and returns findings by severity. Use when asked for an independent code review, before opening a PR, or to self-check finished work in a separate context.",
+      "version": "63206033bbdf",
+      "file": "agents/code-reviewer.md"
+    }
+  ]
+}
