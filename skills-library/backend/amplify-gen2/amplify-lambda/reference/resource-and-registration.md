@@ -10,6 +10,7 @@
 6. Calling the Data API from a function
 7. Secrets and environment
 8. Avoiding circular dependencies
+9. Registration at scale (dozens of functions)
 
 ## 1. defineFunction
 
@@ -55,6 +56,20 @@ const orders = backend.data.resources.tables['Order'];
 orders.grantReadWriteData(backend.sendReceipt.resources.lambda);
 backend.sendReceipt.addEnvironment('ORDER_TABLE_NAME', orders.tableName);
 ```
+
+This is the right default for a small backend. At scale, every `tableName` reference and table grant makes
+the function's stack depend on the data stack, and these references are the usual source of data ↔ function
+circular dependencies. Large backends instead:
+
+- **Inject at deploy time**: a custom resource (CDK `Provider` + Lambda) that runs after the data stack
+  settles, looks up the physical table names (e.g. `ListStackResources` on the data stack) and writes
+  `<MODEL>_TABLE_NAME` env vars into the registered functions with `UpdateFunctionConfiguration`. IAM is
+  granted by name pattern rather than by construct reference. Register new functions in the project's
+  injection registry.
+- **Or use a naming convention** the code can compute (API id + env name), as JS resolvers do.
+
+An empty `*_TABLE_NAME` at runtime with this setup usually means the injection hasn't run for that function
+(new function, failed custom resource) — check the registry and the custom resource's logs.
 
 - `grantReadData` for read-only use. GSI queries need the index ARN — the table grants include it.
 - Other resources: `bucket.grantRead(...)`, `queue.grantSendMessages(...)`,
@@ -123,18 +138,33 @@ resolver-side logic (authorization, subscriptions firing, custom resolvers):
 ```
 
 ```ts
-// handler.ts, module scope
+// shared clients module: memoised async factory, no top-level await
 import { Amplify } from 'aws-amplify';
 import { generateClient } from 'aws-amplify/data';
 import { getAmplifyDataClientConfig } from '@aws-amplify/backend/function/runtime';
-import { env } from '$amplify/env/send-receipt';
 
-const { resourceConfig, libraryOptions } = await getAmplifyDataClientConfig(env);
-Amplify.configure(resourceConfig, libraryOptions);
-const dataClient = generateClient<Schema>();
+let client: Promise<DataClient> | undefined;
+
+export function getDataClient(): Promise<DataClient> {
+  client ??= getAmplifyDataClientConfig(process.env as DataClientEnv).then(({ resourceConfig, libraryOptions }) => {
+    Amplify.configure(resourceConfig, libraryOptions);
+    return generateClient<Schema>();
+  });
+  return client;
+}
+
+// handler.ts
+export const handler = async (event) => {
+  const dataClient = await getDataClient();   // inside the handler; reused across warm invocations
+  …
+};
 ```
 
-`allow.resource(fn)` makes the data stack depend on the function: set `resourceGroupName: 'data'`.
+- Call the factory inside the handler, not with top-level await at module scope: init failures then surface
+  as a normal handler error, and modules importing the client stay cheap to load in tests.
+- The Data API client adds several hundred KB to the bundle and a GraphQL hop per call. Prefer direct
+  DynamoDB repositories in hot paths and high-volume consumers.
+- `allow.resource(fn)` makes the data stack depend on the function: set `resourceGroupName: 'data'`.
 
 ## 7. Secrets and environment
 
@@ -155,3 +185,29 @@ A cycle appears when stack A references a value from stack B while B references 
 | Storage trigger function also reading data tables, while data references storage | Put the function in a dedicated group; avoid data → storage references |
 
 Validate after any wiring change (see `amplify-deploy`); a cycle surfaces only at synth/deploy time.
+
+## 9. Registration at scale (dozens of functions)
+
+Past ~20 functions, hand-wiring each one in `backend.ts` gets error-prone. Patterns that keep it
+manageable (add them deliberately; small backends don't need them):
+
+- **A `defineFunction` wrapper** in the repo (e.g. `amplify/functions/lib/define-function.ts`) that
+  defaults `entry` to the caller's `handler.ts`, sets shared defaults (runtime, architecture, SDK
+  layer) and assigns `resourceGroupName` by rule (e.g. by name prefix) so functions spread over nested
+  stacks. Remember that a rule change that moves a function **replaces** it (see `amplify-deploy` →
+  scaling-limits).
+- **A declarative function schema** next to each `resource.ts` (`schema.ts`): the tables, queues,
+  buckets and event patterns the function needs, plus extra env and policy statements. One helper
+  (`registerFunction(schema, backendResources)`) turns it into grants and env wiring, so `backend.ts`
+  holds one line per function. Make the helper grant **only** the listed resources — a helper that
+  grants `*` per service hides over-permission.
+- **Deploy-time environment injection** for physical names (section 3) so the schema lists names and
+  no synth-time token crosses stacks.
+- **A client factories module** (`amplify/services/clients/`): `createLogger`, `createDynamoDbClient`,
+  `createEventBridgePublisher`, `tableNames`… Handlers import only the factories they use, so each
+  bundle stays small and every function configures clients the same way.
+- **Typed event contracts in one place** (`services/events/<domain>.events.ts`): source + detail type
+  constants and a detail interface per event, used by publishers, rules and consumers alike.
+- **`backend.ts` in banner sections** (bus → rules → queues → event-source mappings → per-function
+  registration → outputs) so additions land in a predictable place; move large groups into helper
+  modules once the file passes a few hundred lines.

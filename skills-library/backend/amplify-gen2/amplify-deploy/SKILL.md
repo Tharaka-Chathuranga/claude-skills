@@ -15,9 +15,12 @@ deploy flow, use those instead of the raw commands below.
 ## 1. Before anything reaches AWS
 
 ```bash
-npx tsc --noEmit -p amplify        # backend typecheck (use the project's script if it has one)
+npm run <typecheck script>         # the project's script; it may check several tsconfig projects
 <test runner> amplify/functions/<function-name>
 ```
+
+Use the project's typecheck script (it may check several tsconfig projects, e.g. frontend and backend);
+`npx tsc --noEmit` at the root may skip folders the root tsconfig excludes, such as `amplify/`.
 
 Run the project's stack validation script if it has one (often a synth plus a circular-dependency
 check). Infra changes — `resource.ts`, `backend.ts`, `data/resource.ts`, auth or storage — always need
@@ -61,7 +64,8 @@ Get the real error before changing anything.
 | Operation returns 401 / `Unauthorized` | Missing auth rule, or function missing `allow.resource(fn)` | `data/resource.ts` |
 | Operation returns `null` with no error | Resolver ignores `ctx.error`, or handler not registered | Resolver `response`, `a.handler.function` |
 | `AccessDenied` at runtime | Missing grant or policy | `backend.ts` grants; needs a sandbox deploy, not a code change |
-| Env var empty at runtime | `addEnvironment` missing, or secret not set for this stack | `backend.ts`; `ampx sandbox secret list` |
+| Env var empty at runtime | `addEnvironment` missing, secret not set for this stack, or deploy-time env injection hasn't run for the function | `backend.ts`; `ampx sandbox secret list`; the injection registry and custom resource logs |
+| Resource count over 500 or template over 1 MB | A nested stack is full | [reference/scaling-limits.md](reference/scaling-limits.md) |
 | Wrong tenant's data, or none | Tenant taken from arguments instead of identity | Handler or resolver tenant derivation |
 
 ## 5. Circular dependencies
@@ -80,6 +84,12 @@ Fix by moving the edge, not by adding workarounds:
    only when no structural fix exists.
 
 The error message names the resources in the cycle; trace each one's stack.
+
+## Where to look
+
+- **A deploy hits a resource/size limit or a circular dependency at scale** (500 resources, 1 MB template,
+  full `FunctionDirectiveStack`, regrouping functions) → read
+  [reference/scaling-limits.md](reference/scaling-limits.md)
 
 ## 6. Report honestly
 

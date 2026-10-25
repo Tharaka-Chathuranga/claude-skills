@@ -427,7 +427,8 @@ function manualSteps({ name, camelName, pascalName, trigger }) {
   steps.push(`Register in amplify/backend.ts (match the import style already used there, e.g. a .js suffix):
      import { ${camelName} } from './functions/${name}/resource';
      const backend = defineBackend({ /* existing resources */ ${camelName} });`);
-  steps.push(`Grant table access and set TABLE_NAME in amplify/backend.ts:
+  steps.push(`Grant table access and set TABLE_NAME in amplify/backend.ts
+     (if the project injects <MODEL>_TABLE_NAME at deploy time instead, register the function there and skip this):
      const table = backend.data.resources.tables['<Model>'];
      table.grantReadWriteData(${lambda});   // grantReadData if it only reads
      backend.${camelName}.addEnvironment('TABLE_NAME', table.tableName);`);

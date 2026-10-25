@@ -56,15 +56,21 @@ and override the defaults here.
     `amplify/data/resource.ts`; if it calls the Data API, granted via `allow.resource(fn)` in the
     schema authorization. Use `.js` extensions in `backend.ts` imports if the project does.
 14. **Grant least privilege**: table grants (`grantReadData`, `grantReadWriteData`) or policies scoped
-    to specific ARNs. Never `*` resources for data actions.
+    to specific ARNs. Never `*` resources for data actions. Broad `resources: ['*']` grants already in
+    the code are debt to narrow, not a pattern to copy.
 15. **No circular CloudFormation dependencies.** A function used as a GraphQL resolver, or one that the
     data stack references, sets `resourceGroupName: 'data'` in `defineFunction`. Before wiring a
     resource from stack A into stack B, check B is not already referenced by A. Validate with a synth
     or sandbox deploy before reporting backend infra changes done (`amplify-deploy`).
 16. **Secrets only via `secret('NAME')`** in `defineFunction({ environment })`. Never a literal, never
     in `.env` committed to git, never logged.
-17. **Physical names are never hardcoded.** Table, bucket and queue names reach code through env vars
-    set from the construct (`backend.data.resources.tables['Model'].tableName`).
+17. **Physical names are never hardcoded.** Table, bucket and queue names reach code through env vars.
+    In a small backend, set them from the construct (`backend.data.resources.tables['Model'].tableName`
+    with `addEnvironment` and a table grant). At scale, each such reference ties a function stack to the
+    data stack and eventually creates cycles; large backends use deploy-time injection instead (a custom
+    resource that runs after the data stack settles and writes `<MODEL>_TABLE_NAME` env vars into the
+    functions) or a naming convention. Follow whichever the project uses. An empty table env var at
+    runtime can mean the injection hasn't run yet.
 
 ## Before reporting done
 
