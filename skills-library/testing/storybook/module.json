@@ -1,0 +1,6 @@
+{
+  "name": "Storybook",
+  "description": "Stories per component state with args, decorators and play-function interaction tests.",
+  "detect": { "files": [".storybook"] },
+  "requires": ["frontend/react"]
+}

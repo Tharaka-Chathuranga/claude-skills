@@ -1,0 +1,6 @@
+{
+  "name": "Jest",
+  "description": "Behaviour-first unit and component tests with Jest and React Testing Library.",
+  "detect": { "dependencies": ["jest"] },
+  "requires": ["core/quality"]
+}
