@@ -1,0 +1,6 @@
+{
+  "name": "Core workflow",
+  "description": "Quality gate, debt ratchet, code review, commits and PRs, plus a read-only code-reviewer subagent.",
+  "detect": { "always": true },
+  "requires": ["core/quality", "core/playbooks"]
+}

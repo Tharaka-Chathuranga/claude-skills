@@ -1,0 +1,6 @@
+{
+  "name": "Core playbooks",
+  "description": "Step-by-step fixes for quality-gate failures: oversized files and import-boundary violations.",
+  "detect": { "always": true },
+  "requires": []
+}
