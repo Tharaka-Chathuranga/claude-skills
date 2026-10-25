@@ -92,3 +92,18 @@ Never cache user- or tenant-specific data under a key that omits the user or ten
 
 `<Link>` for internal navigation; `useRouter` only for imperative navigation after an event; `redirect()` in
 server code. Read URL state with `useSearchParams` inside a `<Suspense>` boundary.
+
+## Client-fetching apps behind a client auth guard
+
+Common when data comes from a client SDK (e.g. AppSync/GraphQL) that needs the signed-in user's token. The
+server-fetching advice above then doesn't apply; instead:
+
+- **Pages stay thin**: read params, render one view component (`<InvoicesView />`). No fetching, no state.
+- **The auth/tenant guard lives in a layout** (a client component that redirects when signed out or when the
+  user has no access to the tenant), so every page under it is protected once.
+- **Locale segment**: with next-intl, routes sit under `[locale]/`; import `Link`, `useRouter`, `usePathname`
+  and `redirect` from the project's next-intl navigation wrappers, not `next/navigation`, so links keep the
+  locale.
+- **Paths come from a helper object** (`paths.invoices.detail(id)`), never string literals in components.
+- **Multi-tenant apps put the tenant in the URL** (`[locale]/app/[tenantId]/…`). The URL is the source of
+  truth; a provider validates it and exposes the current tenant, and components read it from there.

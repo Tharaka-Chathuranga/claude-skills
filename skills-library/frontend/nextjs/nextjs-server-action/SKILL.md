@@ -5,6 +5,9 @@ description: Writes Next.js server actions with schema-validated input, auth and
 
 # Next.js server action
 
+Doesn't apply when the app's mutations go through a client SDK to AppSync/GraphQL (or another API) instead
+of Next.js server code; follow the project's data-access skill (e.g. `amplify-client-data`) there.
+
 A server action is a public HTTP endpoint. Treat every argument as untrusted, even if only your own form calls it.
 Validation types follow `type-safety`; data access layering follows `software-design`.
 
