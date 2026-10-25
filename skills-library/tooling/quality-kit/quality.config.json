@@ -26,7 +26,7 @@
     { "name": "boundaries", "builtin": "boundaries" },
     { "name": "typecheck", "run": ["npx", "tsc", "--noEmit"], "requiresFile": "tsconfig.json", "onlyIfCodeChanged": true },
     { "name": "lint", "run": ["npx", "eslint", "--no-warn-ignored"], "passFiles": true, "requiresPackage": "eslint" },
-    { "name": "format", "run": ["npx", "prettier", "--check", "--ignore-unknown"], "passFiles": true, "passAllChanged": true, "requiresPackage": "prettier" },
+    { "name": "format", "run": ["npx", "prettier", "--check", "--ignore-unknown"], "passFiles": true, "requiresPackage": "prettier" },
     { "name": "test", "run": ["npx", "jest", "--findRelatedTests", "--passWithNoTests"], "passFiles": true, "requiresPackage": "jest" },
     { "name": "infra-validate", "run": ["npm", "run", "validate"], "requiresScript": "validate", "onlyIfChanged": ["infra/"] }
   ]
