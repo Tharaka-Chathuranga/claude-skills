@@ -1,0 +1,6 @@
+{
+  "name": "TypeScript",
+  "description": "Idiomatic TypeScript design and strict type safety: unions over hierarchies, injected services, validated I/O boundaries.",
+  "detect": { "dependencies": ["typescript"] },
+  "requires": ["core/quality", "core/design"]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Dart",
+  "description": "Idiomatic Dart and Flutter design: immutable models, sealed classes with pattern matching, mixins, extensions and null safety.",
+  "detect": { "files": ["pubspec.yaml"] },
+  "requires": ["core/quality", "core/design"]
+}
