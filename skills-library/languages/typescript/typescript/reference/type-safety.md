@@ -1,13 +1,8 @@
----
-name: type-safety
-description: Replaces any, @ts-ignore, non-null assertions and unchecked casts with real TypeScript types — unknown plus type guards, zod-style schemas at I/O boundaries, generated client types, satisfies. Use when tsc errors tempt a cast, the ratchet flags a new any, typing JSON, API or LLM output, or asked to "fix the types", "remove any" or "make this type-safe".
----
-
 # Type safety
 
 `any` turns the checker off for every value it touches, and it spreads through return types to callers.
-**Rule for all new code: no new `any`, `@ts-ignore`, `as unknown as`, or unchecked `as` on external
-data.** The `quality-ratchet` skill's baseline counts these per file and fails when a count goes up.
+The quality ratchet's baseline (`quality-gate`, reference/ratchet.md) counts type escapes per file and
+fails when a count goes up.
 
 ## Pick the type by where the data comes from
 
@@ -73,4 +68,4 @@ That narrow, commented cast restores a type the compiler lost; it is not permiss
 
 Fix `any`s on the lines you change. Clean a whole file only if the change stays reviewable. Shared
 modules and libraries give the most value per fix, because every consumer inherits their types. After a
-cleanup, lower the recorded baseline (see `quality-ratchet`).
+cleanup, lower the recorded baseline (see `quality-gate`, reference/ratchet.md).

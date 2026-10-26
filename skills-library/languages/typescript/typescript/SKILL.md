@@ -1,12 +1,13 @@
 ---
-name: typescript-idioms
-description: Applies software design idiomatically in TypeScript — functions and interfaces first, classes only for services with injected dependencies, discriminated unions over hierarchies, readonly data, exhaustive switches, index.ts boundaries, union literals over enums. Use when asked "class or function", "OOP in TypeScript", "should this be a class", or "how do I model this type".
+name: typescript
+description: TypeScript idioms and strict type safety: unions over classes, exhaustive switches, removing any/@ts-ignore, zod at I/O edges. Use for "class or function", "fix the types", "remove any", or when tsc errors tempt a cast.
 ---
 
-# TypeScript idioms
+# TypeScript
 
-How the principles in `design-principles` translate into TypeScript. For removing `any` and validating I/O,
-use `type-safety`.
+How the principles in `design-principles` translate into TypeScript, and how to keep types honest.
+**No new `any`, `@ts-ignore`, `as unknown as`, or unchecked `as` on external data**; parse external data
+with a schema (zod or the project's library) and derive the type from it.
 
 ## Rules, in priority order
 
@@ -86,3 +87,8 @@ const LABELS = { viewer: 'Viewer', editor: 'Editor', admin: 'Admin' } satisfies 
   unless deliberately fire-and-forget with its own `.catch`.
 - In React code, hooks are the composition unit instead of classes: a hook owns state and effects,
   components render, services do I/O.
+
+## Where to look
+
+- **Removing `any`/`@ts-ignore`, typing JSON, API, event or LLM output, a tsc error tempts a cast, or the ratchet
+  flagged a type escape** → read [reference/type-safety.md](reference/type-safety.md)
