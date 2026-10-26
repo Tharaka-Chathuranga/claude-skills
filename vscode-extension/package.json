@@ -6,7 +6,6 @@
   "publisher": "TharakaChathuranga",
   "license": "MIT",
   "icon": "media/icon.png",
-  "preview": true,
   "galleryBanner": {
     "color": "#C96442",
     "theme": "dark"
