@@ -9,6 +9,9 @@
   "requires": [
     "frontend/react"
   ],
+  "placement": [
+    "src"
+  ],
   "skills": {
     "nextjs-routing": {
       "detect": {

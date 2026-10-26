@@ -48,6 +48,7 @@ Everything else at the top level (`tooling/`, `templates/`, `presets/`, `scripts
 | `name`, `description` | Shown in the extension. One sentence for the description. |
 | `detect` | When the module applies to a project (rules below). Omit it for modules that only arrive through `requires`. |
 | `requires` | Modules used automatically with this one. Same library only. |
+| `placement` | Optional project subfolders, first existing wins (e.g. `["amplify"]`, `["src"]`). The module's skills install into `<folder>/.claude/skills/`, which Claude Code loads only when it reads or edits a file in that folder — so backend skills cost nothing in frontend work and vice versa. Command-only skills and agents always stay at the root. |
 | `skills` | Optional per-skill `detect` rules. Inside a chosen module, a skill with a rule installs **only when it matches**; skills without one always install. |
 
 ## Detect rules

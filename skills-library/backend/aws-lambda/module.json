@@ -15,6 +15,9 @@
     "core/quality",
     "core/design"
   ],
+  "placement": [
+    "amplify"
+  ],
   "skills": {
     "lambda-standards": {
       "detect": {

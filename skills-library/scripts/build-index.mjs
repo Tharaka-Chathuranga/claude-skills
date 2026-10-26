@@ -194,6 +194,10 @@ async function buildModule(layer, moduleName) {
   if (skills.length === 0 && agents.length === 0) errors.push(`${id}: module has no skills or agents`);
 
   checkDetect(`${id}/module.json`, config.detect);
+  if (config.placement !== undefined) {
+    const valid = Array.isArray(config.placement) && config.placement.length > 0 && config.placement.every(SAFE_PATH);
+    if (!valid) errors.push(`${id}/module.json: placement must be a non-empty list of relative folder paths`);
+  }
   // Per-skill rules: inside a chosen module, a skill with `detect` installs only when it matches.
   for (const [name, settings] of Object.entries(config.skills ?? {})) {
     const skill = skills.find((candidate) => candidate.name === name);
@@ -218,6 +222,7 @@ async function buildModule(layer, moduleName) {
       description: config.description ?? '',
       ...(config.detect ? { detect: config.detect } : {}),
       requires: config.requires ?? [],
+      ...(config.placement ? { placement: config.placement } : {}),
       version,
       skills: skills.map((skill) => skill.name),
       agents: agents.map((agent) => agent.name),

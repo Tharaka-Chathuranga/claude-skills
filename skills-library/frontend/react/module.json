@@ -10,6 +10,9 @@
     "core/quality",
     "core/design"
   ],
+  "placement": [
+    "src"
+  ],
   "skills": {
     "react-forms": {
       "detect": {

@@ -13,6 +13,9 @@
     "backend/aws-lambda",
     "data/dynamodb"
   ],
+  "placement": [
+    "amplify"
+  ],
   "skills": {
     "amplify-lambda": {
       "detect": {

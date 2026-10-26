@@ -1,6 +1,16 @@
 {
   "name": "Amplify client data",
   "description": "Reading and writing Amplify Data from the frontend with the typed generated client.",
-  "detect": { "dependencies": ["aws-amplify"] },
-  "requires": ["core/quality", "languages/typescript"]
+  "detect": {
+    "dependencies": [
+      "aws-amplify"
+    ]
+  },
+  "requires": [
+    "core/quality",
+    "languages/typescript"
+  ],
+  "placement": [
+    "src"
+  ]
 }

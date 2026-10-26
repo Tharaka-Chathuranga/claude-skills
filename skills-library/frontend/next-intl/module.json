@@ -1,6 +1,15 @@
 {
   "name": "next-intl",
   "description": "User-facing strings through next-intl with locale parity, ICU messages and RTL support.",
-  "detect": { "dependencies": ["next-intl"] },
-  "requires": ["frontend/react"]
+  "detect": {
+    "dependencies": [
+      "next-intl"
+    ]
+  },
+  "requires": [
+    "frontend/react"
+  ],
+  "placement": [
+    "src"
+  ]
 }
