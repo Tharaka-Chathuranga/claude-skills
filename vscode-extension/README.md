@@ -84,7 +84,7 @@ Pin `url` to a tag to choose when a project picks up library changes.
 To prompt teammates to install the extension, add it to `.vscode/extensions.json`:
 
 ```json
-{ "recommendations": ["tharaka-chathuranga.claude-skills"] }
+{ "recommendations": ["TharakaChathuranga.claude-skills"] }
 ```
 
 ## Notes

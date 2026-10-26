@@ -6,11 +6,11 @@ Releases run from GitHub Actions. Nobody publishes from a laptop.
 
 1. **Marketplace token.** In Azure DevOps (https://dev.azure.com), create a personal access token with
    organization **All accessible organizations** and scope **Marketplace › Manage**. Make sure the
-   `tharaka-chathuranga` publisher exists at https://marketplace.visualstudio.com/manage. Save the token as the
+   `TharakaChathuranga` publisher exists at https://marketplace.visualstudio.com/manage. Save the token as the
    repo secret `VSCE_PAT`. Without it the release skips the Marketplace.
 2. **Open VSX token** (optional, for Cursor, VSCodium and similar editors). Sign in at https://open-vsx.org,
    sign the publisher agreement, and create an access token. Create the namespace once:
-   `npx ovsx create-namespace tharaka-chathuranga -p <token>`. Save the token as the repo secret `OVSX_PAT`.
+   `npx ovsx create-namespace TharakaChathuranga -p <token>`. Save the token as the repo secret `OVSX_PAT`.
    Without it the release skips Open VSX.
 
 ## Cutting a release

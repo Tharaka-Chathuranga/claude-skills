@@ -36,7 +36,7 @@ TypeScript and the core modules.
 ## 2. Install the extension
 
 **From the Marketplace** (once published): open the Extensions view, search **Claude Skills**
-(publisher `tharaka-chathuranga`), install. Cursor, VSCodium and Windsurf use Open VSX — same name.
+(publisher `TharakaChathuranga`), install. Cursor, VSCodium and Windsurf use Open VSX — same name.
 
 **Until then, from a VSIX:**
 
@@ -154,7 +154,7 @@ Committing the installed files means Claude works for teammates even before they
 extension. To prompt them to install it, add `.vscode/extensions.json`:
 
 ```json
-{ "recommendations": ["tharaka-chathuranga.claude-skills"] }
+{ "recommendations": ["TharakaChathuranga.claude-skills"] }
 ```
 
 ## 4. Join a project that's already set up
