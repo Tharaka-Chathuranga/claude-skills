@@ -1,12 +1,7 @@
----
-name: react-feature-structure
-description: Organize a frontend feature (section) so it scales — thin route file, one view component, a context provider that owns data state, a services module for backend calls, and parts grouped by UI region — plus the four UI states every data view handles. Use when creating a new page, feature or section, when a feature folder is getting messy, or when deciding where a component, hook or backend call belongs inside a feature.
----
-
 # Feature structure
 
-Builds on `architecture-boundaries` (layers and import direction) and `react-component` (single
-component shape). The project's actual folder names are in CLAUDE.md; follow them if they differ.
+Builds on `code-quality` (reference/architecture-boundaries.md: layers and import direction) and the
+single-component rules in SKILL.md. The project's actual folder names are in CLAUDE.md; follow them if they differ.
 
 ## Anatomy
 

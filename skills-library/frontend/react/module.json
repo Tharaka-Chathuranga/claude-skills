@@ -1,6 +1,6 @@
 {
   "name": "React",
-  "description": "Component and hook structure, React design patterns and render performance.",
+  "description": "Components and feature structure, hooks, forms, React design patterns and render performance.",
   "detect": {
     "dependencies": [
       "react"

@@ -1,12 +1,12 @@
 ---
 name: react-component
-description: Creates or extends a React component with a folder per component, an index.ts public surface, typed props, container/presentational split, and a colocated test and story; splits components that pass the line cap. Use when asked to "add a component", "build a UI for", "extract this into a component", "this component is too big", or when creating a .tsx file.
+description: Builds React components and feature folders and fixes render performance. Use when creating a .tsx component, page or feature, "extract this into a component", "too many re-renders", "why is this slow".
 ---
 
 # React component
 
-Follow the project's layout in CLAUDE.md where it differs from the defaults below. Names follow the `naming`
-skill; general code rules follow `code-quality`; types follow `type-safety`.
+Follow the project's layout in CLAUDE.md where it differs from the defaults below. Names and general code rules
+follow `code-quality`; types follow `typescript`.
 
 ## Rules
 
@@ -102,6 +102,8 @@ Run type-check, lint and the new/affected tests, then the project's quality gate
 
 - **Choosing how to structure a component** (container/presentational, compound components, render props vs
   hooks, controlled vs uncontrolled, context vs prop drilling) → read [reference/patterns.md](reference/patterns.md)
-- **Laying out a whole feature or page** (view, provider, services, parts by region, UI states) → the
-  `react-feature-structure` skill
+- **Creating a page, feature or section, or a feature folder is messy** (thin route, view, provider, services,
+  parts by region, the four UI states) → read [reference/feature-structure.md](reference/feature-structure.md)
+- **"Why is this slow", too many re-renders, the list lags, bundle size, or before adding memo** → read
+  [reference/performance.md](reference/performance.md)
 - **Building a form or create/edit dialog** → the `react-forms` skill

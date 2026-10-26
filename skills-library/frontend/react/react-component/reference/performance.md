@@ -1,8 +1,3 @@
----
-name: react-performance
-description: Diagnoses and fixes React rendering and loading performance — measuring with the Profiler first, memo/useMemo/useCallback only with evidence, list virtualisation, code splitting with lazy, context re-render cascades and bundle size. Use when asked "why is this slow", "too many re-renders", "optimise this component", "the list lags", "reduce bundle size", or before adding memoisation.
----
-
 # React performance
 
 ## Rules
