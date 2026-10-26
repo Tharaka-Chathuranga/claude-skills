@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { addModules, guarded, pickModules, syncNow } from './actions';
 import { setShowAllModules } from './config';
-import { entryFileUri } from './installer';
+import { entryFileUri, itemKey } from './installer';
 import type { Library } from './library';
 import { setUpProject, suggestModules } from './suggest';
 import type { LibraryNode } from './tree';
@@ -137,7 +137,8 @@ export function registerCommands(context: vscode.ExtensionContext, library: Libr
 
   register('claudeSkills.openItem', async (node?: LibraryNode) => {
     if (node?.kind !== 'item') return;
-    await vscode.window.showTextDocument(entryFileUri(library.requireLocation(), node.itemKind, node.entry.name));
+    const dir = library.lock.items[itemKey(node.itemKind, node.entry.name)]?.dir;
+    await vscode.window.showTextDocument(entryFileUri(library.requireLocation(), node.itemKind, node.entry.name, dir));
   });
 
   register('claudeSkills.openManifest', async () => {

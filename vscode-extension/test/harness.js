@@ -37,9 +37,12 @@ function makeProject(files) {
 }
 
 const libraryRoot = path.resolve(process.env.LIBRARY_DIR ?? path.join(__dirname, '..', '..', 'skills-library'));
-const installed = (project) => {
-  const dir = path.join(project, '.claude/skills');
-  return fs.existsSync(dir) ? fs.readdirSync(dir).sort() : [];
+/** Skills installed in one folder's .claude/skills ('' = project root). */
+const installedIn = (project, dir = '') => {
+  const skillsDir = path.join(project, dir, '.claude/skills');
+  return fs.existsSync(skillsDir) ? fs.readdirSync(skillsDir).sort() : [];
 };
+/** Skills installed anywhere: the root plus nested placement folders. */
+const installed = (project) => [...installedIn(project), ...installedIn(project, 'amplify'), ...installedIn(project, 'src')].sort();
 
-module.exports = { vscode, Library, itemKey, serveLibrary, makeProject, libraryRoot, installed };
+module.exports = { vscode, Library, itemKey, serveLibrary, makeProject, libraryRoot, installed, installedIn };

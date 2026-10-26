@@ -114,7 +114,7 @@ export class ProjectInspector {
     return this.dependencies.has(name);
   }
 
-  private exists(relPath: string): Promise<boolean> {
+  exists(relPath: string): Promise<boolean> {
     if (!isSafeRelativePath(relPath)) return Promise.resolve(false);
     let cached = this.existsCache.get(relPath);
     if (!cached) {

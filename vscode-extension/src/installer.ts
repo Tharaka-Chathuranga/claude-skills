@@ -8,6 +8,8 @@ export interface LockItem {
   source: string;
   module: string;
   version: string;
+  /** Project subfolder whose .claude/skills/ holds this skill; absent means the project root. */
+  dir?: string;
 }
 
 /** What this extension installed. Anything on disk that isn't listed here is left alone. */
@@ -38,11 +40,20 @@ async function readDirectory(dir: vscode.Uri): Promise<[string, vscode.FileType]
   }
 }
 
+export function skillsDirFor(location: ScopeLocation, dir: string | undefined): vscode.Uri {
+  return dir && location.projectRoot
+    ? vscode.Uri.joinPath(location.projectRoot, ...dir.split('/'), '.claude', 'skills')
+    : location.skillsDir;
+}
+
 /** Skills and agents someone created by hand: present on disk but not in the lock. */
-export async function listLocalItems(location: ScopeLocation, lock: Lock): Promise<Set<string>> {
+export async function listLocalItems(location: ScopeLocation, lock: Lock, nestedDirs: string[] = []): Promise<Set<string>> {
   const local = new Set<string>();
-  for (const [name, type] of await readDirectory(location.skillsDir)) {
-    if (type === vscode.FileType.Directory && !lock.items[itemKey('skill', name)]) local.add(itemKey('skill', name));
+  for (const dir of [undefined, ...new Set(nestedDirs)]) {
+    for (const [name, type] of await readDirectory(skillsDirFor(location, dir))) {
+      const managed = lock.items[itemKey('skill', name)];
+      if (type === vscode.FileType.Directory && !managed) local.add(itemKey('skill', name));
+    }
   }
   for (const [file, type] of await readDirectory(location.agentsDir)) {
     const name = file.replace(/\.md$/, '');
@@ -53,14 +64,15 @@ export async function listLocalItems(location: ScopeLocation, lock: Lock): Promi
   return local;
 }
 
-function itemUri(location: ScopeLocation, kind: ItemKind, name: string): vscode.Uri {
+function itemUri(location: ScopeLocation, kind: ItemKind, name: string, dir?: string): vscode.Uri {
   return kind === 'skill'
-    ? vscode.Uri.joinPath(location.skillsDir, name)
+    ? vscode.Uri.joinPath(skillsDirFor(location, dir), name)
     : vscode.Uri.joinPath(location.agentsDir, `${name}.md`);
 }
 
-export function entryFileUri(location: ScopeLocation, kind: ItemKind, name: string): vscode.Uri {
-  return kind === 'skill' ? vscode.Uri.joinPath(itemUri(location, kind, name), 'SKILL.md') : itemUri(location, kind, name);
+export function entryFileUri(location: ScopeLocation, kind: ItemKind, name: string, dir?: string): vscode.Uri {
+  const uri = itemUri(location, kind, name, dir);
+  return kind === 'skill' ? vscode.Uri.joinPath(uri, 'SKILL.md') : uri;
 }
 
 export async function installItem(
@@ -69,8 +81,9 @@ export async function installItem(
   moduleId: string,
   kind: ItemKind,
   entry: SkillEntry | AgentEntry,
+  dir?: string,
 ): Promise<LockItem> {
-  const target = itemUri(location, kind, entry.name);
+  const target = itemUri(location, kind, entry.name, dir);
 
   if (kind === 'agent') {
     const bytes = await catalog.fetchModuleFile(moduleId, (entry as AgentEntry).file);
@@ -92,11 +105,18 @@ export async function installItem(
     }
   }
 
-  return { kind, name: entry.name, source: catalog.source.id, module: moduleId, version: entry.version };
+  return {
+    kind,
+    name: entry.name,
+    source: catalog.source.id,
+    module: moduleId,
+    version: entry.version,
+    ...(dir ? { dir } : {}),
+  };
 }
 
 export async function removeItem(location: ScopeLocation, item: LockItem): Promise<void> {
   await vscode.workspace.fs
-    .delete(itemUri(location, item.kind, item.name), { recursive: true, useTrash: true })
+    .delete(itemUri(location, item.kind, item.name, item.dir), { recursive: true, useTrash: true })
     .then(undefined, () => undefined);
 }

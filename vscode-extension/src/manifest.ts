@@ -29,6 +29,8 @@ export interface Manifest {
 
 export interface ScopeLocation {
   base: vscode.Uri;
+  /** The project folder, for workspace scope; nested placement is only possible there. */
+  projectRoot?: vscode.Uri;
   skillsDir: vscode.Uri;
   agentsDir: vscode.Uri;
   manifestFile: vscode.Uri;
@@ -51,6 +53,7 @@ export function scopeLocation(scope: InstallScope, folder: vscode.Uri | undefine
   if (!base) return undefined;
   return {
     base,
+    projectRoot: scope === 'workspace' ? folder : undefined,
     skillsDir: vscode.Uri.joinPath(base, 'skills'),
     agentsDir: vscode.Uri.joinPath(base, 'agents'),
     manifestFile: vscode.Uri.joinPath(base, 'skills.json'),

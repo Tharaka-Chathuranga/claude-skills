@@ -9,6 +9,8 @@ export interface DesiredItem {
   catalog: SourceCatalog;
   moduleId: string;
   entry: SkillEntry | AgentEntry;
+  /** Project subfolder to install into (nested placement); absent means the project root. */
+  dir?: string;
 }
 
 /** Differences between what the manifest asks for and what the lock says is installed. */
@@ -39,6 +41,8 @@ export interface PlanFilters {
   include: Set<string>;
   /** Whether a skill's own detect rule matches the project. */
   matches: (detect: Detect) => Promise<boolean>;
+  /** Where an item installs: a project subfolder, or undefined for the root. */
+  placementFor: (catalog: SourceCatalog, moduleId: string, kind: ItemKind, entry: SkillEntry | AgentEntry) => Promise<string | undefined>;
 }
 
 export async function computePlan(
@@ -67,7 +71,8 @@ export async function computePlan(
           continue;
         }
         plan.skipped.delete(key);
-        plan.desired.set(key, item);
+        const dir = await filters.placementFor(catalog, detail.id, kind, entry);
+        plan.desired.set(key, dir ? { ...item, dir } : item);
       }
     }
   }
@@ -79,7 +84,8 @@ export async function computePlan(
     else if (
       installed.version !== item.entry.version ||
       installed.source !== item.catalog.source.id ||
-      installed.module !== item.moduleId
+      installed.module !== item.moduleId ||
+      (installed.dir ?? '') !== (item.dir ?? '')
     ) {
       plan.update.push(item);
     }
@@ -104,7 +110,10 @@ export async function applyPlan(
   for (const item of [...plan.install, ...plan.update]) {
     report(item.entry.name, 100 / steps);
     try {
-      next.items[item.key] = await installItem(location, item.catalog, item.moduleId, item.kind, item.entry);
+      const previous = next.items[item.key];
+      // Moving between folders (placement changed): remove the old copy first.
+      if (previous && (previous.dir ?? '') !== (item.dir ?? '')) await removeItem(location, previous);
+      next.items[item.key] = await installItem(location, item.catalog, item.moduleId, item.kind, item.entry, item.dir);
     } catch (err) {
       failures.push(`${item.entry.name}: ${err instanceof Error ? err.message : String(err)}`);
     }

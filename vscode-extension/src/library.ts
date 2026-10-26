@@ -73,8 +73,8 @@ export class Library implements vscode.Disposable {
       this.lock = emptyLock();
       problems.push(err instanceof Error ? err.message : String(err));
     }
-    this.local = location ? await listLocalItems(location, this.lock) : new Set();
     await this.detectModules();
+    this.local = location ? await listLocalItems(location, this.lock, await this.nestedDirs()) : new Set();
 
     this.selections = new Map();
     for (const catalog of this.catalogs) {
@@ -99,6 +99,7 @@ export class Library implements vscode.Disposable {
           exclude: new Set(this.manifest?.exclude ?? []),
           include: new Set(this.manifest?.include ?? []),
           matches: (detect) => this.inspector?.matches(detect) ?? Promise.resolve(false),
+          placementFor: (catalog, moduleId, kind, entry) => this.placementFor(catalog, moduleId, kind, entry),
         },
         this.lock,
         this.local,
@@ -126,6 +127,35 @@ export class Library implements vscode.Disposable {
       }
       this.detected.set(catalog, ids);
     }
+  }
+
+  /**
+   * Where an item installs. Skills of a module with `placement` go into the first existing project
+   * subfolder's .claude/skills/, so Claude Code loads them only when it works there. Agents and
+   * command-only skills stay at the root so they are always available.
+   */
+  private async placementFor(
+    catalog: SourceCatalog,
+    moduleId: string,
+    kind: ItemKind,
+    entry: SkillEntry | AgentEntry,
+  ): Promise<string | undefined> {
+    if (kind !== 'skill' || (entry as SkillEntry).manualOnly || !this.location?.projectRoot || !this.inspector) return undefined;
+    for (const dir of catalog.modules.get(moduleId)?.placement ?? []) {
+      if (await this.inspector.exists(dir)) return dir;
+    }
+    return undefined;
+  }
+
+  /** Subfolders that may hold managed or hand-made nested skills. */
+  private async nestedDirs(): Promise<string[]> {
+    const dirs = new Set(Object.values(this.lock.items).map((item) => item.dir).filter((dir): dir is string => !!dir));
+    for (const catalog of this.catalogs) {
+      for (const module of catalog.modules.values()) {
+        for (const dir of module.placement ?? []) if (await this.inspector?.exists(dir)) dirs.add(dir);
+      }
+    }
+    return [...dirs];
   }
 
   catalogFor(sourceId: string): SourceCatalog | undefined {

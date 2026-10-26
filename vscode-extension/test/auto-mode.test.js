@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const assert = require('assert/strict');
-const { vscode, Library, serveLibrary, makeProject, libraryRoot, installed } = require('./harness');
+const { vscode, Library, serveLibrary, makeProject, libraryRoot, installed, installedIn } = require('./harness');
 
 (async () => {
   const library = await serveLibrary(libraryRoot);
@@ -42,10 +42,19 @@ const { vscode, Library, serveLibrary, makeProject, libraryRoot, installed } = r
       'design-principles', 'design-patterns']) {
       assert.ok(skills.includes(s), `expected ${s}`);
     }
-    for (const s of ['nextjs-server-action', 'fix-import-boundary', 'e2e-tests', 'dart-idioms']) {
+    for (const s of ['nextjs-server-action', 'e2e-tests', 'dart-idioms']) {
       assert.ok(!skills.includes(s), `did not expect ${s}`);
     }
+    // Placement: backend skills load only in amplify/, frontend only in src/; core, tests and commands at the root.
+    const root = installedIn(project);
+    const backend = installedIn(project, 'amplify');
+    const frontend = installedIn(project, 'src');
+    console.log(`root ${root.length} · amplify/ ${backend.length} · src/ ${frontend.length}`);
+    for (const s of ['amplify-lambda', 'amplify-data-model', 'lambda-standards', 'llm-functions']) assert.ok(backend.includes(s), `${s} in amplify/`);
+    for (const s of ['react-forms', 'react-component', 'nextjs-routing', 'mui-components']) assert.ok(frontend.includes(s), `${s} in src/`);
+    for (const s of ['code-quality', 'dependency-injection', 'jest-tests', 'amplify-deploy']) assert.ok(root.includes(s), `${s} at root`);
     assert.ok(fs.existsSync(path.join(claudeDir, 'skills/design-patterns/reference/strategy.md')), 'references installed');
+    assert.ok(fs.existsSync(path.join(project, 'amplify/.claude/skills/amplify-lambda/SKILL.md')), 'nested skill files written');
     const manifest = JSON.parse(fs.readFileSync(path.join(claudeDir, 'skills.json'), 'utf8'));
     assert.equal(manifest.autoDetect, true);
     assert.equal(manifest.modules, undefined, 'auto manifest lists no modules');

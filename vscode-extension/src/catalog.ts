@@ -11,6 +11,11 @@ export interface ModuleSummary {
   description: string;
   detect?: Detect;
   requires: string[];
+  /**
+   * Project subfolders (first existing wins) whose own .claude/skills/ receives this module's skills,
+   * so Claude Code loads them only when it works in that folder.
+   */
+  placement?: string[];
   version: string;
   skills: string[];
   agents: string[];
