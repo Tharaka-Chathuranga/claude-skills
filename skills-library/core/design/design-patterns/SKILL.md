@@ -1,6 +1,6 @@
 ---
 name: design-patterns
-description: Picks a design pattern from a concrete symptom, offering the lighter TypeScript option first — strategy, factory, adapter, decorator, repository, pipeline, result type and more. Use when a pattern is named, when asked which pattern fits, or for repeated switches, cross-cutting concerns or vendor coupling.
+description: Picks a design pattern from a concrete symptom, lighter option first: strategy, factory, adapter, decorator, repository, pipeline, result type. Use when asked "which pattern", for repeated switches or vendor coupling.
 ---
 
 # Design patterns

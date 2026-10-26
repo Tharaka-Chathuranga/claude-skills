@@ -1,6 +1,6 @@
 ---
 name: design-principles
-description: Applies SOLID and OOP principles as checks — encapsulation, cohesion, composition over inheritance, YAGNI, functional core — mapped to TypeScript. Use when designing or refactoring classes and modules, choosing class vs function vs union, or asking if code is too coupled or over-engineered.
+description: Applies SOLID and OOP principles as checks: cohesion, composition over inheritance, YAGNI, functional core. Use when designing classes or modules, "SOLID", "too coupled", "over-engineered", class vs function.
 ---
 
 # Design principles
@@ -69,5 +69,5 @@ composition: inject the collaborator or pass the varying step as a function.
 
 - Wiring, lifetimes, testability → `dependency-injection`
 - Choosing a pattern for a concrete symptom → `design-patterns`
-- TypeScript specifics (unions, `satisfies`, exhaustive checks, type safety) → `typescript-idioms`, `type-safety`
+- TypeScript specifics (unions, `satisfies`, exhaustive checks, type safety) → `typescript`
 - An independent read of a diff → the `design-reviewer` agent

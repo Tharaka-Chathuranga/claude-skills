@@ -1,6 +1,6 @@
 ---
 name: e2e-tests
-description: Writes Playwright end-to-end tests for real user journeys with role-based locators, web-first assertions instead of fixed sleeps, isolated test data via fixtures, reused auth state and a fast suite. Use when asked to "write an e2e test", "add a Playwright test", "test this flow end to end", "this e2e test is flaky", or when editing *.spec.ts files under the e2e folder.
+description: Writes Playwright end-to-end tests with role-based locators, web-first assertions, fixture data and reused auth state. Use when asked to "write an e2e test", "add a Playwright test", or "this e2e test is flaky".
 ---
 
 # Playwright e2e tests

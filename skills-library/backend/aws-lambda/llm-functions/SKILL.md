@@ -1,6 +1,6 @@
 ---
 name: llm-functions
-description: Structure backend functions that call LLMs — one unit per model call with a port, schema, prompt and test; versioned prompt ids with fallbacks; multi-stage pipelines with a time budget and bounded concurrency; required vs optional stages; async jobs for slow work; token tracking and privacy. Use when adding or changing a Lambda or service that calls an LLM, writing a prompt, building an AI generation pipeline, or when AI output is malformed or a generation times out.
+description: Structures backend functions that call LLMs: one unit per model call, versioned prompts, schema-validated output, staged pipelines with time budgets. Use when writing a prompt, or AI output is malformed or times out.
 ---
 
 # LLM functions

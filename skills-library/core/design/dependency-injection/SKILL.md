@@ -1,6 +1,6 @@
 ---
 name: dependency-injection
-description: Wires dependencies for testable code — composition root, constructor or factory injection, narrow ports, lifetimes, injected time and config, fakes, and DI anti-patterns. Use when writing a service, handler, repository or hook, when logic news up clients or reads env or time, or when a test needs jest.mock.
+description: Wires dependencies for testable code: composition root, constructor injection, narrow ports, injected time and config, fakes. Use when logic news up clients, reads env or time, or a test needs jest.mock.
 ---
 
 # Dependency injection

@@ -33,4 +33,4 @@ export const makeS3InvoiceStore = (s3: S3Client, bucket: string): InvoiceStore =
 - Contract-test each adapter against the real service (or local emulator) in a separate integration suite.
 - Core logic tests use an in-memory fake of the port.
 
-**Related:** `ports-and-adapters`, `repository`, `error-handling`
+**Related:** `ports-and-adapters`, `repository`, `code-quality` (reference/error-handling.md)

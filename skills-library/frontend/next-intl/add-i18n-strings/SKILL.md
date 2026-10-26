@@ -1,6 +1,6 @@
 ---
 name: add-i18n-strings
-description: Adds or changes user-facing text with next-intl, keeping every locale's messages file in key parity, using ICU plurals and variables, and handling RTL locales. Use whenever UI displays text to a user, when asked to "add a label/button/error message", "translate this", "localize this", or when a review flags a hardcoded string.
+description: Adds user-facing text with next-intl, keeping locale messages files in key parity with ICU plurals and RTL. Use when UI shows text, "add a label/button/error message", "translate this", or a string is hardcoded.
 ---
 
 # Add i18n strings (next-intl)
@@ -35,7 +35,7 @@ description: Adds or changes user-facing text with next-intl, keeping every loca
 - Name by meaning, not appearance: `deleteConfirmation`, not `redButtonText`.
 - Reuse a key only when the meaning is identical. Words that coincide in one language ("Open" verb vs "Open"
   status) get separate keys.
-- Naming conventions beyond this follow the `naming` skill.
+- Naming conventions beyond this follow `code-quality` (reference/naming.md).
 
 ## Usage
 

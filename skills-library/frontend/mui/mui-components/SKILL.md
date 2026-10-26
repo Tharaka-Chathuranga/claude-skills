@@ -1,6 +1,6 @@
 ---
 name: mui-components
-description: Builds UI with Material UI (MUI) using theme tokens instead of hardcoded values, sx vs styled, responsive props, form controls, accessibility and shared style fragments. Use when writing or reviewing components that import @mui/material, when asked to "style this", "make it responsive", "match the theme", "add a form field", or when a review flags hardcoded colours or spacing.
+description: Builds UI with Material UI (@mui/material): theme tokens, sx vs styled, responsive props, accessible form controls. Use when asked to "style this", "make it responsive", "match the theme", or colours are hardcoded.
 ---
 
 # MUI components

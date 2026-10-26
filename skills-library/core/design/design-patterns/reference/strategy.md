@@ -33,4 +33,4 @@ const price = (order: Order) => pricing[order.pricingKind](order);
 - Table-test each strategy alone; one test that every `Kind` has an entry (the type usually guarantees it).
 - Test the caller with a stub strategy, not every real one.
 
-**Related:** `factory`, `state`, `typescript-idioms`
+**Related:** `factory`, `state`, `typescript`

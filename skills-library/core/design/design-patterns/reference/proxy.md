@@ -31,4 +31,4 @@ export const guardedInvoices = (inner: InvoiceRepository, user: User): InvoiceRe
 - Lazy: assert `make` is not called until first use and called once.
 - Guard: allowed and denied cases against a fake inner port.
 
-**Related:** `decorator`, `adapter`, `security-basics`
+**Related:** `decorator`, `adapter`, `code-quality` (reference/security.md)

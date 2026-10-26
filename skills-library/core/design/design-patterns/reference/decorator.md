@@ -31,4 +31,4 @@ const orders = withMetrics(withRetry(makeDynamoOrderRepo(client, table), policy)
 - Test each decorator alone with a fake inner port (e.g. fails twice, then succeeds).
 - Don't re-test decorators through every service.
 
-**Related:** `proxy`, `dependency-injection`, `error-handling`
+**Related:** `proxy`, `dependency-injection`, `code-quality` (reference/error-handling.md)

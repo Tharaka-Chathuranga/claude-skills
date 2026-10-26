@@ -8,9 +8,9 @@ matching modules plus what they depend on. Nobody copies skill folders by hand.
 
 | Layer | Modules |
 |---|---|
-| `core/` (every project) | `quality` (code quality, architecture boundaries, naming, error handling, security, performance), `design` (OOP principles, design patterns, design reviewer agent), `workflow` (quality gate, ratchet, review standards, commits and PRs, code reviewer agent), `playbooks` (fixes for specific check failures) |
-| `languages/` | `typescript`, `dart` |
-| `frontend/` | `react` (components, feature structure, forms, hooks, performance), `nextjs`, `mui`, `next-intl`, `amplify-client` |
+| `core/` (every project) | `quality` (one `code-quality` skill with naming, error handling, security, performance and architecture-boundary references), `design` (OOP principles, design patterns, design reviewer agent), `workflow` (quality gate with ratchet, file-split and import-boundary references, review standards, commits and PRs, code reviewer agent) |
+| `languages/` | `typescript` (idioms and type safety), `dart` |
+| `frontend/` | `react` (components incl. feature structure and performance, forms, hooks), `nextjs`, `mui`, `next-intl`, `amplify-client` |
 | `backend/` | `aws-lambda` (Lambda rules, LLM functions), `amplify-gen2` (standards, Lambda scaffolder, data model, resolvers, deploy, scaling limits) |
 | `data/` | `dynamodb` |
 | `testing/` | `jest`, `storybook`, `playwright` |

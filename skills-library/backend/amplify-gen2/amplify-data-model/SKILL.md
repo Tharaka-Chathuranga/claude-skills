@@ -1,6 +1,6 @@
 ---
 name: amplify-data-model
-description: Changes the Amplify Gen 2 data schema in amplify/data/resource.ts — models, identifiers, relationships, secondary indexes, authorization rules, custom queries/mutations/subscriptions, and splitting a large schema into domain fragments. Use when asked to "add a model", "add a field", "add an index", "change auth rules" or "add a custom query/mutation" in an Amplify project.
+description: Changes the Amplify Gen 2 schema in amplify/data/resource.ts: models, relationships, secondary indexes, auth rules, custom operations. Use when asked to "add a model", "add a field", "add an index", "change auth rules".
 ---
 
 # Amplify data model

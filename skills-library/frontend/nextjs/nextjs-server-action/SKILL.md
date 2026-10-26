@@ -1,6 +1,6 @@
 ---
 name: nextjs-server-action
-description: Writes Next.js server actions with schema-validated input, auth and permission checks inside the action, a typed discriminated result, revalidatePath/revalidateTag, and data access delegated to a service module. Use when asked to "add a server action", "handle this form submit on the server", "add a mutation", or when creating a file with "use server".
+description: Writes Next.js server actions with validated input, auth checks inside, a typed result and revalidatePath/revalidateTag. Use when asked to "add a server action", "add a mutation", or creating a "use server" file.
 ---
 
 # Next.js server action
@@ -9,7 +9,7 @@ Doesn't apply when the app's mutations go through a client SDK to AppSync/GraphQ
 of Next.js server code; follow the project's data-access skill (e.g. `amplify-client-data`) there.
 
 A server action is a public HTTP endpoint. Treat every argument as untrusted, even if only your own form calls it.
-Validation types follow `type-safety`; data access layering follows `dependency-injection`.
+Validation types follow `typescript` (reference/type-safety.md); data access layering follows `dependency-injection`.
 
 ## Rules
 

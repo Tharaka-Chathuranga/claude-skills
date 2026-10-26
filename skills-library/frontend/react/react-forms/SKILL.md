@@ -1,6 +1,6 @@
 ---
 name: react-forms
-description: Build React forms with react-hook-form and zod — schema in a hook so validation messages are translated, the design system's field components, submit and server-error handling, edit vs create defaults, and confirm dialogs for destructive actions. Use when adding or changing a form, a create or edit dialog, field validation, or when validation messages are hardcoded or a form loses input on error.
+description: Builds React forms with react-hook-form and zod: translated validation, field components, submit and server errors, create vs edit defaults. Use when adding a form, a create/edit dialog or field validation.
 ---
 
 # React forms
@@ -58,7 +58,7 @@ const onSubmit = handleSubmit(async (values) => {
 - Server-side validation errors map onto fields with `setError(field, { message })`; anything else
   is a translated toast. Never clear the form on failure.
 - Transform values at the edge (`toFormValues` / `toApiInput`), not inside field components.
-- Validate on the server too — client validation is for user experience only (`security-basics`).
+- Validate on the server too — client validation is for user experience only (`code-quality`, reference/security.md).
 
 ## Dialogs
 

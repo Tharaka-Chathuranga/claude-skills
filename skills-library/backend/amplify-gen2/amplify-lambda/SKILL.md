@@ -1,6 +1,6 @@
 ---
 name: amplify-lambda
-description: Adds or changes an Amplify Gen 2 Lambda function in amplify/functions — scaffolds resource.ts, a composition-root handler, service and repository with interfaces and tests, then registers it in backend.ts and the data schema. Use when asked to "add a lambda", "add a backend function", "add an API endpoint", "add an SQS/EventBridge consumer" or "add a scheduled job".
+description: Adds or changes an Amplify Gen 2 Lambda in amplify/functions: scaffold, handler, service, repository, tests, registration. Use when asked to "add a lambda", "add an API endpoint", "add an SQS/EventBridge consumer".
 argument-hint: <function-name> [--trigger graphql|sqs|eventbridge|schedule]
 ---
 

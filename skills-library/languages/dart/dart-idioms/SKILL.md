@@ -1,6 +1,6 @@
 ---
 name: dart-idioms
-description: Applies software design idiomatically in Dart and Flutter — immutable models with final/const and copyWith, sealed classes with pattern matching, mixins, extension methods, null safety, async and streams, Effective Dart naming. Use when writing Dart or Flutter code, or asked "how do I model this in Dart", "sealed class", "mixin or inheritance", or "OOP in Dart".
+description: Idiomatic Dart and Flutter design: immutable models with copyWith, sealed classes with pattern matching, mixins, extensions, null safety. Use when writing Dart or Flutter code, "sealed class", "mixin or inheritance".
 ---
 
 # Dart idioms

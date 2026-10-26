@@ -1,6 +1,6 @@
 ---
 name: jest-tests
-description: Writes behaviour-first Jest unit and component tests — React Testing Library queries by role, user-event, mocking only at boundaries, a failing regression test before a bug fix, and running the changed tests first. Use when asked to "write tests", "add coverage", "test this", "add a regression test", when a bug fix needs a test, or when creating a .test.ts/.test.tsx file.
+description: Writes behaviour-first Jest unit and component tests with React Testing Library, mocking only at boundaries. Use when asked to "write tests", "add coverage", "add a regression test", or writing a .test.ts/.test.tsx.
 ---
 
 # Jest tests
@@ -86,7 +86,7 @@ it('submits the entered email', async () => {
 
 - `jest.useFakeTimers()` for debounce/intervals; advance with `jest.advanceTimersByTime`; restore after.
 - Reset mocks between tests (`clearMocks`/`restoreMocks` in config or `afterEach`).
-- Type mocks: `jest.mocked(fn)`, not `as any` (see `type-safety`).
+- Type mocks: `jest.mocked(fn)`, not `as any` (see `typescript`, reference/type-safety.md).
 - AWS SDK v3 clients: `aws-sdk-client-mock` if the project uses it. Never hit real cloud services or networks.
 
 ## Coverage

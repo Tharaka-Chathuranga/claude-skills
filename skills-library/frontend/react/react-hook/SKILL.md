@@ -1,11 +1,11 @@
 ---
 name: react-hook
-description: Creates or fixes a custom React hook in a folder-per-hook layout with correct effect cleanup, ref vs state choices, stable callbacks, derived state and data fetching through the project's data library. Use when asked to "make a hook", "extract this into a hook", "fetch data in a component", when fixing a useEffect bug, infinite re-render or stale closure, or when exhaustive-deps complains.
+description: Creates or fixes custom React hooks: effect cleanup, ref vs state, stable callbacks, data fetching. Use when asked to "make a hook", "extract this into a hook", or for a useEffect bug, infinite re-render, stale closure.
 ---
 
 # React hook
 
-Follow the project's layout in CLAUDE.md where it differs. Names follow `naming`; types follow `type-safety`.
+Follow the project's layout in CLAUDE.md where it differs. Names follow `code-quality`; types follow `typescript`.
 Backend data calls follow the project's data-access skill (e.g. `amplify-client-data`) where one exists.
 
 ## Rules
@@ -25,7 +25,7 @@ Backend data calls follow the project's data-access skill (e.g. `amplify-client-
 6. **Hooks are called unconditionally**, at the top level, in the same order. Pass an `enabled` option
    instead of calling a hook conditionally.
 7. `useCallback`/`useMemo` only when identity matters: the value is a dependency of another hook or a prop
-   of a memoised child. See `react-performance`.
+   of a memoised child. See `react-component` (reference/performance.md).
 
 ## Layout
 

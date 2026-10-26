@@ -1,6 +1,6 @@
 ---
 name: nextjs-routing
-description: Builds Next.js App Router routes — server vs client components with the "use client" boundary pushed down, layouts, loading and error boundaries, route handlers, metadata, dynamic params and caching/revalidation choices. Use when asked to "add a page", "add a route", "add an API route", "why is this page not updating", "fix hydration error", or when editing page.tsx, layout.tsx or route.ts.
+description: Builds Next.js App Router routes: server vs client components, layouts, loading/error boundaries, route handlers, caching. Use when editing page.tsx, layout.tsx or route.ts, "add a page", "fix hydration error".
 ---
 
 # Next.js routing (App Router)

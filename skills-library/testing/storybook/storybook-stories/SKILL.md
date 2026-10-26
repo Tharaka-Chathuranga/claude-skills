@@ -1,6 +1,6 @@
 ---
 name: storybook-stories
-description: Writes Storybook stories in CSF with one story per meaningful component state, args and controls, decorators for providers, play-function interaction tests and no real data fetching. Use when asked to "add a story", "add stories for this component", "test this interaction in Storybook", or when creating a .stories.tsx file.
+description: Writes Storybook CSF stories, one per component state, with args, decorators and play-function interaction tests. Use when asked to "add a story", "test this interaction in Storybook", or writing a .stories.tsx.
 ---
 
 # Storybook stories

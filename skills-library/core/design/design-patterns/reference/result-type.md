@@ -30,4 +30,4 @@ type NextStep = { outcome: 'proceed' } | { outcome: 'waiting'; ids: string[] } |
 - Assert on the returned value: `expect(r).toEqual({ ok: false, error: { kind: 'cardDeclined' } })`.
 - One test per error kind the caller is expected to handle.
 
-**Related:** `error-handling`, `state`, `typescript-idioms`
+**Related:** `code-quality` (reference/error-handling.md), `state`, `typescript`

@@ -1,6 +1,6 @@
 ---
 name: lambda-standards
-description: Runtime rules for Node.js/TypeScript AWS Lambda functions — handler as composition root, module-scope SDK clients, env validation, idempotency for retried SQS/EventBridge events, partial batch failures, timeouts, memory and structured logging. Use when writing or reviewing a Lambda handler or event consumer, or when asked about "cold starts", "lambda timeout", "retries" or "duplicate events".
+description: Runtime rules for Node.js Lambda handlers: composition root, module-scope SDK clients, idempotent SQS/EventBridge retries, partial batch failures. Use when asked about "cold starts", "lambda timeout", "duplicate events".
 ---
 
 # Lambda standards

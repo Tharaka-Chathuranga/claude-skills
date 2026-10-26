@@ -1,6 +1,6 @@
 ---
 name: dynamodb-access-patterns
-description: Designs and reviews DynamoDB access — keys and GSIs from access patterns, Query pagination, BatchGet/BatchWrite limits and retries, conditional writes, TransactWrite, hot partitions and projections, behind a repository. Use when writing @aws-sdk/lib-dynamodb code, adding a GSI, or when asked to "fix a Scan", "batch these reads" or "make this write atomic".
+description: Designs DynamoDB access: keys and GSIs, Query pagination, BatchGet/BatchWrite limits, conditional and TransactWrite writes, hot partitions. Use when writing @aws-sdk/lib-dynamodb code, adding a GSI, or "fix a Scan".
 ---
 
 # DynamoDB access patterns

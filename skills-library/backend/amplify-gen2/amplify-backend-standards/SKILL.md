@@ -1,6 +1,6 @@
 ---
 name: amplify-backend-standards
-description: Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with colocated tests, interface-typed DI for volatile dependencies, repository-owned data access, zod-validated input, registration, CloudFormation cycles, caller identity and secrets. Use when writing or reviewing any file under amplify/.
+description: Non-negotiable rules for code under amplify/: folder-per-unit with tests, interface-typed DI, repository data access, zod input, CloudFormation cycles, secrets. Use when writing or reviewing any file under amplify/.
 user-invocable: false
 paths: ["amplify/**"]
 ---

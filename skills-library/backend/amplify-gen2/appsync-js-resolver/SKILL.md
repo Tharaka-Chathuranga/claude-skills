@@ -1,6 +1,6 @@
 ---
 name: appsync-js-resolver
-description: Writes or reviews AppSync JavaScript (APPSYNC_JS) resolvers in Amplify Gen 2 — runtime limits, cross-table names from awsAppsyncApiId and AMPLIFY_TABLE_ENV_NAME, caller identity from ctx.identity not arguments, pipelines via ctx.stash, util.error, a.handler.custom wiring. Use when touching a resolver .js file under amplify/data, adding a custom query/mutation without a Lambda, or when a resolver returns AccessDenied or null.
+description: Writes or reviews AppSync APPSYNC_JS resolvers under amplify/data: cross-table names, ctx.identity, ctx.stash pipelines, a.handler.custom. Use when editing a resolver .js file or a resolver returns AccessDenied or null.
 ---
 
 # AppSync JS resolvers

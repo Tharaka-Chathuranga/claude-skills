@@ -32,4 +32,4 @@ export function transition(s: OrderState, e: OrderEvent): Result<OrderState, Ill
 
 - Table-test every (state, event) pair: legal → expected next state, illegal → error.
 
-**Related:** `strategy`, `result-type`, `typescript-idioms`
+**Related:** `strategy`, `result-type`, `typescript`

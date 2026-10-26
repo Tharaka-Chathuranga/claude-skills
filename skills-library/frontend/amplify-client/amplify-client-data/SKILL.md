@@ -1,6 +1,6 @@
 ---
 name: amplify-client-data
-description: Reads and writes Amplify Data from the frontend with generateClient and the generated Schema type — services module, nextToken pagination, secondary-index queries instead of filters, selection sets, errors and loading. Use when a component needs backend data, or when asked to "fetch this from the backend", "add pagination" or "filter this list".
+description: Reads and writes Amplify Data from the frontend with generateClient and the Schema type: services module, nextToken pagination, index queries. Use when a component needs backend data, "add pagination", "filter a list".
 ---
 
 # Amplify client data

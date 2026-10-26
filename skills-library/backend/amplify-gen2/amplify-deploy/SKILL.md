@@ -1,6 +1,6 @@
 ---
 name: amplify-deploy
-description: Deploys, sandboxes and debugs an Amplify Gen 2 backend — ampx sandbox, function logs, secrets, reading failed CloudFormation deploys and circular-dependency errors. Use when asked to "deploy", "run the sandbox", "check the lambda logs" or "why did the deploy fail".
+description: Deploys and debugs an Amplify Gen 2 backend: ampx sandbox, function logs, secrets, failed CloudFormation and circular-dependency errors. Use when asked to "deploy", "run the sandbox", "why did the deploy fail".
 disable-model-invocation: true
 ---
 

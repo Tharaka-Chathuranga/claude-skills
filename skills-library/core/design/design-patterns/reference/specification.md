@@ -32,4 +32,4 @@ export const overdue = (now: Date): Spec<Invoice> => ({
 
 - Test `test` and `toQuery` agree: run the same fixtures through both (in-memory vs emulator).
 
-**Related:** `repository`, `strategy`, `naming`
+**Related:** `repository`, `strategy`, `code-quality` (reference/naming.md)
