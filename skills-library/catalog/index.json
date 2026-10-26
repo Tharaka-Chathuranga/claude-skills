@@ -10,7 +10,7 @@
         "always": true
       },
       "requires": [],
-      "version": "f8b0db870d06",
+      "version": "20c7115b279d",
       "skills": [
         "dependency-injection",
         "design-patterns",
@@ -19,69 +19,45 @@
       "agents": [
         "design-reviewer"
       ],
-      "listingTokens": 285
-    },
-    {
-      "id": "core/playbooks",
-      "layer": "core",
-      "name": "Core playbooks",
-      "description": "Step-by-step fixes for quality-gate failures: oversized files and import-boundary violations.",
-      "detect": {
-        "always": true
-      },
-      "requires": [],
-      "version": "954dcbcc8cc7",
-      "skills": [
-        "fix-import-boundary",
-        "split-oversized-file"
-      ],
-      "agents": [],
-      "listingTokens": 225
+      "listingTokens": 216
     },
     {
       "id": "core/quality",
       "layer": "core",
       "name": "Core quality standards",
-      "description": "Stack-agnostic coding standard: code quality, architecture boundaries, naming, error handling, security and performance basics.",
+      "description": "Stack-agnostic coding standard: one code-quality skill with naming, error handling, security, performance and architecture-boundary references.",
       "detect": {
         "always": true
       },
       "requires": [],
-      "version": "3a68dadfdc7c",
+      "version": "ba981a131be1",
       "skills": [
-        "architecture-boundaries",
-        "code-quality",
-        "error-handling",
-        "naming",
-        "performance-scalability",
-        "security-basics"
+        "code-quality"
       ],
       "agents": [],
-      "listingTokens": 690
+      "listingTokens": 72
     },
     {
       "id": "core/workflow",
       "layer": "core",
       "name": "Core workflow",
-      "description": "Quality gate, debt ratchet, code review, commits and PRs, plus a read-only code-reviewer subagent.",
+      "description": "Quality gate (with ratchet, file-split and import-boundary fix references), code review, commits and PRs, plus a read-only code-reviewer subagent.",
       "detect": {
         "always": true
       },
       "requires": [
-        "core/quality",
-        "core/playbooks"
+        "core/quality"
       ],
-      "version": "3417f3f8e3b5",
+      "version": "69654c077783",
       "skills": [
         "code-review-standards",
         "commit-and-pr",
-        "quality-gate",
-        "quality-ratchet"
+        "quality-gate"
       ],
       "agents": [
         "code-reviewer"
       ],
-      "listingTokens": 412
+      "listingTokens": 216
     },
     {
       "id": "languages/dart",
@@ -97,12 +73,12 @@
         "core/quality",
         "core/design"
       ],
-      "version": "af3125576072",
+      "version": "239bb775a3b9",
       "skills": [
         "dart-idioms"
       ],
       "agents": [],
-      "listingTokens": 109
+      "listingTokens": 72
     },
     {
       "id": "languages/typescript",
@@ -118,13 +94,12 @@
         "core/quality",
         "core/design"
       ],
-      "version": "49048f2d8dd4",
+      "version": "341b35f9acea",
       "skills": [
-        "type-safety",
-        "typescript-idioms"
+        "typescript"
       ],
       "agents": [],
-      "listingTokens": 221
+      "listingTokens": 73
     },
     {
       "id": "frontend/amplify-client",
@@ -140,12 +115,15 @@
         "core/quality",
         "languages/typescript"
       ],
-      "version": "dea2d6afb763",
+      "placement": [
+        "src"
+      ],
+      "version": "e38f069b0590",
       "skills": [
         "amplify-client-data"
       ],
       "agents": [],
-      "listingTokens": 107
+      "listingTokens": 75
     },
     {
       "id": "frontend/mui",
@@ -160,12 +138,15 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "33c43bd7c0c5",
+      "placement": [
+        "src"
+      ],
+      "version": "a04179920a6e",
       "skills": [
         "mui-components"
       ],
       "agents": [],
-      "listingTokens": 114
+      "listingTokens": 72
     },
     {
       "id": "frontend/next-intl",
@@ -180,12 +161,15 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "216c60fa09fa",
+      "placement": [
+        "src"
+      ],
+      "version": "82b4906b497e",
       "skills": [
         "add-i18n-strings"
       ],
       "agents": [],
-      "listingTokens": 101
+      "listingTokens": 72
     },
     {
       "id": "frontend/nextjs",
@@ -200,19 +184,22 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "0cc6a6cc32e0",
+      "placement": [
+        "src"
+      ],
+      "version": "32a5ff4045d1",
       "skills": [
         "nextjs-routing",
         "nextjs-server-action"
       ],
       "agents": [],
-      "listingTokens": 226
+      "listingTokens": 144
     },
     {
       "id": "frontend/react",
       "layer": "frontend",
       "name": "React",
-      "description": "Component and hook structure, React design patterns and render performance.",
+      "description": "Components and feature structure, hooks, forms, React design patterns and render performance.",
       "detect": {
         "dependencies": [
           "react"
@@ -222,16 +209,17 @@
         "core/quality",
         "core/design"
       ],
-      "version": "4337fe0aacfb",
+      "placement": [
+        "src"
+      ],
+      "version": "7d66674784c3",
       "skills": [
         "react-component",
-        "react-feature-structure",
         "react-forms",
-        "react-hook",
-        "react-performance"
+        "react-hook"
       ],
       "agents": [],
-      "listingTokens": 586
+      "listingTokens": 213
     },
     {
       "id": "backend/amplify-gen2",
@@ -250,7 +238,10 @@
         "backend/aws-lambda",
         "data/dynamodb"
       ],
-      "version": "fed43336bd92",
+      "placement": [
+        "amplify"
+      ],
+      "version": "60dd93fc6f87",
       "skills": [
         "amplify-backend-standards",
         "amplify-data-model",
@@ -259,7 +250,7 @@
         "appsync-js-resolver"
       ],
       "agents": [],
-      "listingTokens": 457
+      "listingTokens": 297
     },
     {
       "id": "backend/aws-lambda",
@@ -280,13 +271,16 @@
         "core/quality",
         "core/design"
       ],
-      "version": "7310cf6ee808",
+      "placement": [
+        "amplify"
+      ],
+      "version": "f05fa39fe1a7",
       "skills": [
         "lambda-standards",
         "llm-functions"
       ],
       "agents": [],
-      "listingTokens": 254
+      "listingTokens": 147
     },
     {
       "id": "data/dynamodb",
@@ -304,12 +298,12 @@
       "requires": [
         "core/quality"
       ],
-      "version": "ea37283c65c5",
+      "version": "a2d612453c2f",
       "skills": [
         "dynamodb-access-patterns"
       ],
       "agents": [],
-      "listingTokens": 111
+      "listingTokens": 75
     },
     {
       "id": "testing/jest",
@@ -324,12 +318,12 @@
       "requires": [
         "core/quality"
       ],
-      "version": "1b2c7a7054a1",
+      "version": "ac8af7ebd1a9",
       "skills": [
         "jest-tests"
       ],
       "agents": [],
-      "listingTokens": 111
+      "listingTokens": 72
     },
     {
       "id": "testing/playwright",
@@ -347,12 +341,12 @@
       "requires": [
         "core/quality"
       ],
-      "version": "d7770793116e",
+      "version": "af735f5072be",
       "skills": [
         "e2e-tests"
       ],
       "agents": [],
-      "listingTokens": 110
+      "listingTokens": 70
     },
     {
       "id": "testing/storybook",
@@ -377,12 +371,12 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "1cc3cc66f70a",
+      "version": "3a66f39dcdf6",
       "skills": [
         "storybook-stories"
       ],
       "agents": [],
-      "listingTokens": 101
+      "listingTokens": 72
     }
   ],
   "presets": [

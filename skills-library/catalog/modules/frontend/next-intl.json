@@ -1,16 +1,16 @@
 {
   "id": "frontend/next-intl",
-  "version": "216c60fa09fa",
+  "version": "82b4906b497e",
   "skills": [
     {
       "name": "add-i18n-strings",
-      "description": "Adds or changes user-facing text with next-intl, keeping every locale's messages file in key parity, using ICU plurals and variables, and handling RTL locales. Use whenever UI displays text to a user, when asked to \"add a label/button/error message\", \"translate this\", \"localize this\", or when a review flags a hardcoded string.",
-      "version": "8d6afbff9057",
+      "description": "Adds user-facing text with next-intl, keeping locale messages files in key parity with ICU plurals and RTL. Use when UI shows text, \"add a label/button/error message\", \"translate this\", or a string is hardcoded.",
+      "version": "25db728fb0ab",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 101
+      "listingTokens": 72
     }
   ],
   "agents": []

@@ -1,37 +1,29 @@
 {
   "id": "frontend/react",
-  "version": "4337fe0aacfb",
+  "version": "7d66674784c3",
   "skills": [
     {
       "name": "react-component",
-      "description": "Creates or extends a React component with a folder per component, an index.ts public surface, typed props, container/presentational split, and a colocated test and story; splits components that pass the line cap. Use when asked to \"add a component\", \"build a UI for\", \"extract this into a component\", \"this component is too big\", or when creating a .tsx file.",
-      "version": "8a0c046231cf",
+      "description": "Builds React components and feature folders and fixes render performance. Use when creating a .tsx component, page or feature, \"extract this into a component\", \"too many re-renders\", \"why is this slow\".",
+      "version": "54d155206bda",
       "files": [
         "SKILL.md",
-        "reference/patterns.md"
+        "reference/feature-structure.md",
+        "reference/patterns.md",
+        "reference/performance.md"
       ],
       "manualOnly": false,
-      "listingTokens": 109
-    },
-    {
-      "name": "react-feature-structure",
-      "description": "Organize a frontend feature (section) so it scales — thin route file, one view component, a context provider that owns data state, a services module for backend calls, and parts grouped by UI region — plus the four UI states every data view handles. Use when creating a new page, feature or section, when a feature folder is getting messy, or when deciding where a component, hook or backend call belongs inside a feature.",
-      "version": "4d3bf5bcfc42",
-      "files": [
-        "SKILL.md"
-      ],
-      "manualOnly": false,
-      "listingTokens": 127
+      "listingTokens": 70
     },
     {
       "name": "react-forms",
-      "description": "Build React forms with react-hook-form and zod — schema in a hook so validation messages are translated, the design system's field components, submit and server-error handling, edit vs create defaults, and confirm dialogs for destructive actions. Use when adding or changing a form, a create or edit dialog, field validation, or when validation messages are hardcoded or a form loses input on error.",
-      "version": "d083d34ecd06",
+      "description": "Builds React forms with react-hook-form and zod: translated validation, field components, submit and server errors, create vs edit defaults. Use when adding a form, a create/edit dialog or field validation.",
+      "version": "bd08285008c3",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 118,
+      "listingTokens": 70,
       "detect": {
         "anyOf": [
           {
@@ -56,23 +48,13 @@
     },
     {
       "name": "react-hook",
-      "description": "Creates or fixes a custom React hook in a folder-per-hook layout with correct effect cleanup, ref vs state choices, stable callbacks, derived state and data fetching through the project's data library. Use when asked to \"make a hook\", \"extract this into a hook\", \"fetch data in a component\", when fixing a useEffect bug, infinite re-render or stale closure, or when exhaustive-deps complains.",
-      "version": "377d910d9326",
+      "description": "Creates or fixes custom React hooks: effect cleanup, ref vs state, stable callbacks, data fetching. Use when asked to \"make a hook\", \"extract this into a hook\", or for a useEffect bug, infinite re-render, stale closure.",
+      "version": "c59a1049c81d",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 116
-    },
-    {
-      "name": "react-performance",
-      "description": "Diagnoses and fixes React rendering and loading performance — measuring with the Profiler first, memo/useMemo/useCallback only with evidence, list virtualisation, code splitting with lazy, context re-render cascades and bundle size. Use when asked \"why is this slow\", \"too many re-renders\", \"optimise this component\", \"the list lags\", \"reduce bundle size\", or before adding memoisation.",
-      "version": "11d62088094a",
-      "files": [
-        "SKILL.md"
-      ],
-      "manualOnly": false,
-      "listingTokens": 116
+      "listingTokens": 73
     }
   ],
   "agents": []

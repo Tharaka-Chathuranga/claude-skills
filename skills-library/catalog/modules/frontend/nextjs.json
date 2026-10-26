@@ -1,16 +1,16 @@
 {
   "id": "frontend/nextjs",
-  "version": "0cc6a6cc32e0",
+  "version": "32a5ff4045d1",
   "skills": [
     {
       "name": "nextjs-routing",
-      "description": "Builds Next.js App Router routes — server vs client components with the \"use client\" boundary pushed down, layouts, loading and error boundaries, route handlers, metadata, dynamic params and caching/revalidation choices. Use when asked to \"add a page\", \"add a route\", \"add an API route\", \"why is this page not updating\", \"fix hydration error\", or when editing page.tsx, layout.tsx or route.ts.",
-      "version": "bf900a08cd1c",
+      "description": "Builds Next.js App Router routes: server vs client components, layouts, loading/error boundaries, route handlers, caching. Use when editing page.tsx, layout.tsx or route.ts, \"add a page\", \"fix hydration error\".",
+      "version": "e7bf12b29eb8",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 117,
+      "listingTokens": 71,
       "detect": {
         "anyFiles": [
           "app",
@@ -20,13 +20,13 @@
     },
     {
       "name": "nextjs-server-action",
-      "description": "Writes Next.js server actions with schema-validated input, auth and permission checks inside the action, a typed discriminated result, revalidatePath/revalidateTag, and data access delegated to a service module. Use when asked to \"add a server action\", \"handle this form submit on the server\", \"add a mutation\", or when creating a file with \"use server\".",
-      "version": "b4bf233b55b1",
+      "description": "Writes Next.js server actions with validated input, auth checks inside, a typed result and revalidatePath/revalidateTag. Use when asked to \"add a server action\", \"add a mutation\", or creating a \"use server\" file.",
+      "version": "2c43d45d0573",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 109,
+      "listingTokens": 73,
       "detect": {
         "contains": [
           {

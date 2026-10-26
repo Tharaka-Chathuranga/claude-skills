@@ -1,11 +1,11 @@
 {
   "id": "core/design",
-  "version": "f8b0db870d06",
+  "version": "20c7115b279d",
   "skills": [
     {
       "name": "dependency-injection",
-      "description": "Wires dependencies for testable code — composition root, constructor or factory injection, narrow ports, lifetimes, injected time and config, fakes, and DI anti-patterns. Use when writing a service, handler, repository or hook, when logic news up clients or reads env or time, or when a test needs jest.mock.",
-      "version": "89bed1c3a85f",
+      "description": "Wires dependencies for testable code: composition root, constructor injection, narrow ports, injected time and config, fakes. Use when logic news up clients, reads env or time, or a test needs jest.mock.",
+      "version": "24fc933f1801",
       "files": [
         "SKILL.md",
         "reference/containers.md",
@@ -13,12 +13,12 @@
         "reference/testing-with-fakes.md"
       ],
       "manualOnly": false,
-      "listingTokens": 97
+      "listingTokens": 71
     },
     {
       "name": "design-patterns",
-      "description": "Picks a design pattern from a concrete symptom, offering the lighter TypeScript option first — strategy, factory, adapter, decorator, repository, pipeline, result type and more. Use when a pattern is named, when asked which pattern fits, or for repeated switches, cross-cutting concerns or vendor coupling.",
-      "version": "52a13c2d9771",
+      "description": "Picks a design pattern from a concrete symptom, lighter option first: strategy, factory, adapter, decorator, repository, pipeline, result type. Use when asked \"which pattern\", for repeated switches or vendor coupling.",
+      "version": "3ba2f7edc45e",
       "files": [
         "SKILL.md",
         "reference/adapter.md",
@@ -42,17 +42,17 @@
         "reference/unit-of-work.md"
       ],
       "manualOnly": false,
-      "listingTokens": 96
+      "listingTokens": 73
     },
     {
       "name": "design-principles",
-      "description": "Applies SOLID and OOP principles as checks — encapsulation, cohesion, composition over inheritance, YAGNI, functional core — mapped to TypeScript. Use when designing or refactoring classes and modules, choosing class vs function vs union, or asking if code is too coupled or over-engineered.",
-      "version": "ac9d694a531c",
+      "description": "Applies SOLID and OOP principles as checks: cohesion, composition over inheritance, YAGNI, functional core. Use when designing classes or modules, \"SOLID\", \"too coupled\", \"over-engineered\", class vs function.",
+      "version": "911772217577",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 92
+      "listingTokens": 72
     }
   ],
   "agents": [

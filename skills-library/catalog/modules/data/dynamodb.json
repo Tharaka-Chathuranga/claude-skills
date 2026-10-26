@@ -1,11 +1,11 @@
 {
   "id": "data/dynamodb",
-  "version": "ea37283c65c5",
+  "version": "a2d612453c2f",
   "skills": [
     {
       "name": "dynamodb-access-patterns",
-      "description": "Designs and reviews DynamoDB access — keys and GSIs from access patterns, Query pagination, BatchGet/BatchWrite limits and retries, conditional writes, TransactWrite, hot partitions and projections, behind a repository. Use when writing @aws-sdk/lib-dynamodb code, adding a GSI, or when asked to \"fix a Scan\", \"batch these reads\" or \"make this write atomic\".",
-      "version": "bf5f7b20ec05",
+      "description": "Designs DynamoDB access: keys and GSIs, Query pagination, BatchGet/BatchWrite limits, conditional and TransactWrite writes, hot partitions. Use when writing @aws-sdk/lib-dynamodb code, adding a GSI, or \"fix a Scan\".",
+      "version": "239feb6da266",
       "files": [
         "SKILL.md",
         "reference/key-design.md",
@@ -13,7 +13,7 @@
         "reference/writes.md"
       ],
       "manualOnly": false,
-      "listingTokens": 111,
+      "listingTokens": 75,
       "detect": {
         "anyDependencies": [
           "@aws-sdk/client-dynamodb",

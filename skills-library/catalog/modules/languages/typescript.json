@@ -1,26 +1,17 @@
 {
   "id": "languages/typescript",
-  "version": "49048f2d8dd4",
+  "version": "341b35f9acea",
   "skills": [
     {
-      "name": "type-safety",
-      "description": "Replaces any, @ts-ignore, non-null assertions and unchecked casts with real TypeScript types — unknown plus type guards, zod-style schemas at I/O boundaries, generated client types, satisfies. Use when tsc errors tempt a cast, the ratchet flags a new any, typing JSON, API or LLM output, or asked to \"fix the types\", \"remove any\" or \"make this type-safe\".",
-      "version": "942411586516",
+      "name": "typescript",
+      "description": "TypeScript idioms and strict type safety: unions over classes, exhaustive switches, removing any/@ts-ignore, zod at I/O edges. Use for \"class or function\", \"fix the types\", \"remove any\", or when tsc errors tempt a cast.",
+      "version": "2997f987fdad",
       "files": [
-        "SKILL.md"
+        "SKILL.md",
+        "reference/type-safety.md"
       ],
       "manualOnly": false,
-      "listingTokens": 107
-    },
-    {
-      "name": "typescript-idioms",
-      "description": "Applies software design idiomatically in TypeScript — functions and interfaces first, classes only for services with injected dependencies, discriminated unions over hierarchies, readonly data, exhaustive switches, index.ts boundaries, union literals over enums. Use when asked \"class or function\", \"OOP in TypeScript\", \"should this be a class\", or \"how do I model this type\".",
-      "version": "2cabe8990ee2",
-      "files": [
-        "SKILL.md"
-      ],
-      "manualOnly": false,
-      "listingTokens": 114
+      "listingTokens": 73
     }
   ],
   "agents": []

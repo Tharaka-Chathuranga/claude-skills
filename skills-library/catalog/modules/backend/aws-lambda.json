@@ -1,17 +1,17 @@
 {
   "id": "backend/aws-lambda",
-  "version": "7310cf6ee808",
+  "version": "f05fa39fe1a7",
   "skills": [
     {
       "name": "lambda-standards",
-      "description": "Runtime rules for Node.js/TypeScript AWS Lambda functions — handler as composition root, module-scope SDK clients, env validation, idempotency for retried SQS/EventBridge events, partial batch failures, timeouts, memory and structured logging. Use when writing or reviewing a Lambda handler or event consumer, or when asked about \"cold starts\", \"lambda timeout\", \"retries\" or \"duplicate events\".",
-      "version": "d583c262a3c3",
+      "description": "Runtime rules for Node.js Lambda handlers: composition root, module-scope SDK clients, idempotent SQS/EventBridge retries, partial batch failures. Use when asked about \"cold starts\", \"lambda timeout\", \"duplicate events\".",
+      "version": "5efd8d1e7c0d",
       "files": [
         "SKILL.md",
         "reference/retries-and-idempotency.md"
       ],
       "manualOnly": false,
-      "listingTokens": 118,
+      "listingTokens": 74,
       "detect": {
         "anyOf": [
           {
@@ -34,13 +34,13 @@
     },
     {
       "name": "llm-functions",
-      "description": "Structure backend functions that call LLMs — one unit per model call with a port, schema, prompt and test; versioned prompt ids with fallbacks; multi-stage pipelines with a time budget and bounded concurrency; required vs optional stages; async jobs for slow work; token tracking and privacy. Use when adding or changing a Lambda or service that calls an LLM, writing a prompt, building an AI generation pipeline, or when AI output is malformed or a generation times out.",
-      "version": "c2871fcd937f",
+      "description": "Structures backend functions that call LLMs: one unit per model call, versioned prompts, schema-validated output, staged pipelines with time budgets. Use when writing a prompt, or AI output is malformed or times out.",
+      "version": "aa77b22728ad",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 136,
+      "listingTokens": 73,
       "detect": {
         "anyDependencies": [
           "openai",

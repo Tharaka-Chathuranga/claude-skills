@@ -1,16 +1,16 @@
 {
   "id": "testing/jest",
-  "version": "1b2c7a7054a1",
+  "version": "ac8af7ebd1a9",
   "skills": [
     {
       "name": "jest-tests",
-      "description": "Writes behaviour-first Jest unit and component tests — React Testing Library queries by role, user-event, mocking only at boundaries, a failing regression test before a bug fix, and running the changed tests first. Use when asked to \"write tests\", \"add coverage\", \"test this\", \"add a regression test\", when a bug fix needs a test, or when creating a .test.ts/.test.tsx file.",
-      "version": "27a1b0389aaf",
+      "description": "Writes behaviour-first Jest unit and component tests with React Testing Library, mocking only at boundaries. Use when asked to \"write tests\", \"add coverage\", \"add a regression test\", or writing a .test.ts/.test.tsx.",
+      "version": "57e3616557af",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 111
+      "listingTokens": 72
     }
   ],
   "agents": []

@@ -1,28 +1,28 @@
 {
   "id": "backend/amplify-gen2",
-  "version": "fed43336bd92",
+  "version": "60dd93fc6f87",
   "skills": [
     {
       "name": "amplify-backend-standards",
-      "description": "Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with colocated tests, interface-typed DI for volatile dependencies, repository-owned data access, zod-validated input, registration, CloudFormation cycles, caller identity and secrets. Use when writing or reviewing any file under amplify/.",
-      "version": "c5a234a7148b",
+      "description": "Non-negotiable rules for code under amplify/: folder-per-unit with tests, interface-typed DI, repository data access, zod input, CloudFormation cycles, secrets. Use when writing or reviewing any file under amplify/.",
+      "version": "01923f486a44",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 105
+      "listingTokens": 75
     },
     {
       "name": "amplify-data-model",
-      "description": "Changes the Amplify Gen 2 data schema in amplify/data/resource.ts — models, identifiers, relationships, secondary indexes, authorization rules, custom queries/mutations/subscriptions, and splitting a large schema into domain fragments. Use when asked to \"add a model\", \"add a field\", \"add an index\", \"change auth rules\" or \"add a custom query/mutation\" in an Amplify project.",
-      "version": "3ca7cbce820f",
+      "description": "Changes the Amplify Gen 2 schema in amplify/data/resource.ts: models, relationships, secondary indexes, auth rules, custom operations. Use when asked to \"add a model\", \"add a field\", \"add an index\", \"change auth rules\".",
+      "version": "53aa2adfe4c2",
       "files": [
         "SKILL.md",
         "reference/authorization.md",
         "reference/table-settings.md"
       ],
       "manualOnly": false,
-      "listingTokens": 114,
+      "listingTokens": 75,
       "detect": {
         "anyFiles": [
           "amplify/data"
@@ -31,8 +31,8 @@
     },
     {
       "name": "amplify-deploy",
-      "description": "Deploys, sandboxes and debugs an Amplify Gen 2 backend — ampx sandbox, function logs, secrets, reading failed CloudFormation deploys and circular-dependency errors. Use when asked to \"deploy\", \"run the sandbox\", \"check the lambda logs\" or \"why did the deploy fail\".",
-      "version": "2aa1c2b1995d",
+      "description": "Deploys and debugs an Amplify Gen 2 backend: ampx sandbox, function logs, secrets, failed CloudFormation and circular-dependency errors. Use when asked to \"deploy\", \"run the sandbox\", \"why did the deploy fail\".",
+      "version": "168c2e3045f9",
       "files": [
         "SKILL.md",
         "reference/scaling-limits.md"
@@ -42,8 +42,8 @@
     },
     {
       "name": "amplify-lambda",
-      "description": "Adds or changes an Amplify Gen 2 Lambda function in amplify/functions — scaffolds resource.ts, a composition-root handler, service and repository with interfaces and tests, then registers it in backend.ts and the data schema. Use when asked to \"add a lambda\", \"add a backend function\", \"add an API endpoint\", \"add an SQS/EventBridge consumer\" or \"add a scheduled job\".",
-      "version": "07c1ac3f19bc",
+      "description": "Adds or changes an Amplify Gen 2 Lambda in amplify/functions: scaffold, handler, service, repository, tests, registration. Use when asked to \"add a lambda\", \"add an API endpoint\", \"add an SQS/EventBridge consumer\".",
+      "version": "65fda68520ba",
       "files": [
         "SKILL.md",
         "reference/handler-and-services.md",
@@ -52,7 +52,7 @@
         "scripts/scaffold-lambda.mjs"
       ],
       "manualOnly": false,
-      "listingTokens": 111,
+      "listingTokens": 72,
       "detect": {
         "anyFiles": [
           "amplify/functions"
@@ -61,13 +61,13 @@
     },
     {
       "name": "appsync-js-resolver",
-      "description": "Writes or reviews AppSync JavaScript (APPSYNC_JS) resolvers in Amplify Gen 2 — runtime limits, cross-table names from awsAppsyncApiId and AMPLIFY_TABLE_ENV_NAME, caller identity from ctx.identity not arguments, pipelines via ctx.stash, util.error, a.handler.custom wiring. Use when touching a resolver .js file under amplify/data, adding a custom query/mutation without a Lambda, or when a resolver returns AccessDenied or null.",
-      "version": "484252e7599d",
+      "description": "Writes or reviews AppSync APPSYNC_JS resolvers under amplify/data: cross-table names, ctx.identity, ctx.stash pipelines, a.handler.custom. Use when editing a resolver .js file or a resolver returns AccessDenied or null.",
+      "version": "78a47eb4c101",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 127,
+      "listingTokens": 75,
       "detect": {
         "anyOf": [
           {

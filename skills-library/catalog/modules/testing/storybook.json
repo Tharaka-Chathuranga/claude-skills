@@ -1,16 +1,16 @@
 {
   "id": "testing/storybook",
-  "version": "1cc3cc66f70a",
+  "version": "3a66f39dcdf6",
   "skills": [
     {
       "name": "storybook-stories",
-      "description": "Writes Storybook stories in CSF with one story per meaningful component state, args and controls, decorators for providers, play-function interaction tests and no real data fetching. Use when asked to \"add a story\", \"add stories for this component\", \"test this interaction in Storybook\", or when creating a .stories.tsx file.",
-      "version": "84c66f143bfe",
+      "description": "Writes Storybook CSF stories, one per component state, with args, decorators and play-function interaction tests. Use when asked to \"add a story\", \"test this interaction in Storybook\", or writing a .stories.tsx.",
+      "version": "c36fdbced1da",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 101
+      "listingTokens": 72
     }
   ],
   "agents": []
