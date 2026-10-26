@@ -1,16 +1,16 @@
 {
   "id": "frontend/amplify-client",
-  "version": "38ee69848bb4",
+  "version": "dea2d6afb763",
   "skills": [
     {
       "name": "amplify-client-data",
-      "description": "Reads and writes Amplify Data from the frontend with generateClient and the generated Schema type — services module, nextToken pagination, secondary-index queries instead of filters, selection sets, errors, loading and tenant scoping. Use when a component needs backend data, or when asked to \"fetch this from the backend\", \"add pagination\" or \"filter this list\".",
-      "version": "cf3bfe9c8ff7",
+      "description": "Reads and writes Amplify Data from the frontend with generateClient and the generated Schema type — services module, nextToken pagination, secondary-index queries instead of filters, selection sets, errors and loading. Use when a component needs backend data, or when asked to \"fetch this from the backend\", \"add pagination\" or \"filter this list\".",
+      "version": "10b0fb1b96ff",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 111
+      "listingTokens": 107
     }
   ],
   "agents": []

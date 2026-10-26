@@ -1,11 +1,11 @@
 {
   "id": "backend/amplify-gen2",
-  "version": "d26d88ca7bb9",
+  "version": "8ce847b0e569",
   "skills": [
     {
       "name": "amplify-backend-standards",
-      "description": "Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with interfaces and colocated tests, interface-typed DI, repository-owned data access, zod-validated input, registration, CloudFormation cycles, tenant scoping and secrets. Use when writing or reviewing any file under amplify/.",
-      "version": "958dafb85053",
+      "description": "Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with interfaces and colocated tests, interface-typed DI, repository-owned data access, zod-validated input, registration, CloudFormation cycles, caller identity and secrets. Use when writing or reviewing any file under amplify/.",
+      "version": "d77ffcc99c62",
       "files": [
         "SKILL.md"
       ],
@@ -15,19 +15,24 @@
     {
       "name": "amplify-data-model",
       "description": "Changes the Amplify Gen 2 data schema in amplify/data/resource.ts — models, identifiers, relationships, secondary indexes, authorization rules, custom queries/mutations/subscriptions, and splitting a large schema into domain fragments. Use when asked to \"add a model\", \"add a field\", \"add an index\", \"change auth rules\" or \"add a custom query/mutation\" in an Amplify project.",
-      "version": "433370010a7e",
+      "version": "3ca7cbce820f",
       "files": [
         "SKILL.md",
         "reference/authorization.md",
         "reference/table-settings.md"
       ],
       "manualOnly": false,
-      "listingTokens": 114
+      "listingTokens": 114,
+      "detect": {
+        "anyFiles": [
+          "amplify/data"
+        ]
+      }
     },
     {
       "name": "amplify-deploy",
       "description": "Deploys, sandboxes and debugs an Amplify Gen 2 backend — ampx sandbox, function logs, secrets, reading failed CloudFormation deploys and circular-dependency errors. Use when asked to \"deploy\", \"run the sandbox\", \"check the lambda logs\" or \"why did the deploy fail\".",
-      "version": "ce077e7627ad",
+      "version": "2aa1c2b1995d",
       "files": [
         "SKILL.md",
         "reference/scaling-limits.md"
@@ -38,7 +43,7 @@
     {
       "name": "amplify-lambda",
       "description": "Adds or changes an Amplify Gen 2 Lambda function in amplify/functions — scaffolds resource.ts, a composition-root handler, service and repository with interfaces and tests, then registers it in backend.ts and the data schema. Use when asked to \"add a lambda\", \"add a backend function\", \"add an API endpoint\", \"add an SQS/EventBridge consumer\" or \"add a scheduled job\".",
-      "version": "2be9376e5d27",
+      "version": "94d433a52dcc",
       "files": [
         "SKILL.md",
         "reference/handler-and-services.md",
@@ -47,17 +52,39 @@
         "scripts/scaffold-lambda.mjs"
       ],
       "manualOnly": false,
-      "listingTokens": 111
+      "listingTokens": 111,
+      "detect": {
+        "anyFiles": [
+          "amplify/functions"
+        ]
+      }
     },
     {
       "name": "appsync-js-resolver",
-      "description": "Writes or reviews AppSync JavaScript (APPSYNC_JS) resolvers in Amplify Gen 2 — runtime limits, cross-table names from awsAppsyncApiId and AMPLIFY_TABLE_ENV_NAME, tenant from identity not arguments, pipelines via ctx.stash, util.error, a.handler.custom wiring. Use when touching a resolver .js file under amplify/data, adding a custom query/mutation without a Lambda, or when a resolver returns AccessDenied or null.",
-      "version": "243d0299aa6f",
+      "description": "Writes or reviews AppSync JavaScript (APPSYNC_JS) resolvers in Amplify Gen 2 — runtime limits, cross-table names from awsAppsyncApiId and AMPLIFY_TABLE_ENV_NAME, caller identity from ctx.identity not arguments, pipelines via ctx.stash, util.error, a.handler.custom wiring. Use when touching a resolver .js file under amplify/data, adding a custom query/mutation without a Lambda, or when a resolver returns AccessDenied or null.",
+      "version": "484252e7599d",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 124
+      "listingTokens": 127,
+      "detect": {
+        "anyOf": [
+          {
+            "anyFiles": [
+              "amplify/data/resolvers"
+            ]
+          },
+          {
+            "contains": [
+              {
+                "glob": "amplify/**/*.ts",
+                "pattern": "a\\.handler\\.custom\\("
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "agents": []

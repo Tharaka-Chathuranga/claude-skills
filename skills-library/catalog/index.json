@@ -10,7 +10,7 @@
         "always": true
       },
       "requires": [],
-      "version": "c554792e3895",
+      "version": "5ec77445aeae",
       "skills": [
         "software-design"
       ],
@@ -45,7 +45,7 @@
         "always": true
       },
       "requires": [],
-      "version": "7a6654897f2f",
+      "version": "1fa2692bc090",
       "skills": [
         "architecture-boundaries",
         "code-quality",
@@ -55,7 +55,7 @@
         "security-basics"
       ],
       "agents": [],
-      "listingTokens": 698
+      "listingTokens": 690
     },
     {
       "id": "core/workflow",
@@ -69,7 +69,7 @@
         "core/quality",
         "core/playbooks"
       ],
-      "version": "cdeafe25487a",
+      "version": "3417f3f8e3b5",
       "skills": [
         "code-review-standards",
         "commit-and-pr",
@@ -79,7 +79,7 @@
       "agents": [
         "code-reviewer"
       ],
-      "listingTokens": 417
+      "listingTokens": 412
     },
     {
       "id": "languages/dart",
@@ -138,12 +138,12 @@
         "core/quality",
         "languages/typescript"
       ],
-      "version": "38ee69848bb4",
+      "version": "dea2d6afb763",
       "skills": [
         "amplify-client-data"
       ],
       "agents": [],
-      "listingTokens": 111
+      "listingTokens": 107
     },
     {
       "id": "frontend/mui",
@@ -198,13 +198,13 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "b0613aca620c",
+      "version": "34815702ff5c",
       "skills": [
         "nextjs-routing",
         "nextjs-server-action"
       ],
       "agents": [],
-      "listingTokens": 225
+      "listingTokens": 226
     },
     {
       "id": "frontend/react",
@@ -220,7 +220,7 @@
         "core/quality",
         "core/design"
       ],
-      "version": "f4c22218707b",
+      "version": "8c665d32b552",
       "skills": [
         "react-component",
         "react-feature-structure",
@@ -248,7 +248,7 @@
         "backend/aws-lambda",
         "data/dynamodb"
       ],
-      "version": "d26d88ca7bb9",
+      "version": "8ce847b0e569",
       "skills": [
         "amplify-backend-standards",
         "amplify-data-model",
@@ -257,18 +257,28 @@
         "appsync-js-resolver"
       ],
       "agents": [],
-      "listingTokens": 451
+      "listingTokens": 454
     },
     {
       "id": "backend/aws-lambda",
       "layer": "backend",
       "name": "AWS Lambda",
       "description": "Runtime rules for Node.js Lambda functions: composition-root handlers, client lifetime, retries, idempotency, batching and logging.",
+      "detect": {
+        "anyDependencies": [
+          "@types/aws-lambda",
+          "aws-lambda",
+          "@aws-lambda-powertools/*",
+          "@middy/core",
+          "serverless",
+          "aws-cdk-lib"
+        ]
+      },
       "requires": [
         "core/quality",
         "core/design"
       ],
-      "version": "7f9368c483d3",
+      "version": "3ec82a137935",
       "skills": [
         "lambda-standards",
         "llm-functions"
@@ -282,14 +292,17 @@
       "name": "DynamoDB",
       "description": "Access-pattern-first DynamoDB design: keys and GSIs, Query and batch limits, conditional and transactional writes, repositories.",
       "detect": {
-        "dependencies": [
-          "@aws-sdk/client-dynamodb"
+        "anyDependencies": [
+          "@aws-sdk/client-dynamodb",
+          "@aws-sdk/lib-dynamodb",
+          "dynamodb-toolbox",
+          "electrodb"
         ]
       },
       "requires": [
         "core/quality"
       ],
-      "version": "293e79fb3cc4",
+      "version": "ea37283c65c5",
       "skills": [
         "dynamodb-access-patterns"
       ],
@@ -309,7 +322,7 @@
       "requires": [
         "core/quality"
       ],
-      "version": "1d34a91b0c7b",
+      "version": "1b2c7a7054a1",
       "skills": [
         "jest-tests"
       ],
@@ -322,14 +335,17 @@
       "name": "Playwright",
       "description": "Fast, isolated end-to-end user-journey tests with Playwright.",
       "detect": {
-        "dependencies": [
-          "@playwright/test"
+        "anyFiles": [
+          "playwright.config.ts",
+          "playwright.config.js",
+          "playwright.config.mjs",
+          "playwright.config.cjs"
         ]
       },
       "requires": [
         "core/quality"
       ],
-      "version": "2cf0c64feba1",
+      "version": "d7770793116e",
       "skills": [
         "e2e-tests"
       ],
@@ -342,8 +358,18 @@
       "name": "Storybook",
       "description": "Stories per component state with args, decorators and play-function interaction tests.",
       "detect": {
-        "files": [
-          ".storybook"
+        "anyOf": [
+          {
+            "anyFiles": [
+              ".storybook"
+            ]
+          },
+          {
+            "anyDependencies": [
+              "storybook",
+              "@storybook/*"
+            ]
+          }
         ]
       },
       "requires": [

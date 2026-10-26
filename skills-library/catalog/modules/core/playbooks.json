@@ -10,7 +10,24 @@
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 110
+      "listingTokens": 110,
+      "detect": {
+        "anyOf": [
+          {
+            "anyDependencies": [
+              "dependency-cruiser",
+              "eslint-plugin-boundaries"
+            ]
+          },
+          {
+            "anyFiles": [
+              "quality.config.json",
+              ".dependency-cruiser.js",
+              ".dependency-cruiser.cjs"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "split-oversized-file",

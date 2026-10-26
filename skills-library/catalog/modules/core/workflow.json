@@ -1,16 +1,16 @@
 {
   "id": "core/workflow",
-  "version": "cdeafe25487a",
+  "version": "3417f3f8e3b5",
   "skills": [
     {
       "name": "code-review-standards",
-      "description": "Reviews a diff or branch against the core standards — correctness, security and tenant isolation, error handling, boundaries, tests, naming and size — and reports findings by severity with file:line and a concrete failure. Use when asked to \"review my changes\", \"review this PR\", \"check this code\", \"is this ready to merge\", or as a self-check before reporting work complete.",
-      "version": "23fc0ee11e35",
+      "description": "Reviews a diff or branch against the core standards — correctness, security, error handling, boundaries, tests, naming and size — and reports findings by severity with file:line and a concrete failure. Use when asked to \"review my changes\", \"review this PR\", \"check this code\", \"is this ready to merge\", or as a self-check before reporting work complete.",
+      "version": "443befcd2879",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 114
+      "listingTokens": 109
     },
     {
       "name": "commit-and-pr",
@@ -30,7 +30,21 @@
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 106
+      "listingTokens": 106,
+      "detect": {
+        "anyOf": [
+          {
+            "scripts": [
+              "quality"
+            ]
+          },
+          {
+            "anyFiles": [
+              "quality.config.json"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "quality-ratchet",
@@ -40,14 +54,28 @@
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 116
+      "listingTokens": 116,
+      "detect": {
+        "anyOf": [
+          {
+            "scripts": [
+              "quality"
+            ]
+          },
+          {
+            "anyFiles": [
+              "quality.config.json"
+            ]
+          }
+        ]
+      }
     }
   ],
   "agents": [
     {
       "name": "code-reviewer",
       "description": "Read-only reviewer that examines the current branch diff against the project's quality, security, error-handling, boundary, performance, testing and naming standards and returns findings by severity. Use when asked for an independent code review, before opening a PR, or to self-check finished work in a separate context.",
-      "version": "63206033bbdf",
+      "version": "c87d3520ca3b",
       "file": "agents/code-reviewer.md"
     }
   ]

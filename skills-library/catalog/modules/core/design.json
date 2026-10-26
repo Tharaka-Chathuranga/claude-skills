@@ -1,11 +1,11 @@
 {
   "id": "core/design",
-  "version": "c554792e3895",
+  "version": "5ec77445aeae",
   "skills": [
     {
       "name": "software-design",
       "description": "Applies design principles (SOLID, composition, dependency injection, pure core) and picks the right design pattern from a symptom-to-pattern table, while guarding against over-engineering. Use when asked \"which pattern\", \"refactor this\", \"this is too coupled\", \"SOLID\", \"design pattern\", \"OOP\", \"how should I structure this\", or before introducing a new abstraction, class hierarchy or layer.",
-      "version": "292dca66e250",
+      "version": "86f801830e7f",
       "files": [
         "SKILL.md",
         "reference/anti-patterns.md",

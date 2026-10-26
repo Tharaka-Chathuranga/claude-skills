@@ -1,6 +1,6 @@
 {
   "id": "frontend/react",
-  "version": "f4c22218707b",
+  "version": "8c665d32b552",
   "skills": [
     {
       "name": "react-component",
@@ -16,7 +16,7 @@
     {
       "name": "react-feature-structure",
       "description": "Organize a frontend feature (section) so it scales — thin route file, one view component, a context provider that owns data state, a services module for backend calls, and parts grouped by UI region — plus the four UI states every data view handles. Use when creating a new page, feature or section, when a feature folder is getting messy, or when deciding where a component, hook or backend call belongs inside a feature.",
-      "version": "7be88cef2dea",
+      "version": "4d3bf5bcfc42",
       "files": [
         "SKILL.md"
       ],
@@ -26,17 +26,38 @@
     {
       "name": "react-forms",
       "description": "Build React forms with react-hook-form and zod — schema in a hook so validation messages are translated, the design system's field components, submit and server-error handling, edit vs create defaults, and confirm dialogs for destructive actions. Use when adding or changing a form, a create or edit dialog, field validation, or when validation messages are hardcoded or a form loses input on error.",
-      "version": "b2a9fe67f2fe",
+      "version": "d083d34ecd06",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 118
+      "listingTokens": 118,
+      "detect": {
+        "anyOf": [
+          {
+            "anyDependencies": [
+              "react-hook-form",
+              "formik",
+              "@tanstack/react-form",
+              "react-final-form",
+              "@conform-to/react"
+            ]
+          },
+          {
+            "contains": [
+              {
+                "glob": "{src,app,components}/**/*.{ts,tsx,js,jsx}",
+                "pattern": "from ['\"](react-hook-form|formik)['\"]"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "react-hook",
       "description": "Creates or fixes a custom React hook in a folder-per-hook layout with correct effect cleanup, ref vs state choices, stable callbacks, derived state and data fetching through the project's data library. Use when asked to \"make a hook\", \"extract this into a hook\", \"fetch data in a component\", when fixing a useEffect bug, infinite re-render or stale closure, or when exhaustive-deps complains.",
-      "version": "be420fd115cb",
+      "version": "377d910d9326",
       "files": [
         "SKILL.md"
       ],

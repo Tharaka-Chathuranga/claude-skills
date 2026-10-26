@@ -1,11 +1,11 @@
 {
   "id": "testing/playwright",
-  "version": "2cf0c64feba1",
+  "version": "d7770793116e",
   "skills": [
     {
       "name": "e2e-tests",
       "description": "Writes Playwright end-to-end tests for real user journeys with role-based locators, web-first assertions instead of fixed sleeps, isolated test data via fixtures, reused auth state and a fast suite. Use when asked to \"write an e2e test\", \"add a Playwright test\", \"test this flow end to end\", \"this e2e test is flaky\", or when editing *.spec.ts files under the e2e folder.",
-      "version": "4caa9ffd90ec",
+      "version": "3bc2ace49222",
       "files": [
         "SKILL.md"
       ],

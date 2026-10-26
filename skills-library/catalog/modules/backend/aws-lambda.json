@@ -1,27 +1,63 @@
 {
   "id": "backend/aws-lambda",
-  "version": "7f9368c483d3",
+  "version": "3ec82a137935",
   "skills": [
     {
       "name": "lambda-standards",
       "description": "Runtime rules for Node.js/TypeScript AWS Lambda functions — handler as composition root, module-scope SDK clients, env validation, idempotency for retried SQS/EventBridge events, partial batch failures, timeouts, memory and structured logging. Use when writing or reviewing a Lambda handler or event consumer, or when asked about \"cold starts\", \"lambda timeout\", \"retries\" or \"duplicate events\".",
-      "version": "014c4d05b319",
+      "version": "a92480225af1",
       "files": [
         "SKILL.md",
         "reference/retries-and-idempotency.md"
       ],
       "manualOnly": false,
-      "listingTokens": 118
+      "listingTokens": 118,
+      "detect": {
+        "anyOf": [
+          {
+            "anyFiles": [
+              "amplify/functions"
+            ]
+          },
+          {
+            "anyDependencies": [
+              "@types/aws-lambda",
+              "aws-lambda",
+              "@aws-lambda-powertools/*",
+              "@middy/core",
+              "serverless",
+              "aws-cdk-lib"
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "llm-functions",
       "description": "Structure backend functions that call LLMs — one unit per model call with a port, schema, prompt and test; versioned prompt ids with fallbacks; multi-stage pipelines with a time budget and bounded concurrency; required vs optional stages; async jobs for slow work; token tracking and privacy. Use when adding or changing a Lambda or service that calls an LLM, writing a prompt, building an AI generation pipeline, or when AI output is malformed or a generation times out.",
-      "version": "e8735afd1237",
+      "version": "d99d3b69e67f",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 136
+      "listingTokens": 136,
+      "detect": {
+        "anyDependencies": [
+          "openai",
+          "@anthropic-ai/sdk",
+          "@openrouter/sdk",
+          "@ai-sdk/*",
+          "ai",
+          "langchain",
+          "@langchain/*",
+          "@aws-sdk/client-bedrock-runtime",
+          "@google/genai",
+          "@google/generative-ai",
+          "@mistralai/mistralai",
+          "cohere-ai",
+          "groq-sdk"
+        ]
+      }
     }
   ],
   "agents": []

@@ -1,6 +1,6 @@
 {
   "id": "core/quality",
-  "version": "7a6654897f2f",
+  "version": "1fa2692bc090",
   "skills": [
     {
       "name": "architecture-boundaries",
@@ -15,7 +15,7 @@
     {
       "name": "code-quality",
       "description": "The always-on standard for writing or changing code in any language — small single-purpose units, flat control flow, typed and validated edges, deliberate duplication, why-comments, tests with the change, and a self-review before reporting done. Use for any code-writing task (feature, fix, refactor, script), when asked to \"write clean code\", \"make this maintainable\", \"improve this code\" or \"follow best practices\".",
-      "version": "3675a35208d5",
+      "version": "9898c578e881",
       "files": [
         "SKILL.md",
         "reference/research-summary.md"
@@ -26,7 +26,7 @@
     {
       "name": "error-handling",
       "description": "Rules for failures in any stack — handle each error once, typed expected vs unexpected errors, keep the cause, structured logging without secrets or PII, no swallowing, safe user-facing messages. Use when writing try/catch, throwing or returning errors, adding logging, mapping errors to responses, or when asked \"how should I handle this failure\".",
-      "version": "dd0f4cdfb0fa",
+      "version": "502aa0bd27db",
       "files": [
         "SKILL.md"
       ],
@@ -47,7 +47,7 @@
     {
       "name": "performance-scalability",
       "description": "Stack-agnostic performance and scalability principles — paginate every list, avoid N+1 calls, batch reads and writes, cache deliberately, bound work and concurrency, set timeouts, design for retries, and measure before optimising. Use when writing data access, loops over remote calls, list endpoints, background jobs or caches, or when asked \"will this scale\", \"why is this slow\" or \"optimise this\".",
-      "version": "71c27c58a5e5",
+      "version": "cdd57cecd269",
       "files": [
         "SKILL.md"
       ],
@@ -56,13 +56,13 @@
     },
     {
       "name": "security-basics",
-      "description": "Baseline security for any stack — input validation at trust boundaries, server-side authorisation, tenant isolation, secrets, least privilege, injection and safe logging. Use when handling user input, adding an endpoint, query, upload or permission check, touching auth, secrets or tenant data, or when asked \"is this secure\" or \"can another tenant see this\".",
-      "version": "ae7885d00cf6",
+      "description": "Baseline security for any stack — input validation at trust boundaries, server-side authorisation, secrets, least privilege, injection and safe logging. Use when handling user input, adding an endpoint, query, upload or permission check, touching auth or secrets, or when asked \"is this secure\" or \"can another user see this\".",
+      "version": "0c804549ef25",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 109
+      "listingTokens": 101
     }
   ],
   "agents": []
