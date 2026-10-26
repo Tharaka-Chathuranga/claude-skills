@@ -1,6 +1,6 @@
 {
   "name": "Core quality standards",
-  "description": "Stack-agnostic coding standard: code quality, architecture boundaries, naming, error handling, security and performance basics.",
+  "description": "Stack-agnostic coding standard: one code-quality skill with naming, error handling, security, performance and architecture-boundary references.",
   "detect": { "always": true },
   "requires": []
 }

@@ -1,8 +1,3 @@
----
-name: security-basics
-description: Baseline security for any stack — input validation at trust boundaries, server-side authorisation, secrets, least privilege, injection and safe logging. Use when handling user input, adding an endpoint, query, upload or permission check, touching auth or secrets, or when asked "is this secure" or "can another user see this".
----
-
 # Security basics
 
 The highest-impact defects, in order. A finding in the first two blocks a merge.
@@ -58,7 +53,7 @@ The highest-impact defects, in order. A finding in the first two blocks a merge.
 ## 6. Safe logging and errors
 
 - Never log secrets, tokens, passwords, session ids, full payloads or personal data; log ids.
-- Error responses don't expose stack traces, queries or internals (`error-handling`).
+- Error responses don't expose stack traces, queries or internals (error-handling reference).
 - Security-relevant events (login, permission change, export, delete) are logged with who and
   what.
 

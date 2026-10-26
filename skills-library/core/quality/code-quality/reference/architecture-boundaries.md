@@ -1,13 +1,8 @@
----
-name: architecture-boundaries
-description: Decides where new code goes and what it may import — layers with one-way dependencies, feature boundaries, public entry files, shared vs feature code, and migrating legacy structure incrementally. Use before creating a folder, feature, module or package, when asking "where should this live", when one feature needs code from another, or when asked about "project structure", "layering" or "separation of concerns".
----
-
 # Architecture boundaries
 
 The project's own layer map is in CLAUDE.md or in `quality.config.json` → `layers` (ordered top
 to bottom). Stack modules add concrete folder maps. This skill holds the rules that apply to any
-map. Fixing a reported violation: `fix-import-boundary`.
+map. Fixing a reported violation: `quality-gate` (reference/fix-import-boundary.md).
 
 ## The dependency rule
 

@@ -1,8 +1,3 @@
----
-name: naming
-description: Owns naming rules for files, folders, modules, functions, types, variables, constants, booleans and tests — intent-revealing, in the domain's language, one word per concept — and reviews or proposes names with a reason. Use when writing or renaming code, when asked to "name this", "check the names", "is this a good name", or when code is hard to understand even if naming isn't mentioned.
----
-
 # Naming
 
 A name is often the only documentation a reader sees. A good name lets someone new to the code
@@ -92,6 +87,3 @@ Report:
 
 End with how many files the "must" renames touch, and offer to apply them in one change so the
 code is never half-renamed.
-
-## Where to look
-- **Justifying a rule, or two guidelines disagree** → read [reference/sources.md](reference/sources.md)

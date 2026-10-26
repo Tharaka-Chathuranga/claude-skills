@@ -1,8 +1,3 @@
----
-name: error-handling
-description: Rules for failures in any stack — handle each error once, typed expected vs unexpected errors, keep the cause, structured logging without secrets or PII, no swallowing, safe user-facing messages. Use when writing try/catch, throwing or returning errors, adding logging, mapping errors to responses, or when asked "how should I handle this failure".
----
-
 # Error handling
 
 ## Rules
@@ -48,7 +43,7 @@ handle each case exhaustively.
   in shipped code.
 - Always include the correlation/request id when it exists.
 - Never log secrets, tokens, passwords, full request/response bodies, or personal data. Log ids,
-  not contents. Detail: `security-basics`.
+  not contents. Detail: the security reference of `code-quality`.
 - Pick levels deliberately: `error` needs someone to look; `warn` is degraded but handled;
   `info` is a business event; `debug` is off in production.
 

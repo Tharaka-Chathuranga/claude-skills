@@ -1,8 +1,3 @@
----
-name: performance-scalability
-description: Stack-agnostic performance and scalability principles — paginate every list, avoid N+1 calls, batch reads and writes, cache deliberately, bound work and concurrency, set timeouts, design for retries, and measure before optimising. Use when writing data access, loops over remote calls, list endpoints, background jobs or caches, or when asked "will this scale", "why is this slow" or "optimise this".
----
-
 # Performance and scalability
 
 General principles only. Stack modules own the specifics (query planners, database key design,
@@ -24,7 +19,7 @@ rendering, bundle size, serverless limits); use theirs when installed.
 6. **Timeouts on every outbound call**, shorter than the caller's own timeout, so failures
    surface as errors instead of hangs.
 7. **Retries are bounded**: capped exponential backoff with jitter, transient errors only, and
-   only for idempotent operations (`error-handling`).
+   only for idempotent operations (error-handling reference).
 8. **Idempotency.** Anything triggered by a queue, event, webhook or retry must be safe to run
    twice: deterministic ids, conditional writes, or a processed-keys record.
 9. **Spread hot keys.** Writes concentrated on one key, partition or row throttle under load;
