@@ -7,6 +7,8 @@ Shared [Claude Code skills](https://code.claude.com/docs/en/skills) and the VS C
 | [`skills-library/`](skills-library/README.md) | The skills, subagents and presets, plus the generated `catalog/` the extension reads |
 | [`vscode-extension/`](vscode-extension/README.md) | The **Claude Skills** extension: detects a project's stack and installs the matching modules into `.claude/` |
 
+**New here?** Read [GETTING-STARTED.md](GETTING-STARTED.md): install the extension, set up a project's skills, and use them in Claude Code.
+
 The extension reads the library from
 `https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/<branch-or-tag>/skills-library`.
 
