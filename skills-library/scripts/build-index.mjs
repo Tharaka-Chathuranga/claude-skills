@@ -122,6 +122,50 @@ async function buildAgent(moduleDir, moduleId, file) {
   };
 }
 
+const DETECT_LIST_KEYS = ['dependencies', 'anyDependencies', 'files', 'anyFiles', 'scripts'];
+const DETECT_KEYS = new Set(['always', 'contains', 'anyOf', ...DETECT_LIST_KEYS]);
+const SAFE_PATH = (p) => typeof p === 'string' && p !== '' && !p.startsWith('/') && !p.includes('\\') &&
+  p.split('/').every((segment) => segment !== '' && segment !== '.' && segment !== '..');
+
+/** Detect rules decide what gets installed, so a typo must fail the build rather than match nothing. */
+function checkDetect(label, detect) {
+  if (detect === undefined) return;
+  if (typeof detect !== 'object' || detect === null || Array.isArray(detect)) {
+    errors.push(`${label}: detect must be an object`);
+    return;
+  }
+  const keys = Object.keys(detect);
+  if (keys.length === 0) errors.push(`${label}: detect has no rules (use "always": true)`);
+  for (const key of keys) {
+    if (!DETECT_KEYS.has(key)) errors.push(`${label}: unknown detect key "${key}"`);
+  }
+  for (const key of DETECT_LIST_KEYS) {
+    const list = detect[key];
+    if (list === undefined) continue;
+    if (!Array.isArray(list) || list.length === 0 || !list.every((item) => typeof item === 'string' && item)) {
+      errors.push(`${label}: detect.${key} must be a non-empty list of strings`);
+    } else if ((key === 'files' || key === 'anyFiles') && !list.every(SAFE_PATH)) {
+      errors.push(`${label}: detect.${key} paths must be relative, without ".."`);
+    }
+  }
+  if (detect.contains !== undefined) {
+    const valid = Array.isArray(detect.contains) && detect.contains.length > 0 && detect.contains.every((rule) => {
+      if (typeof rule?.glob !== 'string' || typeof rule?.pattern !== 'string' || !SAFE_PATH(rule.glob.replace(/\*/g, 'x'))) return false;
+      try {
+        new RegExp(rule.pattern, 'm');
+        return true;
+      } catch {
+        return false;
+      }
+    });
+    if (!valid) errors.push(`${label}: detect.contains must be a list of { glob, pattern } with a valid regex`);
+  }
+  if (detect.anyOf !== undefined) {
+    if (!Array.isArray(detect.anyOf) || detect.anyOf.length === 0) errors.push(`${label}: detect.anyOf must be a non-empty list`);
+    else detect.anyOf.forEach((rule, index) => checkDetect(`${label} anyOf[${index}]`, rule));
+  }
+}
+
 async function buildModule(layer, moduleName) {
   const id = `${layer}/${moduleName}`;
   const dir = path.join(root, layer, moduleName);
@@ -148,6 +192,18 @@ async function buildModule(layer, moduleName) {
     : [];
   const agents = await Promise.all(agentFiles.map((file) => buildAgent(dir, id, file)));
   if (skills.length === 0 && agents.length === 0) errors.push(`${id}: module has no skills or agents`);
+
+  checkDetect(`${id}/module.json`, config.detect);
+  // Per-skill rules: inside a chosen module, a skill with `detect` installs only when it matches.
+  for (const [name, settings] of Object.entries(config.skills ?? {})) {
+    const skill = skills.find((candidate) => candidate.name === name);
+    if (!skill) {
+      errors.push(`${id}/module.json: "skills" names unknown skill "${name}"`);
+      continue;
+    }
+    checkDetect(`${id}/module.json skills.${name}`, settings?.detect);
+    if (settings?.detect) skill.detect = settings.detect;
+  }
 
   const version = createHash('sha256')
     .update([...skills, ...agents].map((item) => `${item.name}@${item.version}`).join(','))

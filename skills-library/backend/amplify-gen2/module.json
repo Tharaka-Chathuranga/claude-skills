@@ -1,6 +1,51 @@
 {
   "name": "AWS Amplify Gen 2",
   "description": "Backend functions, data models, AppSync resolvers and deploys for Amplify Gen 2 projects.",
-  "detect": { "dependencies": ["@aws-amplify/backend"] },
-  "requires": ["core/quality", "core/design", "languages/typescript", "backend/aws-lambda", "data/dynamodb"]
+  "detect": {
+    "dependencies": [
+      "@aws-amplify/backend"
+    ]
+  },
+  "requires": [
+    "core/quality",
+    "core/design",
+    "languages/typescript",
+    "backend/aws-lambda",
+    "data/dynamodb"
+  ],
+  "skills": {
+    "amplify-lambda": {
+      "detect": {
+        "anyFiles": [
+          "amplify/functions"
+        ]
+      }
+    },
+    "amplify-data-model": {
+      "detect": {
+        "anyFiles": [
+          "amplify/data"
+        ]
+      }
+    },
+    "appsync-js-resolver": {
+      "detect": {
+        "anyOf": [
+          {
+            "anyFiles": [
+              "amplify/data/resolvers"
+            ]
+          },
+          {
+            "contains": [
+              {
+                "glob": "amplify/**/*.ts",
+                "pattern": "a\\.handler\\.custom\\("
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

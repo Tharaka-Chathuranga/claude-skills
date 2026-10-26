@@ -1,6 +1,38 @@
 {
   "name": "React",
   "description": "Component and hook structure, React design patterns and render performance.",
-  "detect": { "dependencies": ["react"] },
-  "requires": ["core/quality", "core/design"]
+  "detect": {
+    "dependencies": [
+      "react"
+    ]
+  },
+  "requires": [
+    "core/quality",
+    "core/design"
+  ],
+  "skills": {
+    "react-forms": {
+      "detect": {
+        "anyOf": [
+          {
+            "anyDependencies": [
+              "react-hook-form",
+              "formik",
+              "@tanstack/react-form",
+              "react-final-form",
+              "@conform-to/react"
+            ]
+          },
+          {
+            "contains": [
+              {
+                "glob": "{src,app,components}/**/*.{ts,tsx,js,jsx}",
+                "pattern": "from ['\"](react-hook-form|formik)['\"]"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

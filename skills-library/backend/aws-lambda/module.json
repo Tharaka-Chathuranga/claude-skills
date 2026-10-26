@@ -1,5 +1,60 @@
 {
   "name": "AWS Lambda",
   "description": "Runtime rules for Node.js Lambda functions: composition-root handlers, client lifetime, retries, idempotency, batching and logging.",
-  "requires": ["core/quality", "core/design"]
+  "detect": {
+    "anyDependencies": [
+      "@types/aws-lambda",
+      "aws-lambda",
+      "@aws-lambda-powertools/*",
+      "@middy/core",
+      "serverless",
+      "aws-cdk-lib"
+    ]
+  },
+  "requires": [
+    "core/quality",
+    "core/design"
+  ],
+  "skills": {
+    "lambda-standards": {
+      "detect": {
+        "anyOf": [
+          {
+            "anyFiles": [
+              "amplify/functions"
+            ]
+          },
+          {
+            "anyDependencies": [
+              "@types/aws-lambda",
+              "aws-lambda",
+              "@aws-lambda-powertools/*",
+              "@middy/core",
+              "serverless",
+              "aws-cdk-lib"
+            ]
+          }
+        ]
+      }
+    },
+    "llm-functions": {
+      "detect": {
+        "anyDependencies": [
+          "openai",
+          "@anthropic-ai/sdk",
+          "@openrouter/sdk",
+          "@ai-sdk/*",
+          "ai",
+          "langchain",
+          "@langchain/*",
+          "@aws-sdk/client-bedrock-runtime",
+          "@google/genai",
+          "@google/generative-ai",
+          "@mistralai/mistralai",
+          "cohere-ai",
+          "groq-sdk"
+        ]
+      }
+    }
+  }
 }

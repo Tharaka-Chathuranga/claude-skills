@@ -1,6 +1,15 @@
 {
   "name": "Playwright",
   "description": "Fast, isolated end-to-end user-journey tests with Playwright.",
-  "detect": { "dependencies": ["@playwright/test"] },
-  "requires": ["core/quality"]
+  "detect": {
+    "anyFiles": [
+      "playwright.config.ts",
+      "playwright.config.js",
+      "playwright.config.mjs",
+      "playwright.config.cjs"
+    ]
+  },
+  "requires": [
+    "core/quality"
+  ]
 }

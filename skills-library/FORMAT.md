@@ -28,15 +28,45 @@ Everything else at the top level (`tooling/`, `templates/`, `presets/`, `scripts
   "name": "AWS Amplify Gen 2",
   "description": "Backend functions, data models, resolvers and deploys for Amplify Gen 2.",
   "detect": { "dependencies": ["@aws-amplify/backend"] },
-  "requires": ["core/quality", "languages/typescript", "backend/aws-lambda"]
+  "requires": ["core/quality", "languages/typescript", "backend/aws-lambda"],
+  "skills": {
+    "amplify-lambda": { "detect": { "anyFiles": ["amplify/functions"] } },
+    "appsync-js-resolver": {
+      "detect": {
+        "anyOf": [
+          { "anyFiles": ["amplify/data/resolvers"] },
+          { "contains": [{ "glob": "amplify/**/*.ts", "pattern": "a\\.handler\\.custom\\(" }] }
+        ]
+      }
+    }
+  }
 }
 ```
 
 | Field | Meaning |
 |---|---|
 | `name`, `description` | Shown in the extension. One sentence for the description. |
-| `detect` | When to suggest the module. `"always": true` suggests it for every project. Otherwise every listed `dependencies` entry must be in the root `package.json`, and every listed `files` entry must exist. Omit `detect` for modules that only arrive through `requires`. |
-| `requires` | Modules installed automatically with this one. Same library only. |
+| `detect` | When the module applies to a project (rules below). Omit it for modules that only arrive through `requires`. |
+| `requires` | Modules used automatically with this one. Same library only. |
+| `skills` | Optional per-skill `detect` rules. Inside a chosen module, a skill with a rule installs **only when it matches**; skills without one always install. |
+
+## Detect rules
+
+The same rule format is used for modules and for skills. Every key that is set must hold:
+
+| Key | Holds when |
+|---|---|
+| `always: true` | Always (core modules) |
+| `dependencies` | All listed packages are dependencies in some `package.json` of the project (root and nested packages up to three levels, so monorepos count) |
+| `anyDependencies` | At least one listed package is a dependency. A trailing `*` matches a scope: `"@ai-sdk/*"` |
+| `files` / `anyFiles` | All / at least one of the paths (file or folder, relative to the project root) exist |
+| `scripts` | All listed npm scripts exist in some `package.json` |
+| `contains` | At least one file matching `glob` (`**`, `*`, `{a,b}`) contains a line matching the regex `pattern` |
+| `anyOf` | At least one of the nested rules holds |
+
+Prefer the cheapest rule that is precise: dependencies, then files, then `contains`. Add a skill rule
+whenever a skill only makes sense for part of a module's users — that is what keeps every project's
+skill set small as the library grows. The build rejects unknown keys, empty rules and invalid regexes.
 
 ## Skills
 
@@ -86,13 +116,21 @@ Projects record their choice in `.claude/skills.json`, committed to the repo:
     "shared": { "url": "https://raw.githubusercontent.com/Tharaka-Chathuranga/claude-skills/library-v1.0.0/skills-library" },
     "acme": { "url": "https://raw.githubusercontent.com/acme/claude-skills-acme/main", "auth": "github" }
   },
-  "modules": {
-    "shared": ["backend/amplify-gen2", "frontend/nextjs"],
-    "acme": ["company/acme"]
-  },
+  "autoDetect": true,
+  "modules": { "acme": ["company/acme"] },
+  "excludeModules": { "shared": ["frontend/mui"] },
+  "include": ["nextjs-server-action"],
   "exclude": ["amplify-deploy"]
 }
 ```
 
-Pin `url` to a tag to control when a project picks up library changes. `exclude` lists skill or agent names to skip.
+| Field | Meaning |
+|---|---|
+| `autoDetect` | Follow the project: every module whose rule matches is used, and inside modules only the skills whose rule matches. Re-evaluated when dependencies change. |
+| `modules` | Modules to use even when not detected, per library |
+| `excludeModules` | Modules to leave out even when detected or required, per library |
+| `include` | Skill or agent names to install even when their rule doesn't match |
+| `exclude` | Skill or agent names to leave out |
+
+Pin `url` to a tag to control when a project picks up library changes.
 The extension keeps `.claude/claude-skills.lock.json` with what it installed, so it never touches files it didn't write.

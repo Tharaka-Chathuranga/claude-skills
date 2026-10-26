@@ -1,6 +1,45 @@
 {
   "name": "Core workflow",
   "description": "Quality gate, debt ratchet, code review, commits and PRs, plus a read-only code-reviewer subagent.",
-  "detect": { "always": true },
-  "requires": ["core/quality", "core/playbooks"]
+  "detect": {
+    "always": true
+  },
+  "requires": [
+    "core/quality",
+    "core/playbooks"
+  ],
+  "skills": {
+    "quality-gate": {
+      "detect": {
+        "anyOf": [
+          {
+            "scripts": [
+              "quality"
+            ]
+          },
+          {
+            "anyFiles": [
+              "quality.config.json"
+            ]
+          }
+        ]
+      }
+    },
+    "quality-ratchet": {
+      "detect": {
+        "anyOf": [
+          {
+            "scripts": [
+              "quality"
+            ]
+          },
+          {
+            "anyFiles": [
+              "quality.config.json"
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

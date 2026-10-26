@@ -1,6 +1,27 @@
 {
   "name": "DynamoDB",
   "description": "Access-pattern-first DynamoDB design: keys and GSIs, Query and batch limits, conditional and transactional writes, repositories.",
-  "detect": { "dependencies": ["@aws-sdk/client-dynamodb"] },
-  "requires": ["core/quality"]
+  "detect": {
+    "anyDependencies": [
+      "@aws-sdk/client-dynamodb",
+      "@aws-sdk/lib-dynamodb",
+      "dynamodb-toolbox",
+      "electrodb"
+    ]
+  },
+  "requires": [
+    "core/quality"
+  ],
+  "skills": {
+    "dynamodb-access-patterns": {
+      "detect": {
+        "anyDependencies": [
+          "@aws-sdk/client-dynamodb",
+          "@aws-sdk/lib-dynamodb",
+          "dynamodb-toolbox",
+          "electrodb"
+        ]
+      }
+    }
+  }
 }

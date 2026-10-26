@@ -1,6 +1,32 @@
 {
   "name": "Next.js",
   "description": "App Router routing, server/client component boundaries, caching and server actions.",
-  "detect": { "dependencies": ["next"] },
-  "requires": ["frontend/react"]
+  "detect": {
+    "dependencies": [
+      "next"
+    ]
+  },
+  "requires": [
+    "frontend/react"
+  ],
+  "skills": {
+    "nextjs-routing": {
+      "detect": {
+        "anyFiles": [
+          "app",
+          "src/app"
+        ]
+      }
+    },
+    "nextjs-server-action": {
+      "detect": {
+        "contains": [
+          {
+            "glob": "{src,app}/**/*.{ts,tsx,js,jsx}",
+            "pattern": "^\\s*['\"]use server['\"]"
+          }
+        ]
+      }
+    }
+  }
 }
