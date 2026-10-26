@@ -20,8 +20,7 @@ Every row must map to a `Get`, `BatchGet` or `Query`. A row with no key is a mis
 
 ## 2. Partition and sort keys
 
-- Partition key: high cardinality, evenly accessed. In multi-tenant tables, lead with the tenant id
-  (`tenantId` or `TENANT#<id>`) so every query is scoped by construction.
+- Partition key: high cardinality, evenly accessed.
 - Sort key: encodes the range you query and the order you need. Composite sort keys
   (`status#createdAt`, `2026-10#<id>`) let one key serve "begins_with" and range queries.
 - Use ISO-8601 timestamps or zero-padded numbers in sort keys so string order equals logical order.

@@ -7,7 +7,7 @@ description: The always-on standard for writing or changing code in any language
 
 Write code for the next person who reads it. This skill is **how to write it**. Related owners,
 linked rather than repeated: names → `naming`; where code goes → `architecture-boundaries`;
-principles and patterns → `software-design`; failures → `error-handling`; trust and tenants →
+principles and patterns → `software-design`; failures → `error-handling`; trust and access →
 `security-basics`; data access at scale → `performance-scalability`; checking → `quality-gate`.
 
 Numbers (line cap, forbidden patterns) come from `quality.config.json`. Project-specific rules
@@ -61,8 +61,8 @@ Never swallow; add context when rethrowing; map to a response once at the edge. 
 `error-handling`.
 
 ### 7. Safe and scalable by default
-Validate input, authorise on the server, scope every data path to the tenant, keep secrets out of
-code and logs (`security-basics`). Paginate lists, batch, no calls inside loops, bound every
+Validate input, authorise on the server (check the caller may access each record), keep secrets out
+of code and logs (`security-basics`). Paginate lists, batch, no calls inside loops, bound every
 wait (`performance-scalability`). Anything triggered by a retrying source must be idempotent.
 
 ### 8. Comments say why
@@ -74,7 +74,7 @@ wait (`performance-scalability`). Anything triggered by a retrying source must b
 ## Tests are part of the change
 - New logic ships with tests; a bug fix ships with a regression test that failed first.
 - Test behaviour through the public contract, not internals. Cover edges: empty, zero,
-  boundary, null, the error path, the other tenant.
+  boundary, null, the error path, a caller without access.
 - Pure logic gets unit tests; I/O wiring gets integration tests with fakes at the boundary.
 
 ## Changing existing code
@@ -90,7 +90,7 @@ Read the diff as a reviewer would:
 - [ ] Each new unit has one job; no file over `maxFileLines`.
 - [ ] No new forbidden pattern (type escapes, lint disables, debug logging).
 - [ ] External input validated; errors handled once with context; nothing swallowed.
-- [ ] Authorisation and tenant scoping on every new data path.
+- [ ] Server-side authorisation on every new data path.
 - [ ] Lists bounded; no awaited calls or writes inside loops where a batch fits.
 - [ ] Comments explain why; no dead or commented-out code.
 - [ ] Tests cover the new behaviour and its edges.

@@ -16,7 +16,7 @@ interfaces, DI) follows the `software-design` skill; this skill covers what is s
 2. **SDK clients are created once, at module scope**, and injected downward. Never construct a client
    inside the handler (it discards warm keep-alive connections) and never import a client singleton
    from inside a service or repository (it can no longer be replaced in tests).
-3. **Nothing request- or tenant-scoped lives at module scope.** One warm container serves many callers
+3. **Nothing request- or user-scoped lives at module scope.** One warm container serves many callers
    in sequence. Module-level caches hold only values identical for every caller.
 4. **Every event source that retries is handled idempotently.** SQS, EventBridge, DynamoDB/Kinesis
    streams and async invokes deliver at least once. Processing the same event twice must be harmless.
@@ -92,7 +92,7 @@ Ambient values become injected ports: time is a `Clock`, `context.getRemainingTi
 - **Validate structured output with a schema** (zod), and write the schema's field descriptions as
   instructions to the model — they are part of the prompt.
 - **Never log full prompts or outputs** that contain user data; log ids, sizes, model and timings.
-- **Attribute token usage per call** (model, input/output tokens, tenant, operation) so cost can be traced.
+- **Attribute token usage per call** (model, input/output tokens, user, operation) so cost can be traced.
 
 ## Where to look
 

@@ -26,9 +26,6 @@ description: Designs and reviews DynamoDB access — keys and GSIs from access p
    loses data.
 7. **Concurrency is enforced by conditions, not by reading first.** Use `ConditionExpression`
    (`attribute_not_exists`, version checks) and atomic `ADD`/`SET` expressions; never read-modify-write.
-8. **Tenant scoping is part of the key.** If the project is multi-tenant (see CLAUDE.md for the tenant
-   key), the tenant id is in the partition key or key condition, never a post-read filter. The tenant
-   comes from the auth context, never from client arguments.
 
 ## Limits to design around
 

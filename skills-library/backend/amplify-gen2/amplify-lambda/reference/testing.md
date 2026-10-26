@@ -23,7 +23,7 @@ function makeService(order: Order | null = makeOrder()) {
 
 it('does not send when the order does not exist', async () => {
   const { service, mailer } = makeService(null);
-  await service.sendReceipt({ tenantId: 't-1', orderId: 'missing' });
+  await service.sendReceipt({ userId: 'u-1', orderId: 'missing' });
   expect(mailer.send).not.toHaveBeenCalled();
 });
 ```
@@ -33,13 +33,13 @@ Pure builders and utils are used for real inside service tests and get their own
 ## Repository
 
 Fake the document client's `send` and assert on the command input; that pins keys, index names,
-conditions and tenant scoping:
+and conditions:
 
 ```ts
 const send = jest.fn().mockResolvedValue({ Items: [], LastEvaluatedKey: undefined });
 const repo = new OrderRepository({ send } as unknown as DynamoDBDocumentClient, { order: 'orders' });
-await repo.listByCustomer('t-1', 'c-1');
-expect(send.mock.calls[0][0].input).toMatchObject({ IndexName: 'ordersByCustomer', ExpressionAttributeValues: { ':ck': 't-1#c-1' } });
+await repo.listByCustomer('c-1');
+expect(send.mock.calls[0][0].input).toMatchObject({ IndexName: 'ordersByCustomer', ExpressionAttributeValues: { ':c': 'c-1' } });
 ```
 
 Cover: pagination loops until `LastEvaluatedKey` is absent; `UnprocessedKeys`/`UnprocessedItems` are

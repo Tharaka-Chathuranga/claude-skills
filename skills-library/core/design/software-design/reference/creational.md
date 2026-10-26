@@ -72,7 +72,7 @@ from segments, HTTP request builders.
 to reuse across warm invocations) and **inject it**. One instance is a wiring decision, not a class property.
 
 **When not to:** never use a globally reachable `getInstance()` for something with state or I/O. It hides
-dependencies, makes tests share state, and leaks tenant/request data across calls.
+dependencies, makes tests share state, and leaks user/request data across calls.
 
 ```ts
 // Entry point: one client, reused across invocations, passed down explicitly

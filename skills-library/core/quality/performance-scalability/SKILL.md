@@ -35,10 +35,10 @@ rendering, bundle size, serverless limits); use theirs when installed.
 ## Caching, deliberately
 
 - Cache only with a known invalidation rule and TTL; write both down beside the cache.
-- Cache keys include every input that changes the result, **including the tenant id**.
-- Never cache per-user or per-tenant data in a shared cache without that key.
+- Cache keys include every input that changes the result, **including the user id** for per-user data.
+- Never cache per-user data in a shared cache without that key.
 - Initialise expensive clients and connections once per process, not per request; keep them
-  free of request or tenant state.
+  free of request or user state.
 
 ## Data shape
 
@@ -63,5 +63,5 @@ rendering, bundle size, serverless limits); use theirs when installed.
 - [ ] Queries use an index or key for their access pattern; no full scans on hot paths.
 - [ ] Outbound calls have timeouts; retries are bounded; retried handlers are idempotent.
 - [ ] Concurrency is limited; heavy work is off the request path.
-- [ ] Caches have an invalidation rule, a TTL and a tenant-aware key.
+- [ ] Caches have an invalidation rule, a TTL and a key covering every input.
 - [ ] Any optimisation comes with a measurement.

@@ -10,8 +10,8 @@ install anything. Use Bash only for read-only commands (`git status`, `git diff`
 
 ## Steps
 
-1. Read CLAUDE.md (and any nested CLAUDE.md in changed folders) for project rules, the tenant
-   key, the domain vocabulary and the layer map. Read `quality.config.json` if present for
+1. Read CLAUDE.md (and any nested CLAUDE.md in changed folders) for project rules, the domain
+   vocabulary and the layer map. Read `quality.config.json` if present for
    `baseBranch`, `maxFileLines`, `forbiddenPatterns` and `layers`.
 2. Find the base: `baseBranch` from config, else `origin/main`, else `main`. Collect the change:
    `git diff --stat <base>...HEAD`, `git diff <base>...HEAD`, plus `git diff` and
@@ -23,7 +23,7 @@ install anything. Use Bash only for read-only commands (`git status`, `git diff`
 4. For each changed file, read enough surrounding code (callers, tests, the whole function) to
    judge the hunk. Grep for existing helpers before flagging duplication, and for every call
    site before flagging a breaking signature change.
-5. Check, in order: correctness and edge cases; tenant isolation and server-side authorisation;
+5. Check, in order: correctness and edge cases; server-side authorisation;
    secrets and input validation; error handling and logging; layer boundaries; unbounded or
    N+1 data access; tests (does a test fail without the change?); size vs `maxFileLines` and
    new forbidden patterns; naming.

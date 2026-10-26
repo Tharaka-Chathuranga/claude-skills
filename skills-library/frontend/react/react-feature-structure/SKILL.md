@@ -40,9 +40,9 @@ services.ts  →  provider (or a feature hook)  →  view  →  parts (props)
 ```
 
 - Services are plain async functions: one backend call each, typed results, throw a descriptive error
-  on failure. They take ids (including the tenant id) as parameters and never read React context.
+  on failure. They take ids as parameters and never read React context.
 - The provider runs independent fetches in parallel, guards against stale responses when ids change,
-  exposes actions (`refresh`, `remove`, `loadMore`), and resets when the tenant or route id changes.
+  exposes actions (`refresh`, `remove`, `loadMore`), and resets when the route id changes.
 - Parts get data and callbacks through props or the feature context — they never call services.
 - Large editable state (editors, builders) uses a store (e.g. zustand slices) behind the context
   instead of many `useState`s.

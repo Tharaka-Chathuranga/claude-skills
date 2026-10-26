@@ -1,6 +1,6 @@
 ---
 name: nextjs-server-action
-description: Writes Next.js server actions with schema-validated input, auth and tenant checks inside the action, a typed discriminated result, revalidatePath/revalidateTag, and data access delegated to a service module. Use when asked to "add a server action", "handle this form submit on the server", "add a mutation", or when creating a file with "use server".
+description: Writes Next.js server actions with schema-validated input, auth and permission checks inside the action, a typed discriminated result, revalidatePath/revalidateTag, and data access delegated to a service module. Use when asked to "add a server action", "handle this form submit on the server", "add a mutation", or when creating a file with "use server".
 ---
 
 # Next.js server action
@@ -17,8 +17,8 @@ Validation types follow `type-safety`; data access layering follows `software-de
    the TypeScript type of the parameters.
 2. **Authenticate and authorise inside the action**, every time. Middleware or a hidden button is not
    protection — the action can be called directly.
-3. **Scope to the caller's tenant/owner from the session**, never from client input. Pass the tenant ID to the
-   service; the service filters by it.
+3. **Take the caller's identity from the session**, never from client input. Pass the user ID to the
+   service; the service checks the caller may access the record.
 4. **Return a typed discriminated result** for expected failures (validation, not found, forbidden, conflict);
    throw only for unexpected errors. Never return raw error messages or stack traces.
 5. **Keep the action thin**: validate → auth → call a service → revalidate → return. Data access and business
@@ -62,10 +62,10 @@ export async function updateInvoice(input: unknown): Promise<ActionResult<{ id: 
   if (!session) return { ok: false, error: 'unauthorized' };
   if (!session.permissions.includes('invoice:write')) return { ok: false, error: 'forbidden' };
 
-  const result = await invoiceService.update({ tenantId: session.tenantId, ...parsed.data });
+  const result = await invoiceService.update({ userId: session.userId, ...parsed.data });
   if (!result) return { ok: false, error: 'not_found' };
 
-  revalidateTag(`invoices:${session.tenantId}`);
+  revalidateTag(`invoices:${session.userId}`);
   return { ok: true, data: { id: result.id } };
 }
 ```
@@ -84,7 +84,7 @@ Put the shared `ActionResult` type in one module, not per action.
 
 - [ ] Schema validation first, `unknown` input type
 - [ ] Session checked; permission checked for this specific operation
-- [ ] Tenant/owner comes from the session and every query filters by it
+- [ ] User comes from the session; the service checks the caller may access the record
 - [ ] Service module holds data access; action has no direct DB/SDK calls
 - [ ] Discriminated result; no leaked internals
 - [ ] Correct tag/path revalidated; `redirect` outside `try/catch`

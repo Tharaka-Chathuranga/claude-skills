@@ -54,7 +54,7 @@ export const test = base.extend<{ customer: Customer }>({
 - Fixtures own setup and teardown of test data via the API; tests read like the journey.
 - Page objects only for screens used by many tests, and they expose user actions (`sendInvoice()`), not
   locators for every element.
-- Multi-tenant apps: a fixture per tenant/role, and at least one test that a user can't see another tenant's data.
+- Apps with roles: a fixture per role, and at least one test that a user can't see data they have no access to.
 
 ## Flakiness
 

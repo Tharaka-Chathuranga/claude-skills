@@ -77,7 +77,7 @@ export class OrderRepository implements OrderStore {
 mutable state (caches, "current user"), tests that must reset globals or run serially.
 
 **Fix:** create once in the composition root and inject. Module-scope reuse of a stateless client at the
-entry point is fine; module-scope request, user or tenant data never is.
+entry point is fine; module-scope request or user data never is.
 
 ## Feature envy and train wrecks
 

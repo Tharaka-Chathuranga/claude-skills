@@ -67,8 +67,7 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
 ## Route handlers
 
 Use for webhooks, third-party callbacks, file downloads and non-React clients. For mutations from your own
-UI, prefer a server action (see `nextjs-server-action`). Route handlers need the same validation, auth and
-tenant scoping; return proper status codes and a typed JSON body.
+UI, prefer a server action (see `nextjs-server-action`). Route handlers need the same validation and auth; return proper status codes and a typed JSON body.
 
 ## Caching and revalidation
 
@@ -79,7 +78,7 @@ tenant scoping; return proper status codes and a typed JSON body.
 | Per user or per request (cookies, headers) | Dynamic; never cache under a shared key |
 | Changes on a schedule | Time-based revalidate |
 
-Never cache user- or tenant-specific data under a key that omits the user or tenant.
+Never cache user-specific data under a key that omits the user.
 
 ## Client boundary pitfalls
 
@@ -99,11 +98,9 @@ Common when data comes from a client SDK (e.g. AppSync/GraphQL) that needs the s
 server-fetching advice above then doesn't apply; instead:
 
 - **Pages stay thin**: read params, render one view component (`<InvoicesView />`). No fetching, no state.
-- **The auth/tenant guard lives in a layout** (a client component that redirects when signed out or when the
-  user has no access to the tenant), so every page under it is protected once.
+- **The auth guard lives in a layout** (a client component that redirects when signed out or when the
+  user has no access to the section), so every page under it is protected once.
 - **Locale segment**: with next-intl, routes sit under `[locale]/`; import `Link`, `useRouter`, `usePathname`
   and `redirect` from the project's next-intl navigation wrappers, not `next/navigation`, so links keep the
   locale.
 - **Paths come from a helper object** (`paths.invoices.detail(id)`), never string literals in components.
-- **Multi-tenant apps put the tenant in the URL** (`[locale]/app/[tenantId]/…`). The URL is the source of
-  truth; a provider validates it and exposes the current tenant, and components read it from there.

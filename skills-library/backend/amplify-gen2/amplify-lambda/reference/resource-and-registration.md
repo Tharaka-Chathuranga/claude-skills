@@ -101,7 +101,7 @@ export const handler: Schema['sendReceipt']['functionHandler'] = async (event, c
 - Use `a.query()` for reads, `a.mutation()` for writes. Return a custom type (`a.customType` / `a.ref`),
   not a bare JSON blob.
 - Identity is `event.identity` (Cognito: `sub`, `claims`; custom authorizer: `resolverContext`).
-  The tenant comes from there, never from `event.arguments`.
+  The caller comes from there, never from `event.arguments`.
 - `a.handler.function(fn).async()` runs it as fire-and-forget (returns `EventInvocationResponse`).
 - Resolver functions set `resourceGroupName: 'data'`.
 

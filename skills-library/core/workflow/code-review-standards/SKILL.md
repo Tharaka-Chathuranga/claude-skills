@@ -1,6 +1,6 @@
 ---
 name: code-review-standards
-description: Reviews a diff or branch against the core standards — correctness, security and tenant isolation, error handling, boundaries, tests, naming and size — and reports findings by severity with file:line and a concrete failure. Use when asked to "review my changes", "review this PR", "check this code", "is this ready to merge", or as a self-check before reporting work complete.
+description: Reviews a diff or branch against the core standards — correctness, security, error handling, boundaries, tests, naming and size — and reports findings by severity with file:line and a concrete failure. Use when asked to "review my changes", "review this PR", "check this code", "is this ready to merge", or as a self-check before reporting work complete.
 ---
 
 # Code review
@@ -25,8 +25,8 @@ Each area has an owning skill; apply its checklist rather than re-deriving rules
 
 1. **Correctness.** Does it do what the task asked? Edge cases: empty, null, zero, boundary,
    concurrent calls, retries, partial failure, time zones, the error path.
-2. **Security and tenant isolation** → `security-basics`. Unscoped data access, missing
-   server-side authorisation, secrets, unvalidated input, injection.
+2. **Security** → `security-basics`. Missing server-side or object-level authorisation, secrets,
+   unvalidated input, injection.
 3. **Error handling** → `error-handling`. Swallowed errors, double handling, leaky messages,
    unsafe logs.
 4. **Boundaries** → `architecture-boundaries`. Upward imports, reaching into another feature,
@@ -44,7 +44,7 @@ Each area has an owning skill; apply its checklist rather than re-deriving rules
 
 | Level | Meaning | Examples |
 | --- | --- | --- |
-| **Blocker** | Must fix before merge | data leak across tenants, missing authorisation, secret in code, data loss, broken behaviour, swallowed error on a main path, deploy-breaking change |
+| **Blocker** | Must fix before merge | data leak to another user, missing authorisation, secret in code, data loss, broken behaviour, swallowed error on a main path, deploy-breaking change |
 | **Should fix** | Fix in this PR unless there's a reason | missing tests, oversized file, boundary violation, unbounded query, duplicated existing helper |
 | **Consider** | Worth raising; author decides | naming, magic numbers, narrating comments, minor simplifications |
 

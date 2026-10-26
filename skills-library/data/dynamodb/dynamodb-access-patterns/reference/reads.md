@@ -34,15 +34,15 @@ export class OrderRepository implements IOrderRepository {
 ## 2. Query with pagination
 
 ```ts
-async listByCustomer(tenantId: string, customerId: string): Promise<Order[]> {
+async listByCustomer(customerId: string): Promise<Order[]> {
   const items: Order[] = [];
   let lastKey: Record<string, unknown> | undefined;
   do {
     const page = await this.db.send(new QueryCommand({
       TableName: this.tables.order,
       IndexName: ORDERS_BY_CUSTOMER_INDEX,
-      KeyConditionExpression: 'customerKey = :ck',
-      ExpressionAttributeValues: { ':ck': `${tenantId}#${customerId}` },
+      KeyConditionExpression: 'customerId = :c',
+      ExpressionAttributeValues: { ':c': customerId },
       ExclusiveStartKey: lastKey,
     }));
     items.push(...((page.Items ?? []) as Order[]));
@@ -62,7 +62,7 @@ return { items: page.Items as Order[], nextToken: encode(page.LastEvaluatedKey) 
 ```
 
 - `encode` = base64url of `JSON.stringify(lastEvaluatedKey)`; `decode` validates the shape and rejects a
-  token whose partition key does not belong to the caller's tenant (a forged token is a cross-tenant read).
+  token whose partition key differs from the current query's (a forged token would read other items).
 - With a `FilterExpression`, a page can hold fewer than `limit` items (even zero) while `nextToken` is set.
   Clients must keep paging on `nextToken`, not on item count.
 

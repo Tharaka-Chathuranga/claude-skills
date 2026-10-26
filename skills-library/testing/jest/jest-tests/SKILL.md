@@ -55,7 +55,7 @@ describe('calculateLateFee', () => {
 - Cover edges: empty, zero, negative, null/undefined, boundaries, duplicates, error paths.
 - Arrange data with small factory helpers (`buildInvoice({ status: 'paid' })`) instead of large literals.
 - No logic snapshots; snapshot only small, stable serialised output when the exact shape is the contract.
-- Data access code: include a test that one tenant/owner cannot read another's records.
+- Data access code: include a test that a caller cannot read records they may not access.
 
 ## Components (React Testing Library)
 

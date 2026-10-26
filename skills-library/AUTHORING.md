@@ -80,7 +80,7 @@ Rules:
 - **Third person.** "Creates…", not "I can…" or "You can use this to…".
 - **Key use case first.** Claude Code truncates long descriptions in the skill listing, and when many skills are
   installed it drops descriptions for the least-used skills first.
-- **Include file types, library names and domain words**: `.xlsx`, `zod`, "server action", "multi-tenant".
+- **Include file types, library names and domain words**: `.xlsx`, `zod`, "server action", "pagination".
 - **Don't overlap with another skill.** If two descriptions match the same request, Claude may pick the wrong one.
   Split responsibilities clearly, or merge the skills.
 - **Aim for 1–3 sentences** (roughly 150–400 characters). Longer descriptions cost every developer tokens in every session.

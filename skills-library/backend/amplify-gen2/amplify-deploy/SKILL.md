@@ -66,7 +66,7 @@ Get the real error before changing anything.
 | `AccessDenied` at runtime | Missing grant or policy | `backend.ts` grants; needs a sandbox deploy, not a code change |
 | Env var empty at runtime | `addEnvironment` missing, secret not set for this stack, or deploy-time env injection hasn't run for the function | `backend.ts`; `ampx sandbox secret list`; the injection registry and custom resource logs |
 | Resource count over 500 or template over 1 MB | A nested stack is full | [reference/scaling-limits.md](reference/scaling-limits.md) |
-| Wrong tenant's data, or none | Tenant taken from arguments instead of identity | Handler or resolver tenant derivation |
+| Another user's data, or none | User taken from arguments instead of identity | Handler or resolver identity derivation |
 
 ## 5. Circular dependencies
 

@@ -84,7 +84,7 @@ for (const record of event.Records) {
 
 For work longer than a synchronous caller can wait (AppSync caps at 30 s):
 
-1. **Start** mutation: validates input and authorization, writes a job row `{ jobId, tenantId, status:
+1. **Start** mutation: validates input and authorization, writes a job row `{ jobId, userId, status:
    'PENDING', expiresAt }`, publishes an event (or enqueues), returns `{ jobId }`.
 2. **Worker** (event/queue consumer) does the work and records `COMPLETED` with the result, or `FAILED`
    with a client-safe reason, on the job row. Give the row a TTL.
@@ -92,7 +92,7 @@ For work longer than a synchronous caller can wait (AppSync caps at 30 s):
    returns normally — rethrowing would make the platform retry an outcome that will not change. Throw only
    for transient failures a retry can fix, and make sure the final attempt still records `FAILED` (or a DLQ
    consumer does).
-4. **Client** polls a status query or subscribes to job updates, scoped to its tenant.
+4. **Client** polls a status query or subscribes to job updates; it can read only its own jobs.
 
 ## 6. Making a handler idempotent
 

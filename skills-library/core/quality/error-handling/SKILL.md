@@ -44,9 +44,9 @@ handle each case exhaustively.
 ## Logging
 
 - Use the project logger, structured: `logger.error('Payment capture failed', { orderId,
-  tenantId, correlationId, error })`. No string-concatenated logs; no debug `print`/`console.log`
+  correlationId, error })`. No string-concatenated logs; no debug `print`/`console.log`
   in shipped code.
-- Always include the correlation/request id and tenant id when they exist.
+- Always include the correlation/request id when it exists.
 - Never log secrets, tokens, passwords, full request/response bodies, or personal data. Log ids,
   not contents. Detail: `security-basics`.
 - Pick levels deliberately: `error` needs someone to look; `warn` is degraded but handled;
@@ -73,5 +73,5 @@ handle each case exhaustively.
 - [ ] Each error is handled once; rethrows keep the cause.
 - [ ] Expected errors are typed and mapped to specific responses; unexpected ones are generic
       outside and detailed in logs.
-- [ ] Logs are structured, carry correlation and tenant ids, and contain no secrets or PII.
+- [ ] Logs are structured, carry correlation ids, and contain no secrets or PII.
 - [ ] Outbound calls have timeouts; retries are bounded and only for transient failures.

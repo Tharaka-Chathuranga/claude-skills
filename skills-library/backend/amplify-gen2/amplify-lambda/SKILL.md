@@ -76,7 +76,7 @@ Before changing a shared repository's method signature, find and update every ca
 - [ ] Handler holds only validation, wiring and the response; `new`, `process.env`, `new Date()` only there.
 - [ ] Every unit has `index.ts`, `interfaces/` and a colocated test using plain-object fakes.
 - [ ] No AWS SDK import outside a repository; no Scan; no write inside a loop.
-- [ ] External and model input parsed with zod; tenant derived from auth context.
+- [ ] External and model input parsed with zod; caller derived from auth context.
 - [ ] Registered everywhere the scaffolder listed; least-privilege grants; secrets via `secret()`.
 - [ ] Typecheck, tests and stack validation ran — report which ones.
 

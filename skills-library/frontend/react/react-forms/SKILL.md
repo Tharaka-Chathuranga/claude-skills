@@ -41,7 +41,7 @@ const { handleSubmit, formState: { isSubmitting } } = methods;
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await saveInvoice(organizationId, values);       // a services function
+    await saveInvoice(customerId, values);           // a services function
     toast.success(t('saved'));
     onClose();
   } catch (error) {

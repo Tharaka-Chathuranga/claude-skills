@@ -60,7 +60,7 @@ job row with status and TTL → client polls or subscribes. Size the worker for 
 
 ## Cost and privacy
 
-- Collect token usage per call (model, input/output tokens, stage, tenant, operation) and publish it
+- Collect token usage per call (model, input/output tokens, stage, user, operation) and publish it
   once the job succeeds.
 - Never log prompts or outputs containing user content; log ids, prompt id/version, model, sizes,
   timings and token counts.

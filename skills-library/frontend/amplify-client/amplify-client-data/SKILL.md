@@ -1,6 +1,6 @@
 ---
 name: amplify-client-data
-description: Reads and writes Amplify Data from the frontend with generateClient and the generated Schema type — services module, nextToken pagination, secondary-index queries instead of filters, selection sets, errors, loading and tenant scoping. Use when a component needs backend data, or when asked to "fetch this from the backend", "add pagination" or "filter this list".
+description: Reads and writes Amplify Data from the frontend with generateClient and the generated Schema type — services module, nextToken pagination, secondary-index queries instead of filters, selection sets, errors and loading. Use when a component needs backend data, or when asked to "fetch this from the backend", "add pagination" or "filter this list".
 ---
 
 # Amplify client data
@@ -20,12 +20,9 @@ description: Reads and writes Amplify Data from the frontend with generateClient
 5. **Check `errors` as well as `data`.** A response can resolve with `errors` set and `data` null:
    `if (errors?.length || !data) throw new Error(errors?.[0]?.message ?? '<operation> failed')` — a
    descriptive error, never a silent `null`.
-6. **Tenant scoping.** If the project is multi-tenant (tenant key in CLAUDE.md), take the tenant from the
-   app's auth/tenant context, pass it to every scoped call, and reset feature state when it changes. The
-   backend derives the tenant from the token; a mismatched argument is a bug, not a fallback.
-7. **Select only what you render** with `selectionSet`, declared as an `as const` array next to the service,
+6. **Select only what you render** with `selectionSet`, declared as an `as const` array next to the service,
    with the result type built from it (`SelectionSet<…>` or `Pick<Schema['Order']['type'], 'id' | 'status'>`).
-8. **Long-running operations return a job id.** A mutation that starts AI generation, an export or other
+7. **Long-running operations return a job id.** A mutation that starts AI generation, an export or other
    slow work returns `{ jobId }`; the client polls a status query or subscribes, rather than awaiting a
    request that can hit the 30 s AppSync timeout.
 
@@ -93,8 +90,8 @@ export async function sendReceipt(orderId: string) {
 
 ## Pagination
 
-Keep `nextToken` in hook state; "load more" appends the next page; a new filter or tenant resets items
-and token. With server-side filters a page can be short or empty while `nextToken` is set — continue on
+Keep `nextToken` in hook state; "load more" appends the next page; a new filter or parent id resets
+items and token. With server-side filters a page can be short or empty while `nextToken` is set — continue on
 the token, not on item count.
 
 ## Loading and errors in the hook
@@ -103,7 +100,7 @@ the token, not on item count.
   error states distinctly.
 - On a failed refetch keep the last good data on screen and surface the error (toast or inline).
 - Guard against stale responses: a request id or abort flag so a slow earlier call cannot overwrite a
-  newer one; skip calls while required ids (user, tenant) are still null.
+  newer one; skip calls while required ids (such as the user id) are still null.
 
 ## Realtime
 
@@ -116,5 +113,4 @@ key fields as the list.
 - [ ] No `client.` call outside the services module.
 - [ ] Lists use index query fields and `nextToken`; no client-side filtering of full tables.
 - [ ] `errors` checked on every call; loading, empty and error states render.
-- [ ] Tenant-scoped calls take the tenant from context and reset on change.
 - [ ] No `any` casts on results outside the single TS2590 wrapper; results re-typed in the service.

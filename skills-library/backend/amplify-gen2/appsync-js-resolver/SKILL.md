@@ -1,6 +1,6 @@
 ---
 name: appsync-js-resolver
-description: Writes or reviews AppSync JavaScript (APPSYNC_JS) resolvers in Amplify Gen 2 — runtime limits, cross-table names from awsAppsyncApiId and AMPLIFY_TABLE_ENV_NAME, tenant from identity not arguments, pipelines via ctx.stash, util.error, a.handler.custom wiring. Use when touching a resolver .js file under amplify/data, adding a custom query/mutation without a Lambda, or when a resolver returns AccessDenied or null.
+description: Writes or reviews AppSync JavaScript (APPSYNC_JS) resolvers in Amplify Gen 2 — runtime limits, cross-table names from awsAppsyncApiId and AMPLIFY_TABLE_ENV_NAME, caller identity from ctx.identity not arguments, pipelines via ctx.stash, util.error, a.handler.custom wiring. Use when touching a resolver .js file under amplify/data, adding a custom query/mutation without a Lambda, or when a resolver returns AccessDenied or null.
 ---
 
 # AppSync JS resolvers
@@ -36,19 +36,18 @@ payloads; return only what the client selects.
 import { util } from '@aws-appsync/utils';
 
 export function request(ctx) {
-  const tenantId = tenantFromIdentity(ctx.identity);
-  if (!tenantId) util.error('Not authorized', 'UnauthorizedError');
+  if (!ctx.identity || !ctx.identity.sub) util.error('Not authorized', 'UnauthorizedError');
   if (!ctx.args.orderId) util.error('orderId is required', 'ValidationError');
 
   return {
     operation: 'GetItem',
-    key: util.dynamodb.toMapValues({ tenantId, id: ctx.args.orderId }),
+    key: util.dynamodb.toMapValues({ id: ctx.args.orderId }),
   };
 }
 
 export function response(ctx) {
   if (ctx.error) util.error(ctx.error.message, ctx.error.type);
-  if (!ctx.result) util.error('Order not found', 'NotFoundError');
+  if (!ctx.result || ctx.result.ownerId !== ctx.identity.sub) util.error('Order not found', 'NotFoundError');
   return ctx.result;
 }
 ```
@@ -60,13 +59,12 @@ export function response(ctx) {
 - Items written by a custom resolver set `__typename: 'Order'` (plus `createdAt`/`updatedAt` via
   `util.time.nowISO8601()`), so generated types and the Data API resolve them like model-written items.
 
-## Tenant scoping
+## Caller identity
 
-If the project is multi-tenant (tenant key and source in CLAUDE.md), derive the tenant from
-`ctx.identity` only: Cognito `ctx.identity.claims` / `groups`, or `ctx.identity.resolverContext` from a
-Lambda authorizer. Never scope by `ctx.args.tenantId`; if the client sends one, compare it with the
-derived one and `util.error` on mismatch. Every key, key condition and condition expression includes
-the tenant. When you touch an existing resolver that trusts an argument, fix it.
+Derive the caller from `ctx.identity` only: Cognito `ctx.identity.sub` / `claims` / `groups`, or
+`ctx.identity.resolverContext` from a Lambda authorizer. Never trust identity or ownership fields sent in
+`ctx.args` (`userId`, `ownerId`). A record loaded by id is returned or changed only after checking the
+caller may access it. When you touch an existing resolver that trusts an argument, fix it.
 
 ## Table names for cross-table operations
 
@@ -108,8 +106,8 @@ must also be allowed to access every other table in the operation, or the call f
 
 No local runtime exists. Before reporting done:
 
-1. Evaluate each function against the real runtime with a realistic context, including a caller from a
-   **different tenant** and a missing argument:
+1. Evaluate each function against the real runtime with a realistic context, including a caller who
+   **may not access the record** and a missing argument:
    ```bash
    aws appsync evaluate-code --runtime name=APPSYNC_JS,runtimeVersion=1.0.0 \
      --code file://amplify/data/resolvers/<op>/<step>.js --function request --context file://ctx.json

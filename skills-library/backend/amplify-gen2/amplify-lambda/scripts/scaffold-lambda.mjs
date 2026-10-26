@@ -222,8 +222,7 @@ function repositoryTs({ pascalName }) {
 import type { ${pascalName}Record } from '../../types';
 import type { I${pascalName}Repository } from './interfaces';
 
-// Owns every table call for this function. If the project is multi-tenant, the tenant id
-// (see CLAUDE.md) is a parameter of every method and part of every key or key condition.
+// Owns every table call for this function.
 export class ${pascalName}Repository implements I${pascalName}Repository {
   constructor(
     private readonly db: DynamoDBDocumentClient,
@@ -366,7 +365,7 @@ const argumentsSchema = z.object({ id: z.string().min(1) });
 //   export const handler: Schema['${camelName}']['functionHandler'] = async (event, context) => { ... };
 export const handler: AppSyncResolverHandler<unknown, ${pascalName}Result> = async (event, context) => {
 ${lg.perRequest}
-  // Tenant and user come from event.identity (the auth context), never from event.arguments.
+  // The user comes from event.identity (the auth context), never from event.arguments.
   const input = argumentsSchema.parse(event.arguments);
   return buildService().${camelName}(input);
 };

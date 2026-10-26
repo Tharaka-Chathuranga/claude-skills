@@ -42,7 +42,7 @@ call one service method → shape the response.
 ```ts
 export const handler: Schema['sendReceipt']['functionHandler'] = async (event, context) => {
   logger.addContext(context);
-  const tenantId = tenantFromIdentity(event.identity);       // never from event.arguments
+  const userId = userIdFromIdentity(event.identity);         // never from event.arguments
   const { orderId } = argumentsSchema.parse(event.arguments);
   const { ORDER_TABLE_NAME, MAIL_API_KEY } = loadConfig();
 
@@ -53,7 +53,7 @@ export const handler: Schema['sendReceipt']['functionHandler'] = async (event, c
     logger,
     clock: systemClock,
   });
-  return service.sendReceipt({ tenantId, orderId });
+  return service.sendReceipt({ userId, orderId });
 };
 ```
 
@@ -140,7 +140,7 @@ and enforces cross-stage invariants. Stages log a summary (counts), not payloads
 ```ts
 import type { Schema } from '../../../data/resource';
 export type Order = Schema['Order']['type'];
-export interface SendReceiptInput { tenantId: string; orderId: string }
+export interface SendReceiptInput { userId: string; orderId: string }
 ```
 
 Logic files import types from `types`, never directly from `data/resource`.

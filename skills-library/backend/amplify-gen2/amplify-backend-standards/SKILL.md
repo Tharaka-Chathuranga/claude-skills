@@ -1,6 +1,6 @@
 ---
 name: amplify-backend-standards
-description: Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with interfaces and colocated tests, interface-typed DI, repository-owned data access, zod-validated input, registration, CloudFormation cycles, tenant scoping and secrets. Use when writing or reviewing any file under amplify/.
+description: Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with interfaces and colocated tests, interface-typed DI, repository-owned data access, zod-validated input, registration, CloudFormation cycles, caller identity and secrets. Use when writing or reviewing any file under amplify/.
 user-invocable: false
 paths: ["amplify/**"]
 ---
@@ -40,14 +40,12 @@ and override the defaults here.
 10. **Use generated types** — alias `Schema['Model']['type']` in the function's `types/`; do not
     redeclare model shapes.
 
-## Tenant scoping
+## Caller identity
 
-11. If the project is multi-tenant, the tenant key and its rules are in CLAUDE.md. **Always derive the
-    tenant from the auth context** (`event.identity`, resolver context, authorizer claims, or a
-    trusted event detail written by the backend), **never from client arguments.** Pass it explicitly
-    into every repository call and make it part of every key or key condition. A query that can return
-    another tenant's rows is a security defect, even if the service filters afterwards.
-12. Nothing tenant- or user-scoped is cached at module scope.
+11. **Always derive the caller from the auth context** (`event.identity`, resolver context, authorizer
+    claims, or a trusted event detail written by the backend), **never from client arguments.** A record
+    loaded by id is checked against the caller before it is returned or changed.
+12. Nothing user- or request-scoped is cached at module scope.
 
 ## Registration and infrastructure
 

@@ -79,11 +79,11 @@ const [state, setState] = useState<State>({ items: [], nextToken: null, isLoadin
 const requestIdRef = useRef(0);
 
 const load = useCallback(async (nextToken: string | null) => {
-  if (!tenantId) return;
+  if (!customerId) return;
   const requestId = ++requestIdRef.current;
   setState((s) => ({ ...s, isLoading: true }));
   try {
-    const page = await listOrders(tenantId, nextToken);            // service call, not the client
+    const page = await listOrders(customerId, nextToken);          // service call, not the client
     if (requestId !== requestIdRef.current) return;                // stale response
     setState((s) => ({
       items: nextToken ? [...s.items, ...page.items] : page.items, // load more appends
@@ -93,7 +93,7 @@ const load = useCallback(async (nextToken: string | null) => {
     if (requestId !== requestIdRef.current) return;
     setState((s) => ({ ...s, isLoading: false, error: toMessage(error) })); // keep last good items
   }
-}, [tenantId]);
+}, [customerId]);
 
 useEffect(() => {
   void load(null);

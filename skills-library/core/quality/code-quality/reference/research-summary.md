@@ -48,7 +48,7 @@ asks why the standard says what it says.
 ## Errors and logging
 
 - Typed domain errors mapped once at the edge; keep the cause chain; never swallow.
-- Structured logs with correlation and tenant ids, no PII; log once at the boundary.
+- Structured logs with correlation ids, no PII; log once at the boundary.
   [OWASP Logging Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html)
 - At-least-once delivery means handlers must be idempotent.
 
