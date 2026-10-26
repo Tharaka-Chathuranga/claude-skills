@@ -1,8 +1,8 @@
 # Quality kit
 
 A single quality gate and a code-health ratchet for any Node project, configured by one
-`quality.config.json`. Node built-ins only; no install step. The `core/workflow` and
-`core/playbooks` skills assume this kit (or an equivalent wired to the same npm scripts).
+`quality.config.json`. Node built-ins only; no install step. The `core/workflow` skills
+assume this kit (or an equivalent wired to the same npm scripts).
 
 ## Files
 
@@ -111,11 +111,12 @@ Vitest, or a `dependency-cruiser` / `eslint-plugin-boundaries` run in place of t
 
 ## How the skills use it
 
-- `quality-gate` runs `npm run quality`, reads the summary, and routes each failure to a playbook.
-- `quality-ratchet` explains the baseline, `quality:report` and when `quality:baseline` is allowed.
-- Failure messages end with `→ <skill>` (`split-oversized-file`, `fix-import-boundary`,
-  `type-safety`, …), so the next step is always named in the output.
-- `code-quality`, `architecture-boundaries` and `split-oversized-file` read `maxFileLines` and
+- `quality-gate` runs `npm run quality`, reads the summary, and routes each failure to one of its
+  reference files (ratchet, split-oversized-file, fix-import-boundary).
+- `quality-gate` (reference/ratchet.md) explains the baseline, `quality:report` and when `quality:baseline` is allowed.
+- Failure messages end with `→ <skill>` (`quality-gate (reference/split-oversized-file.md)`,
+  `typescript (reference/type-safety.md)`, …), so the next step is always named in the output.
+- `code-quality` and `quality-gate` read `maxFileLines` and
   `layers` from this config instead of hardcoding numbers.
 
 ## Limits

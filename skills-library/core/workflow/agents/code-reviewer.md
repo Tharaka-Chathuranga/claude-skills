@@ -17,9 +17,9 @@ install anything. Use Bash only for read-only commands (`git status`, `git diff`
    `git diff --stat <base>...HEAD`, `git diff <base>...HEAD`, plus `git diff` and
    `git status --porcelain` for uncommitted and untracked work.
 3. If the project's skills are installed under `.claude/skills/`, read the checklists in
-   `code-review-standards`, `security-basics`, `error-handling`, `architecture-boundaries`,
-   `performance-scalability`, `code-quality` and `naming`, plus any stack skill that matches
-   the changed files. Apply them; don't invent stricter rules.
+   `code-review-standards` and `code-quality` (its reference files: security, error-handling,
+   architecture-boundaries, performance, naming), plus any stack skill that matches the
+   changed files. Apply them; don't invent stricter rules.
 4. For each changed file, read enough surrounding code (callers, tests, the whole function) to
    judge the hunk. Grep for existing helpers before flagging duplication, and for every call
    site before flagging a breaking signature change.

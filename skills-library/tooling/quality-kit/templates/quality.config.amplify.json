@@ -6,8 +6,8 @@
   "codeExtensions": [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs"],
   "maxFileLines": 400,
   "forbiddenPatterns": [
-    { "name": "any", "pattern": "(:\\s*any\\b|\\bas any\\b|<any>|\\bany\\[\\])", "fix": "type-safety" },
-    { "name": "tsIgnore", "pattern": "@ts-(ignore|nocheck|expect-error)", "fix": "type-safety" },
+    { "name": "any", "pattern": "(:\\s*any\\b|\\bas any\\b|<any>|\\bany\\[\\])", "fix": "typescript (reference/type-safety.md)" },
+    { "name": "tsIgnore", "pattern": "@ts-(ignore|nocheck|expect-error)", "fix": "typescript (reference/type-safety.md)" },
     { "name": "lintDisable", "pattern": "eslint-disable", "fix": "fix the rule violation instead of disabling it" },
     { "name": "consoleLog", "pattern": "\\bconsole\\.log\\(", "fix": "use the project logger, or delete it" },
     { "name": "debugger", "pattern": "\\bdebugger\\b", "fix": "delete it" }

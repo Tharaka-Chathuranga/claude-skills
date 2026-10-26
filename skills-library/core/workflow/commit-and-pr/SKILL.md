@@ -1,6 +1,6 @@
 ---
 name: commit-and-pr
-description: Writes Conventional Commits messages, splits work into small reviewable commits and PRs, and structures the PR description. Use when asked to "commit this", "write a commit message", "open a PR", "create a pull request" or "write the PR description".
+description: Writes Conventional Commits messages, splits work into small commits and PRs, and structures the PR description. Use when asked to "commit this", "write a commit message", "open a PR", "write the PR description".
 ---
 
 # Commits and pull requests

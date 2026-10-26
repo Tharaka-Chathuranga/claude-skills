@@ -1,8 +1,3 @@
----
-name: split-oversized-file
-description: Splits a file that is over, or about to cross, the line cap (maxFileLines in quality.config.json) into cohesive units without changing behaviour — UI components, services, handlers, data tables, schemas and test files. Use when the ratchet reports "over the N-line cap" or "a file over N may not grow", when asked to "split this file", "break this up" or "this file is too big".
----
-
 # Split an oversized file
 
 The cap is `maxFileLines` in `quality.config.json`, counted as non-blank, non-comment lines. The
@@ -52,12 +47,12 @@ longer mentions the state, helpers or types it gave away.
   the original. Shared types go to a separate `types` file to avoid cycles.
 - **Keep the public surface.** Everything importers used is still exported from the same path
   (the original file or the folder's entry file). Don't make new internals public.
-- **Name files after their main export**, following `naming`.
+- **Name files after their main export**, following `code-quality` (reference/naming.md).
 - **Don't compress to fit.** Deleting comments, joining lines or shortening names is not a split.
 - **Debt moves with the code.** A forbidden pattern moved into a new file shows as a ratchet
-  regression for that file. Fix it while there, or record the move (`quality-ratchet`).
+  regression for that file. Fix it while there, or record the move (see the ratchet reference of `quality-gate`).
 - **Respect boundaries.** Extracted code stays in the same layer unless it is genuinely shared;
-  then move it down per `architecture-boundaries`.
+  then move it down per `code-quality` (reference/architecture-boundaries.md).
 
 ## 4. Central files touched by everyone
 

@@ -199,7 +199,7 @@ function buildBaseline(config) {
 }
 
 function fixHint(config, metric) {
-  if (metric === 'lines') return 'split-oversized-file';
+  if (metric === 'lines') return 'quality-gate (reference/split-oversized-file.md)';
   return config.forbiddenPatterns.find((entry) => entry.name === metric)?.fix ?? 'remove it';
 }
 

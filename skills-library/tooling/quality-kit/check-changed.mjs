@@ -111,12 +111,12 @@ function checkBoundaries(files, config) {
       const to = target && locate(target, layers);
       if (!to) continue;
       if (to.index < from.index) {
-        violations.push(`${file}: imports '${specifier}' (${from.layer.name} → ${to.layer.name}: upward) → fix-import-boundary`);
+        violations.push(`${file}: imports '${specifier}' (${from.layer.name} → ${to.layer.name}: upward) → quality-gate (reference/fix-import-boundary.md)`);
       } else if (
         to.index === from.index && from.layer.isolated && from.slice && to.slice &&
         from.slice !== to.slice && !isSliceIndex(to.restInSlice)
       ) {
-        violations.push(`${file}: imports '${specifier}' (internals of ${from.layer.name}/${to.slice}; use its index or move it down) → fix-import-boundary`);
+        violations.push(`${file}: imports '${specifier}' (internals of ${from.layer.name}/${to.slice}; use its index or move it down) → quality-gate (reference/fix-import-boundary.md)`);
       }
     }
   }

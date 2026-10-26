@@ -1,8 +1,3 @@
----
-name: quality-ratchet
-description: Explains and pays down recorded code-health debt — the per-file baseline of oversized files and forbidden patterns that may only go down — and governs when the baseline may be updated. Use when the ratchet step of npm run quality fails, when asked for a "tech debt report", "code health", "what should we clean up" or "where is the worst code", or after a cleanup to lock in lower numbers.
----
-
 # Quality ratchet
 
 Banning existing debt outright blocks every PR; ignoring it lets it grow. The ratchet records each
@@ -25,8 +20,8 @@ Use the report as the only source of numbers. Never estimate debt by hand.
 ## When the ratchet fails
 
 The diff added debt to the named file. **Fix the code.** The message names the file, the
-metric and the fix (`any 2 → 3 → type-safety`, `431 lines, over the 400-line cap →
-split-oversized-file`).
+metric and the fix (`any 2 → 3 → typescript (reference/type-safety.md)`, `431 lines, over the 400-line cap →
+quality-gate (reference/split-oversized-file.md)`).
 
 **Moving code between files** can look like a regression: a pattern moves from `a.ts` into a new
 `b.ts`, which has no allowance. Fix the moved occurrence while you're there. If that is truly out

@@ -1,6 +1,6 @@
 ---
 name: quality-gate
-description: Runs the project's single quality gate (npm run quality) over everything the branch changed, reads the output, routes each failure to the right fix, and re-runs until green. Use before reporting any code task complete, before opening a PR, when asked to "run the checks", "check my changes", "is this green", or when a pre-push hook or CI check failed.
+description: Runs npm run quality on changed files and fixes failures: ratchet debt, oversized files, import boundaries. Use before reporting done or opening a PR, "run the checks", "is this green", CI or pre-push failed.
 ---
 
 # Quality gate
@@ -42,12 +42,12 @@ Each ratchet/boundary message ends with `→ <fix>`. Follow it:
 
 | Failure | Do this |
 | --- | --- |
-| `ratchet`: `N lines, over the cap` or `may not grow` | `split-oversized-file` |
-| `ratchet`: a type-escape pattern grew (`any`, ignore comments, unchecked casts) | `type-safety` |
+| `ratchet`: `N lines, over the cap` or `may not grow` | Read [reference/split-oversized-file.md](reference/split-oversized-file.md) |
+| `ratchet`: a type-escape pattern grew (`any`, ignore comments, unchecked casts) | The language skill, e.g. `typescript` (reference/type-safety.md) |
 | `ratchet`: lint-disable, debug logging or another forbidden pattern grew | Remove it; fix the underlying issue |
 | `ratchet`: locale file missing keys | Add the key to every locale file |
-| `ratchet`: debt moved between files during a refactor | `quality-ratchet` (moves section) |
-| `boundaries`: upward import or another feature's internals | `fix-import-boundary` |
+| `ratchet`: debt moved between files during a refactor | Read [reference/ratchet.md](reference/ratchet.md) (moving code section) |
+| `boundaries`: upward import, another feature's internals, or a cycle | Read [reference/fix-import-boundary.md](reference/fix-import-boundary.md) |
 | `typecheck` | Fix the type error; never silence it |
 | `lint` / `format` | Fix the rule; run the formatter on the changed files |
 | `test` | Read the failing assertion. A test protecting behaviour you changed is right until proven otherwise |
@@ -72,3 +72,9 @@ generated file that only exists after a local setup step) should be listed in CL
 Quality gate: PASSED (skipped: infra-validate — nothing changed under infra/)
 Quality gate: FAILED (ratchet: src/features/billing/invoice-table.tsx 431 lines; test: 2 failing in format-date.test.ts)
 ```
+
+## Where to look
+
+- **A file is over the line cap, or "this file is too big"** → read [reference/split-oversized-file.md](reference/split-oversized-file.md)
+- **Boundary step failed: upward import, "internals of", no-restricted-paths, circular dependency** → read [reference/fix-import-boundary.md](reference/fix-import-boundary.md)
+- **Ratchet failed, updating the baseline, or asked for a "tech debt report" / "code health"** → read [reference/ratchet.md](reference/ratchet.md)

@@ -1,12 +1,7 @@
----
-name: fix-import-boundary
-description: Fixes a layer or feature-boundary violation from the boundary check (the gate's boundaries step, dependency-cruiser, eslint-plugin-boundaries) by moving code down, inverting the dependency, or using the public API. Use when the gate reports an "upward" or "internals of" import, a boundaries/element-types or no-restricted-paths error, or a circular dependency.
----
-
 # Fix an import boundary violation
 
 The layer map is `quality.config.json` → `layers.order` (top to bottom) or the boundary tool's
-config; CLAUDE.md may describe it in words. Rules: `architecture-boundaries`.
+config; CLAUDE.md may describe it in words. Rules: `code-quality` (reference/architecture-boundaries.md).
 
 **Never fix a violation by** loosening the boundary config, adding a disable comment, copying the
 whole module, or re-exporting the internal through a barrel just to satisfy the checker.
@@ -55,7 +50,7 @@ change together.
 ```
 
 If the moved code carries forbidden patterns, the ratchet flags the new file; fix them or
-record the move (`quality-ratchet`).
+record the move (see the ratchet reference of `quality-gate`).
 
 ## 4. Legacy violations
 

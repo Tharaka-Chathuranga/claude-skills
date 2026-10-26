@@ -1,6 +1,6 @@
 ---
 name: code-review-standards
-description: Reviews a diff or branch against the core standards — correctness, security, error handling, boundaries, tests, naming and size — and reports findings by severity with file:line and a concrete failure. Use when asked to "review my changes", "review this PR", "check this code", "is this ready to merge", or as a self-check before reporting work complete.
+description: Reviews a diff against the core standards and reports findings by severity with file:line and a concrete failure. Use when asked to "review my changes", "review this PR", "is this ready to merge", or to self-check.
 ---
 
 # Code review
@@ -25,19 +25,19 @@ Each area has an owning skill; apply its checklist rather than re-deriving rules
 
 1. **Correctness.** Does it do what the task asked? Edge cases: empty, null, zero, boundary,
    concurrent calls, retries, partial failure, time zones, the error path.
-2. **Security** → `security-basics`. Missing server-side or object-level authorisation, secrets,
+2. **Security** → `code-quality` (reference/security.md). Missing server-side or object-level authorisation, secrets,
    unvalidated input, injection.
-3. **Error handling** → `error-handling`. Swallowed errors, double handling, leaky messages,
+3. **Error handling** → `code-quality` (reference/error-handling.md). Swallowed errors, double handling, leaky messages,
    unsafe logs.
-4. **Boundaries** → `architecture-boundaries`. Upward imports, reaching into another feature,
+4. **Boundaries** → `code-quality` (reference/architecture-boundaries.md). Upward imports, reaching into another feature,
    logic in entry points, duplicated helpers that already exist.
-5. **Performance** → `performance-scalability`. Unbounded lists, calls in loops, missing
+5. **Performance** → `code-quality` (reference/performance.md). Unbounded lists, calls in loops, missing
    timeouts, non-idempotent retried handlers.
 6. **Tests.** New logic tested; bug fix has a regression test that fails without the fix;
    tests assert behaviour, not implementation.
 7. **Code quality** → `code-quality`. Unit size vs `maxFileLines`, flat control flow, types at
    edges, why-comments, dead code.
-8. **Naming** → `naming`. Misleading or vague names, synonyms for one concept.
+8. **Naming** → `code-quality` (reference/naming.md). Misleading or vague names, synonyms for one concept.
 9. **Stack-specific rules** from installed stack modules and CLAUDE.md.
 
 ## Severity
