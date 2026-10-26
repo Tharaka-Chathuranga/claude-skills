@@ -34,7 +34,7 @@ re-export shims unless the move is staged across PRs.
 **B. Invert the dependency.** Lower-level code needs behaviour that lives higher up. Define an
 interface (or callback/prop type) in the lower layer, have the higher layer implement it and pass
 it in at the composition root (entry point, provider, factory). The lower layer now depends only
-on its own interface. Patterns: `software-design`.
+on its own interface. Patterns: `design-patterns` (adapter, ports-and-adapters).
 
 **C. Use the public API.** The other feature does own this and it is a legitimate public
 capability. Export it from that feature's entry file (`index.*`) and import from there. Only for

@@ -7,7 +7,7 @@ description: The always-on standard for writing or changing code in any language
 
 Write code for the next person who reads it. This skill is **how to write it**. Related owners,
 linked rather than repeated: names → `naming`; where code goes → `architecture-boundaries`;
-principles and patterns → `software-design`; failures → `error-handling`; trust and access →
+wiring and testability → `dependency-injection`; principles → `design-principles`; patterns → `design-patterns`; failures → `error-handling`; trust and access →
 `security-basics`; data access at scale → `performance-scalability`; checking → `quality-gate`.
 
 Numbers (line cap, forbidden patterns) come from `quality.config.json`. Project-specific rules
@@ -41,7 +41,7 @@ in CLAUDE.md win over this skill.
 
 ### 3. Pure core, I/O at the edges
 Business logic takes data and returns data: no network, storage, environment, clock or
-randomness inside it. Those are passed in. Detail and patterns: `software-design`.
+randomness inside it. Those are passed in. Detail: `dependency-injection`.
 
 ### 4. Duplication: wait for the third time
 Duplicated **knowledge** (a business rule, a key format, a limit) is a bug; centralise it now.

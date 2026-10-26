@@ -1,29 +1,65 @@
 {
   "id": "core/design",
-  "version": "5ec77445aeae",
+  "version": "f8b0db870d06",
   "skills": [
     {
-      "name": "software-design",
-      "description": "Applies design principles (SOLID, composition, dependency injection, pure core) and picks the right design pattern from a symptom-to-pattern table, while guarding against over-engineering. Use when asked \"which pattern\", \"refactor this\", \"this is too coupled\", \"SOLID\", \"design pattern\", \"OOP\", \"how should I structure this\", or before introducing a new abstraction, class hierarchy or layer.",
-      "version": "86f801830e7f",
+      "name": "dependency-injection",
+      "description": "Wires dependencies for testable code — composition root, constructor or factory injection, narrow ports, lifetimes, injected time and config, fakes, and DI anti-patterns. Use when writing a service, handler, repository or hook, when logic news up clients or reads env or time, or when a test needs jest.mock.",
+      "version": "89bed1c3a85f",
       "files": [
         "SKILL.md",
-        "reference/anti-patterns.md",
-        "reference/architectural.md",
-        "reference/behavioral.md",
-        "reference/creational.md",
-        "reference/solid.md",
-        "reference/structural.md"
+        "reference/containers.md",
+        "reference/frontend.md",
+        "reference/testing-with-fakes.md"
       ],
       "manualOnly": false,
-      "listingTokens": 117
+      "listingTokens": 97
+    },
+    {
+      "name": "design-patterns",
+      "description": "Picks a design pattern from a concrete symptom, offering the lighter TypeScript option first — strategy, factory, adapter, decorator, repository, pipeline, result type and more. Use when a pattern is named, when asked which pattern fits, or for repeated switches, cross-cutting concerns or vendor coupling.",
+      "version": "52a13c2d9771",
+      "files": [
+        "SKILL.md",
+        "reference/adapter.md",
+        "reference/builder.md",
+        "reference/command.md",
+        "reference/decorator.md",
+        "reference/facade.md",
+        "reference/factory.md",
+        "reference/middleware-chain.md",
+        "reference/null-object.md",
+        "reference/observer.md",
+        "reference/pipeline.md",
+        "reference/ports-and-adapters.md",
+        "reference/proxy.md",
+        "reference/repository.md",
+        "reference/result-type.md",
+        "reference/specification.md",
+        "reference/state.md",
+        "reference/strategy.md",
+        "reference/template-method.md",
+        "reference/unit-of-work.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 96
+    },
+    {
+      "name": "design-principles",
+      "description": "Applies SOLID and OOP principles as checks — encapsulation, cohesion, composition over inheritance, YAGNI, functional core — mapped to TypeScript. Use when designing or refactoring classes and modules, choosing class vs function vs union, or asking if code is too coupled or over-engineered.",
+      "version": "ac9d694a531c",
+      "files": [
+        "SKILL.md"
+      ],
+      "manualOnly": false,
+      "listingTokens": 92
     }
   ],
   "agents": [
     {
       "name": "design-reviewer",
       "description": "Reviews a diff or a set of files for software design problems — tight coupling, god objects, missing dependency injection, leaking vendor types, and also needless patterns and pass-through layers. Read-only. Use when asked to \"review the design\", \"is this over-engineered\", \"is this too coupled\", or before merging a change that adds classes, layers or abstractions.",
-      "version": "31c1d648a0f9",
+      "version": "c72c6bc96eb1",
       "file": "agents/design-reviewer.md"
     }
   ]

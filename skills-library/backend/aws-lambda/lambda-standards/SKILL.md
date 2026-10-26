@@ -6,7 +6,7 @@ description: Runtime rules for Node.js/TypeScript AWS Lambda functions — handl
 # Lambda standards
 
 How a Lambda function behaves at runtime. Code structure inside the function (services, repositories,
-interfaces, DI) follows the `software-design` skill; this skill covers what is specific to Lambda.
+interfaces, DI) follows the `dependency-injection` skill; this skill covers what is specific to Lambda.
 
 ## Rules
 

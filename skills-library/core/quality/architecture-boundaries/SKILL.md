@@ -20,7 +20,7 @@ map. Fixing a reported violation: `fix-import-boundary`.
    third unit is missing.
 4. **Dependencies point at stable things.** Volatile details (frameworks, vendors, I/O) depend
    on the core's interfaces, not the reverse. Patterns for inverting a dependency:
-   `software-design`.
+   `dependency-injection` and `design-principles`.
 
 ## A typical map (adapt to the project's)
 

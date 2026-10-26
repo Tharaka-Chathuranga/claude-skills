@@ -1,16 +1,16 @@
 {
   "id": "backend/amplify-gen2",
-  "version": "8ce847b0e569",
+  "version": "fed43336bd92",
   "skills": [
     {
       "name": "amplify-backend-standards",
-      "description": "Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with interfaces and colocated tests, interface-typed DI, repository-owned data access, zod-validated input, registration, CloudFormation cycles, caller identity and secrets. Use when writing or reviewing any file under amplify/.",
-      "version": "d77ffcc99c62",
+      "description": "Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with colocated tests, interface-typed DI for volatile dependencies, repository-owned data access, zod-validated input, registration, CloudFormation cycles, caller identity and secrets. Use when writing or reviewing any file under amplify/.",
+      "version": "c5a234a7148b",
       "files": [
         "SKILL.md"
       ],
       "manualOnly": false,
-      "listingTokens": 102
+      "listingTokens": 105
     },
     {
       "name": "amplify-data-model",
@@ -43,7 +43,7 @@
     {
       "name": "amplify-lambda",
       "description": "Adds or changes an Amplify Gen 2 Lambda function in amplify/functions — scaffolds resource.ts, a composition-root handler, service and repository with interfaces and tests, then registers it in backend.ts and the data schema. Use when asked to \"add a lambda\", \"add a backend function\", \"add an API endpoint\", \"add an SQS/EventBridge consumer\" or \"add a scheduled job\".",
-      "version": "94d433a52dcc",
+      "version": "07c1ac3f19bc",
       "files": [
         "SKILL.md",
         "reference/handler-and-services.md",

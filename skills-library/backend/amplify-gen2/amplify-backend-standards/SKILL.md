@@ -1,6 +1,6 @@
 ---
 name: amplify-backend-standards
-description: Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with interfaces and colocated tests, interface-typed DI, repository-owned data access, zod-validated input, registration, CloudFormation cycles, caller identity and secrets. Use when writing or reviewing any file under amplify/.
+description: Non-negotiable rules for all code under amplify/ in an Amplify Gen 2 project — folder-per-unit with colocated tests, interface-typed DI for volatile dependencies, repository-owned data access, zod-validated input, registration, CloudFormation cycles, caller identity and secrets. Use when writing or reviewing any file under amplify/.
 user-invocable: false
 paths: ["amplify/**"]
 ---
@@ -8,15 +8,16 @@ paths: ["amplify/**"]
 # Amplify backend standards
 
 These hold for every change under `amplify/`. Task skills (`amplify-lambda`, `amplify-data-model`,
-`appsync-js-resolver`, `amplify-deploy`) assume them. General design rules are in `software-design`;
+`appsync-js-resolver`, `amplify-deploy`) assume them. General design rules are in `dependency-injection` and `design-principles`;
 Lambda runtime rules in `lambda-standards`; table access in `dynamodb-access-patterns`.
 Project-specific conventions (path aliases, client factories, shared repositories) are in CLAUDE.md
 and override the defaults here.
 
 ## Structure
 
-1. **Every unit is a folder**: implementation + `index.ts` + `interfaces/` + colocated `.test.ts`.
-   Units are services, repositories, builders, model-call units and non-trivial utils.
+1. **Every unit is a folder**: implementation + `index.ts` + colocated `.test.ts`, plus `interfaces/`
+   when the unit is injected (services, repositories, model-call units, adapters). Pure mapping or
+   building logic is a plain function with no interface — import it directly.
 2. **Imports cross folder boundaries through `index.ts` only.** Named exports, no default exports.
 3. **Match the existing function** when extending one; new functions follow `amplify-lambda`.
 4. **Files stay small** — split a file well before it reaches the project's line cap.
@@ -25,8 +26,9 @@ and override the defaults here.
 
 5. **`handler.ts` is the only composition root.** `new`, `process.env`, `new Date()` and
    `context.getRemainingTimeInMillis()` appear only there; everything below receives them.
-6. **Consumers depend on `I<Name>` interfaces**, injected through the constructor as
-   `private readonly`. Narrow with `Pick<>` when a unit uses one or two methods.
+6. **Consumers depend on `I<Name>` interfaces for volatile dependencies** (I/O, model calls, time),
+   injected through the constructor as `private readonly`. Narrow with `Pick<>` when a unit uses one
+   or two methods. No interface for stable, pure code (see `dependency-injection` rules 2 and 8).
 7. **Tests construct units directly with plain-object fakes.** Needing `jest.mock` or SDK client mocks
    for a service test means the wiring is wrong.
 

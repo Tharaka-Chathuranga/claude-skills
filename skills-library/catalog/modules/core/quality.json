@@ -1,11 +1,11 @@
 {
   "id": "core/quality",
-  "version": "1fa2692bc090",
+  "version": "3a68dadfdc7c",
   "skills": [
     {
       "name": "architecture-boundaries",
       "description": "Decides where new code goes and what it may import — layers with one-way dependencies, feature boundaries, public entry files, shared vs feature code, and migrating legacy structure incrementally. Use before creating a folder, feature, module or package, when asking \"where should this live\", when one feature needs code from another, or when asked about \"project structure\", \"layering\" or \"separation of concerns\".",
-      "version": "92592da18a6f",
+      "version": "f9ca421eb988",
       "files": [
         "SKILL.md"
       ],
@@ -15,7 +15,7 @@
     {
       "name": "code-quality",
       "description": "The always-on standard for writing or changing code in any language — small single-purpose units, flat control flow, typed and validated edges, deliberate duplication, why-comments, tests with the change, and a self-review before reporting done. Use for any code-writing task (feature, fix, refactor, script), when asked to \"write clean code\", \"make this maintainable\", \"improve this code\" or \"follow best practices\".",
-      "version": "9898c578e881",
+      "version": "228f0538e3b5",
       "files": [
         "SKILL.md",
         "reference/research-summary.md"

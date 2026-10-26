@@ -5,7 +5,7 @@ description: Applies software design idiomatically in TypeScript — functions a
 
 # TypeScript idioms
 
-How the `software-design` principles translate into TypeScript. For removing `any` and validating I/O,
+How the principles in `design-principles` translate into TypeScript. For removing `any` and validating I/O,
 use `type-safety`.
 
 ## Rules, in priority order

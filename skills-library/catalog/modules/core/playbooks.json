@@ -1,11 +1,11 @@
 {
   "id": "core/playbooks",
-  "version": "e15c17a23227",
+  "version": "954dcbcc8cc7",
   "skills": [
     {
       "name": "fix-import-boundary",
       "description": "Fixes a layer or feature-boundary violation from the boundary check (the gate's boundaries step, dependency-cruiser, eslint-plugin-boundaries) by moving code down, inverting the dependency, or using the public API. Use when the gate reports an \"upward\" or \"internals of\" import, a boundaries/element-types or no-restricted-paths error, or a circular dependency.",
-      "version": "276f7ad86a83",
+      "version": "3f60234360d1",
       "files": [
         "SKILL.md"
       ],

@@ -12,7 +12,7 @@
 8. Multi-step pipelines
 9. Types
 
-General design rules (single responsibility, ports, composition root) are in `software-design`.
+General design rules (single responsibility, ports, composition root) are in `dependency-injection` and `design-principles`.
 This file covers how they map onto an Amplify function.
 
 ## 1. Folder layout

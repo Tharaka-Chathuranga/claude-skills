@@ -1,11 +1,11 @@
 {
   "id": "frontend/react",
-  "version": "8c665d32b552",
+  "version": "4337fe0aacfb",
   "skills": [
     {
       "name": "react-component",
       "description": "Creates or extends a React component with a folder per component, an index.ts public surface, typed props, container/presentational split, and a colocated test and story; splits components that pass the line cap. Use when asked to \"add a component\", \"build a UI for\", \"extract this into a component\", \"this component is too big\", or when creating a .tsx file.",
-      "version": "f9a994eacf2a",
+      "version": "8a0c046231cf",
       "files": [
         "SKILL.md",
         "reference/patterns.md"

@@ -1,6 +1,6 @@
 {
   "id": "frontend/nextjs",
-  "version": "34815702ff5c",
+  "version": "0cc6a6cc32e0",
   "skills": [
     {
       "name": "nextjs-routing",
@@ -21,7 +21,7 @@
     {
       "name": "nextjs-server-action",
       "description": "Writes Next.js server actions with schema-validated input, auth and permission checks inside the action, a typed discriminated result, revalidatePath/revalidateTag, and data access delegated to a service module. Use when asked to \"add a server action\", \"handle this form submit on the server\", \"add a mutation\", or when creating a file with \"use server\".",
-      "version": "b7b4d5089119",
+      "version": "b4bf233b55b1",
       "files": [
         "SKILL.md"
       ],

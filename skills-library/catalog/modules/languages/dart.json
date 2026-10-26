@@ -1,11 +1,11 @@
 {
   "id": "languages/dart",
-  "version": "357b5cb736db",
+  "version": "af3125576072",
   "skills": [
     {
       "name": "dart-idioms",
       "description": "Applies software design idiomatically in Dart and Flutter — immutable models with final/const and copyWith, sealed classes with pattern matching, mixins, extension methods, null safety, async and streams, Effective Dart naming. Use when writing Dart or Flutter code, or asked \"how do I model this in Dart\", \"sealed class\", \"mixin or inheritance\", or \"OOP in Dart\".",
-      "version": "a63056895045",
+      "version": "61066478c55b",
       "files": [
         "SKILL.md"
       ],

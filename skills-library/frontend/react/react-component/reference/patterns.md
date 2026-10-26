@@ -10,7 +10,7 @@
 6. Context vs prop drilling
 7. Choosing quickly
 
-General design principles (SOLID, coupling, layering) live in the `software-design` skill. This file covers
+General design principles (SOLID, coupling, layering) live in `design-principles`; injecting services into components and hooks is in `dependency-injection`. This file covers
 only how they apply to React components.
 
 ## 1. Hooks composition

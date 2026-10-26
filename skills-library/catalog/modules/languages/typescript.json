@@ -1,6 +1,6 @@
 {
   "id": "languages/typescript",
-  "version": "368de346cf93",
+  "version": "49048f2d8dd4",
   "skills": [
     {
       "name": "type-safety",
@@ -15,7 +15,7 @@
     {
       "name": "typescript-idioms",
       "description": "Applies software design idiomatically in TypeScript — functions and interfaces first, classes only for services with injected dependencies, discriminated unions over hierarchies, readonly data, exhaustive switches, index.ts boundaries, union literals over enums. Use when asked \"class or function\", \"OOP in TypeScript\", \"should this be a class\", or \"how do I model this type\".",
-      "version": "409da3af7585",
+      "version": "2cabe8990ee2",
       "files": [
         "SKILL.md"
       ],

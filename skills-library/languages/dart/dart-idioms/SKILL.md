@@ -5,7 +5,7 @@ description: Applies software design idiomatically in Dart and Flutter — immut
 
 # Dart idioms
 
-How the `software-design` principles translate into Dart. Follow Effective Dart and the project's
+How the principles in `design-principles` translate into Dart. Follow Effective Dart and the project's
 `analysis_options.yaml`; don't fight the linter.
 
 ## Rules, in priority order

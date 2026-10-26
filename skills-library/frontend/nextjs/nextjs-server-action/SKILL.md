@@ -9,7 +9,7 @@ Doesn't apply when the app's mutations go through a client SDK to AppSync/GraphQ
 of Next.js server code; follow the project's data-access skill (e.g. `amplify-client-data`) there.
 
 A server action is a public HTTP endpoint. Treat every argument as untrusted, even if only your own form calls it.
-Validation types follow `type-safety`; data access layering follows `software-design`.
+Validation types follow `type-safety`; data access layering follows `dependency-injection`.
 
 ## Rules
 

@@ -6,7 +6,7 @@ description: Structure backend functions that call LLMs — one unit per model c
 # LLM functions
 
 Builds on `lambda-standards` (its "LLM calls" section: timeouts, retries, schema validation, logging,
-token attribution) and `software-design`. This skill is about how to **structure** AI code so it stays
+token attribution) and `dependency-injection`. This skill is about how to **structure** AI code so it stays
 testable and changeable.
 
 ## One unit per model call

@@ -5,19 +5,21 @@
       "id": "core/design",
       "layer": "core",
       "name": "Software design",
-      "description": "Design principles, patterns and anti-patterns for structuring code, with a reviewer agent that flags both under- and over-design.",
+      "description": "Dependency injection, OOP and design principles, and symptom-driven design patterns, with a reviewer agent that flags both under- and over-design.",
       "detect": {
         "always": true
       },
       "requires": [],
-      "version": "5ec77445aeae",
+      "version": "f8b0db870d06",
       "skills": [
-        "software-design"
+        "dependency-injection",
+        "design-patterns",
+        "design-principles"
       ],
       "agents": [
         "design-reviewer"
       ],
-      "listingTokens": 117
+      "listingTokens": 285
     },
     {
       "id": "core/playbooks",
@@ -28,7 +30,7 @@
         "always": true
       },
       "requires": [],
-      "version": "e15c17a23227",
+      "version": "954dcbcc8cc7",
       "skills": [
         "fix-import-boundary",
         "split-oversized-file"
@@ -45,7 +47,7 @@
         "always": true
       },
       "requires": [],
-      "version": "1fa2692bc090",
+      "version": "3a68dadfdc7c",
       "skills": [
         "architecture-boundaries",
         "code-quality",
@@ -95,7 +97,7 @@
         "core/quality",
         "core/design"
       ],
-      "version": "357b5cb736db",
+      "version": "af3125576072",
       "skills": [
         "dart-idioms"
       ],
@@ -116,7 +118,7 @@
         "core/quality",
         "core/design"
       ],
-      "version": "368de346cf93",
+      "version": "49048f2d8dd4",
       "skills": [
         "type-safety",
         "typescript-idioms"
@@ -198,7 +200,7 @@
       "requires": [
         "frontend/react"
       ],
-      "version": "34815702ff5c",
+      "version": "0cc6a6cc32e0",
       "skills": [
         "nextjs-routing",
         "nextjs-server-action"
@@ -220,7 +222,7 @@
         "core/quality",
         "core/design"
       ],
-      "version": "8c665d32b552",
+      "version": "4337fe0aacfb",
       "skills": [
         "react-component",
         "react-feature-structure",
@@ -248,7 +250,7 @@
         "backend/aws-lambda",
         "data/dynamodb"
       ],
-      "version": "8ce847b0e569",
+      "version": "fed43336bd92",
       "skills": [
         "amplify-backend-standards",
         "amplify-data-model",
@@ -257,7 +259,7 @@
         "appsync-js-resolver"
       ],
       "agents": [],
-      "listingTokens": 454
+      "listingTokens": 457
     },
     {
       "id": "backend/aws-lambda",
@@ -278,7 +280,7 @@
         "core/quality",
         "core/design"
       ],
-      "version": "3ec82a137935",
+      "version": "7310cf6ee808",
       "skills": [
         "lambda-standards",
         "llm-functions"
