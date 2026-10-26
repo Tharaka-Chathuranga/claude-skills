@@ -22,17 +22,25 @@ modules, so you choose one thing and get a consistent set.
 
 ## Using it
 
-Open the **Claude Skills** view in the activity bar.
+**Open a project. That's it.** The extension inspects it and installs only the skills that match:
 
-- **When you open a project**, it suggests the detected modules: "Detected Amplify Gen 2, Jest, React. Add 9 modules
-  (31 skills, ~2,900 tokens per session)?" Choose **Add**, or **Choose…** to pick.
-- **Find Module** (search icon) searches the whole library by technology.
-- **Apply Preset** (in the view's `...` menu) adds a curated set for a role, such as "Amplify backend developer".
-- **Remove a module** with the `−` button. Its skills are deleted unless another chosen module needs them.
-- **Exclude a skill** you don't want (right-click it). It stays excluded for the project.
-- **Install and Update** (cloud icon) brings the disk in line with the manifest and pulls library updates.
+- **Modules** by what the project uses: dependencies in every `package.json` (monorepo packages too), marker files
+  and npm scripts.
+- **Skills** by their own rules inside each module, e.g. `nextjs-server-action` only if the code contains
+  `'use server'`, `llm-functions` only with an LLM SDK, `amplify-lambda` only if `amplify/functions/` exists.
+  Skills that don't apply show as **not used in this project** and cost nothing.
 
-By default the sidebar shows only modules that are added, required or detected. Use **Show All Modules** to browse
+A notification shows what was set up, with **Review** and **Undo**. After that the skills **follow the project**:
+add or remove a dependency and the matching skills arrive or leave (shown in the status bar).
+
+Adjust in the **Claude Skills** view; every choice is saved as an override in `.claude/skills.json`:
+
+- **Turn Off** (⊘) a detected module the project doesn't want; it stays off.
+- **Exclude** a skill (right-click), or **include** a skipped one (`+`).
+- **Find Module** (search icon) or **Apply Preset** (`…` menu) for modules detection can't see.
+- **Remove All Installed Skills** (`…` menu) to start over.
+
+By default the sidebar shows only modules in use, required, detected or turned off. **Show All Modules** browses
 the whole library.
 
 ## Files it writes
@@ -41,7 +49,7 @@ With the default `workspace` scope, everything goes under the project's `.claude
 
 | File | Purpose | Commit it? |
 |---|---|---|
-| `.claude/skills.json` | Which libraries and modules this project uses, plus exclusions | Yes |
+| `.claude/skills.json` | Libraries, `autoDetect`, and your overrides (modules added or turned off, skills included or excluded) | Yes |
 | `.claude/claude-skills.lock.json` | What the extension installed, with versions | Yes |
 | `.claude/skills/<name>/` | Installed skills | Yes, so Claude works without the extension |
 | `.claude/agents/<name>.md` | Installed subagents | Yes |
@@ -57,7 +65,7 @@ When a teammate opens the repo, the extension offers to install anything in `ski
 |---|---|---|
 | `claudeSkills.sources` | the shared library | Libraries to use until a project has its own `skills.json` |
 | `claudeSkills.installScope` | `workspace` | `workspace` uses the project's `.claude/`; `user` uses `~/.claude/` for every project |
-| `claudeSkills.autoSuggest` | `true` | Offer detected modules and missing skills when a project opens |
+| `claudeSkills.setupMode` | `auto` | `auto` sets up projects and follows dependency changes; `ask` confirms first; `manual` only acts on your commands |
 | `claudeSkills.budgetWarningTokens` | `3000` | Warn when skill descriptions would add more than this to every session |
 | `claudeSkills.showAllModules` | `false` | List the whole library instead of only relevant modules |
 

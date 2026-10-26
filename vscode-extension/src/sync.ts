@@ -1,4 +1,5 @@
 import type { AgentEntry, ItemKind, SkillEntry, SourceCatalog } from './catalog';
+import type { Detect } from './detect';
 import { installItem, itemKey, removeItem, type Lock, type LockItem } from './installer';
 import type { ModuleSelection, ScopeLocation } from './manifest';
 
@@ -13,6 +14,8 @@ export interface DesiredItem {
 /** Differences between what the manifest asks for and what the lock says is installed. */
 export interface SyncPlan {
   desired: Map<string, DesiredItem>;
+  /** Items in chosen modules left out because their own detect rule doesn't match the project. */
+  skipped: Map<string, DesiredItem>;
   install: DesiredItem[];
   update: DesiredItem[];
   remove: LockItem[];
@@ -20,13 +23,27 @@ export interface SyncPlan {
   conflicts: DesiredItem[];
 }
 
-export const emptyPlan = (): SyncPlan => ({ desired: new Map(), install: [], update: [], remove: [], conflicts: [] });
+export const emptyPlan = (): SyncPlan => ({
+  desired: new Map(),
+  skipped: new Map(),
+  install: [],
+  update: [],
+  remove: [],
+  conflicts: [],
+});
 
 export const planHasChanges = (plan: SyncPlan) => plan.install.length + plan.update.length + plan.remove.length > 0;
 
+export interface PlanFilters {
+  exclude: Set<string>;
+  include: Set<string>;
+  /** Whether a skill's own detect rule matches the project. */
+  matches: (detect: Detect) => Promise<boolean>;
+}
+
 export async function computePlan(
   selections: Map<SourceCatalog, Map<string, ModuleSelection>>,
-  exclude: Set<string>,
+  filters: PlanFilters,
   lock: Lock,
   local: Set<string>,
 ): Promise<SyncPlan> {
@@ -42,8 +59,15 @@ export async function computePlan(
       for (const [kind, entry] of entries) {
         const key = itemKey(kind, entry.name);
         // The first library listed wins when two libraries ship the same name.
-        if (exclude.has(entry.name) || plan.desired.has(key)) continue;
-        plan.desired.set(key, { key, kind, catalog, moduleId: detail.id, entry });
+        if (filters.exclude.has(entry.name) || plan.desired.has(key)) continue;
+        const item = { key, kind, catalog, moduleId: detail.id, entry };
+        const detect = (entry as SkillEntry).detect;
+        if (detect && !filters.include.has(entry.name) && !(await filters.matches(detect))) {
+          plan.skipped.set(key, item);
+          continue;
+        }
+        plan.skipped.delete(key);
+        plan.desired.set(key, item);
       }
     }
   }

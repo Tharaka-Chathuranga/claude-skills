@@ -1,18 +1,15 @@
 import * as vscode from 'vscode';
 import type { SkillSource } from './config';
+import { isSafeRelativePath, type Detect } from './detect';
 
-export interface ModuleDetect {
-  always?: boolean;
-  dependencies?: string[];
-  files?: string[];
-}
+export { isSafeRelativePath };
 
 export interface ModuleSummary {
   id: string;
   layer: string;
   name: string;
   description: string;
-  detect?: ModuleDetect;
+  detect?: Detect;
   requires: string[];
   version: string;
   skills: string[];
@@ -35,6 +32,8 @@ export interface SkillEntry {
   files: string[];
   manualOnly: boolean;
   listingTokens: number;
+  /** Install only when the project matches; absent means always, within a chosen module. */
+  detect?: Detect;
 }
 
 export interface AgentEntry {
@@ -55,12 +54,6 @@ export type ItemKind = 'skill' | 'agent';
 
 const ITEM_NAME = /^[a-z0-9][a-z0-9-]*$/;
 const MODULE_ID = /^[a-z]+\/[a-z0-9][a-z0-9-]*$/;
-
-/** Rejects absolute paths and `..` segments so a catalog can never write outside its target folder. */
-export function isSafeRelativePath(relPath: string): boolean {
-  if (!relPath || relPath.startsWith('/') || relPath.includes('\\')) return false;
-  return relPath.split('/').every((segment) => segment !== '' && segment !== '.' && segment !== '..');
-}
 
 async function requestHeaders(source: SkillSource): Promise<Record<string, string>> {
   if (source.auth !== 'github') return {};

@@ -2,12 +2,15 @@
   "name": "claude-skills",
   "displayName": "Claude Skills",
   "description": "Pick Claude Code skill modules for your tech stack from shared libraries, with dependencies, presets and a token budget.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "tharaka-chathuranga",
   "license": "MIT",
   "icon": "media/icon.png",
   "preview": true,
-  "galleryBanner": { "color": "#B4532F", "theme": "dark" },
+  "galleryBanner": {
+    "color": "#B4532F",
+    "theme": "dark"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Tharaka-Chathuranga/claude-skills",
@@ -117,7 +120,7 @@
       },
       {
         "command": "claudeSkills.includeItem",
-        "title": "Include Again",
+        "title": "Include in This Project",
         "category": "Claude Skills",
         "icon": "$(add)"
       },
@@ -126,6 +129,30 @@
         "title": "Open",
         "category": "Claude Skills",
         "icon": "$(go-to-file)"
+      },
+      {
+        "command": "claudeSkills.setUpProject",
+        "title": "Set Up This Project Automatically",
+        "category": "Claude Skills",
+        "icon": "$(wand)"
+      },
+      {
+        "command": "claudeSkills.turnOffModule",
+        "title": "Turn Off for This Project",
+        "category": "Claude Skills",
+        "icon": "$(circle-slash)"
+      },
+      {
+        "command": "claudeSkills.turnOnModule",
+        "title": "Turn Back On",
+        "category": "Claude Skills",
+        "icon": "$(pass)"
+      },
+      {
+        "command": "claudeSkills.removeAll",
+        "title": "Remove All Installed Skills",
+        "category": "Claude Skills",
+        "icon": "$(trash)"
       }
     ],
     "menus": {
@@ -169,6 +196,16 @@
           "command": "claudeSkills.openManifest",
           "when": "view == claudeSkills.library",
           "group": "2_files@1"
+        },
+        {
+          "command": "claudeSkills.setUpProject",
+          "when": "view == claudeSkills.library",
+          "group": "0_setup@1"
+        },
+        {
+          "command": "claudeSkills.removeAll",
+          "when": "view == claudeSkills.library",
+          "group": "2_files@2"
         }
       ],
       "view/item/context": [
@@ -183,13 +220,23 @@
           "group": "inline"
         },
         {
+          "command": "claudeSkills.turnOffModule",
+          "when": "view == claudeSkills.library && viewItem =~ /^module\\.(auto|required)$/",
+          "group": "inline"
+        },
+        {
+          "command": "claudeSkills.turnOnModule",
+          "when": "view == claudeSkills.library && viewItem == module.off",
+          "group": "inline"
+        },
+        {
           "command": "claudeSkills.openItem",
           "when": "view == claudeSkills.library && viewItem =~ /^item\\.(installed|outdated|local)$/",
           "group": "inline"
         },
         {
           "command": "claudeSkills.includeItem",
-          "when": "view == claudeSkills.library && viewItem == item.excluded",
+          "when": "view == claudeSkills.library && viewItem =~ /^item\\.(excluded|skipped)$/",
           "group": "inline"
         },
         {
@@ -204,6 +251,14 @@
         },
         {
           "command": "claudeSkills.removeModule",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.turnOffModule",
+          "when": "false"
+        },
+        {
+          "command": "claudeSkills.turnOnModule",
           "when": "false"
         },
         {
@@ -269,11 +324,6 @@
           "default": "workspace",
           "description": "Where skills are installed."
         },
-        "claudeSkills.autoSuggest": {
-          "type": "boolean",
-          "default": true,
-          "description": "Offer detected modules, and missing or updated skills, when you open a project."
-        },
         "claudeSkills.budgetWarningTokens": {
           "type": "number",
           "default": 3000,
@@ -284,6 +334,21 @@
           "type": "boolean",
           "default": false,
           "description": "List every module in the library, not just the ones added to or detected in this project."
+        },
+        "claudeSkills.setupMode": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "ask",
+            "manual"
+          ],
+          "default": "auto",
+          "enumDescriptions": [
+            "Set up projects and keep their skills in sync with the stack automatically (shows what changed, with Undo).",
+            "Ask before setting up a project or applying changes.",
+            "Only change skills when you use the sidebar or commands."
+          ],
+          "description": "How Claude Skills sets up projects and follows dependency changes."
         }
       }
     }

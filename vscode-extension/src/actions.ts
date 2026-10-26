@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import type { SourceCatalog } from './catalog';
-import { getInstallScope } from './config';
+import { getInstallScope, getSetupMode } from './config';
 import type { Library } from './library';
 import { planHasChanges } from './sync';
 
@@ -44,13 +44,21 @@ export async function syncNow(library: Library, { quiet = false } = {}): Promise
 
 export async function addModules(library: Library, catalog: SourceCatalog, ids: string[]): Promise<void> {
   if (ids.length === 0) return;
-  await library.editManifest((manifest) => {
-    const { id, url, auth } = catalog.source;
-    manifest.sources[id] ??= { url, auth };
-    const chosen = (manifest.modules[id] ??= []);
-    for (const moduleId of ids) if (!chosen.includes(moduleId)) chosen.push(moduleId);
-    chosen.sort();
-  });
+  await library.editManifest(
+    (manifest) => {
+      const { id, url, auth } = catalog.source;
+      manifest.sources[id] ??= { url, auth };
+      manifest.excludeModules[id] = (manifest.excludeModules[id] ?? []).filter((moduleId) => !ids.includes(moduleId));
+      // In auto mode a detected module needs no entry; only list what detection wouldn't pick.
+      const chosen = (manifest.modules[id] ??= []);
+      for (const moduleId of ids) {
+        const followsDetection = manifest.autoDetect && library.isDetected(catalog, moduleId);
+        if (!followsDetection && !chosen.includes(moduleId)) chosen.push(moduleId);
+      }
+      chosen.sort();
+    },
+    { autoDetect: getSetupMode() === 'auto' },
+  );
   await syncNow(library);
 }
 

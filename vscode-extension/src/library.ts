@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { loadCatalogs, type AgentEntry, type ItemKind, type SkillEntry, type SourceCatalog } from './catalog';
 import { getInstallScope, getSettingsSources, type SkillSource } from './config';
-import { createProjectMatcher } from './detect';
+import { ProjectInspector } from './detect';
 import { emptyLock, itemKey, listLocalItems, readLock, writeLock, type Lock } from './installer';
 import {
   manifestSources,
@@ -16,8 +16,8 @@ import {
 } from './manifest';
 import { applyPlan, computePlan, emptyPlan, type SyncPlan } from './sync';
 
-export type ModuleState = 'added' | 'required' | 'detected' | 'available';
-export type ItemState = 'installed' | 'outdated' | 'pending' | 'local' | 'excluded' | 'available';
+export type ModuleState = 'added' | 'auto' | 'required' | 'off' | 'detected' | 'available';
+export type ItemState = 'installed' | 'outdated' | 'pending' | 'skipped' | 'local' | 'excluded' | 'available';
 
 /** Everything the UI shows: libraries, the manifest, what's installed, and what would change on sync. */
 export class Library implements vscode.Disposable {
@@ -29,8 +29,11 @@ export class Library implements vscode.Disposable {
   local = new Set<string>();
   selections = new Map<SourceCatalog, Map<string, ModuleSelection>>();
   plan: SyncPlan = emptyPlan();
+  /** When this extension last wrote .claude files, so file watchers can ignore its own changes. */
+  lastOwnWrite = 0;
 
   private loadProblems: string[] = [];
+  private inspector: ProjectInspector | undefined;
   private detected = new Map<SourceCatalog, Set<string>>();
   private readonly changed = new vscode.EventEmitter<void>();
   readonly onDidChange = this.changed.event;
@@ -41,8 +44,12 @@ export class Library implements vscode.Disposable {
     return fromManifest.length ? fromManifest : getSettingsSources();
   }
 
+  private get projectFolder(): vscode.Uri | undefined {
+    return vscode.workspace.workspaceFolders?.[0]?.uri;
+  }
+
   async reload(): Promise<void> {
-    this.location = scopeLocation(getInstallScope(), vscode.workspace.workspaceFolders?.[0]?.uri);
+    this.location = scopeLocation(getInstallScope(), this.projectFolder);
     this.loadProblems = [];
     try {
       this.manifest = this.location && (await readManifest(this.location));
@@ -56,6 +63,7 @@ export class Library implements vscode.Disposable {
     await this.refresh();
   }
 
+  /** Re-reads the project (dependencies, files, code) and recomputes what should be installed. */
   async refresh(): Promise<void> {
     const problems = [...this.loadProblems];
     const location = this.location;
@@ -69,14 +77,32 @@ export class Library implements vscode.Disposable {
     await this.detectModules();
 
     this.selections = new Map();
-    for (const [sourceId, chosen] of Object.entries(this.manifest?.modules ?? {})) {
-      const catalog = this.catalogFor(sourceId);
-      if (catalog) this.selections.set(catalog, resolveSelection(catalog, chosen, problems));
-      else if (chosen.length) problems.push(`skills.json lists modules for unknown library "${sourceId}"`);
+    for (const catalog of this.catalogs) {
+      const sourceId = catalog.source.id;
+      const direct = this.manifest?.modules[sourceId] ?? [];
+      const detected = this.manifest?.autoDetect ? [...(this.detected.get(catalog) ?? [])] : [];
+      const excluded = new Set(this.manifest?.excludeModules[sourceId] ?? []);
+      if (direct.length || detected.length) {
+        this.selections.set(catalog, resolveSelection(catalog, { direct, detected, excluded }, problems));
+      }
+    }
+    for (const sourceId of Object.keys(this.manifest?.modules ?? {})) {
+      if (!this.catalogFor(sourceId) && this.manifest?.modules[sourceId].length) {
+        problems.push(`skills.json lists modules for unknown library "${sourceId}"`);
+      }
     }
 
     try {
-      this.plan = await computePlan(this.selections, new Set(this.manifest?.exclude ?? []), this.lock, this.local);
+      this.plan = await computePlan(
+        this.selections,
+        {
+          exclude: new Set(this.manifest?.exclude ?? []),
+          include: new Set(this.manifest?.include ?? []),
+          matches: (detect) => this.inspector?.matches(detect) ?? Promise.resolve(false),
+        },
+        this.lock,
+        this.local,
+      );
     } catch (err) {
       this.plan = emptyPlan();
       problems.push(`Could not read module details: ${err instanceof Error ? err.message : String(err)}`);
@@ -90,13 +116,13 @@ export class Library implements vscode.Disposable {
 
   private async detectModules(): Promise<void> {
     this.detected = new Map();
-    const folder = vscode.workspace.workspaceFolders?.[0]?.uri;
-    if (!folder) return;
-    const matches = await createProjectMatcher(folder);
+    const folder = this.projectFolder;
+    this.inspector = folder ? await ProjectInspector.create(folder.fsPath) : undefined;
+    if (!this.inspector) return;
     for (const catalog of this.catalogs) {
       const ids = new Set<string>();
       for (const module of catalog.modules.values()) {
-        if (await matches(module.detect)) ids.add(module.id);
+        if (await this.inspector.matches(module.detect)) ids.add(module.id);
       }
       this.detected.set(catalog, ids);
     }
@@ -106,18 +132,31 @@ export class Library implements vscode.Disposable {
     return this.catalogs.find((catalog) => catalog.source.id === sourceId);
   }
 
+  isDetected(catalog: SourceCatalog, id: string): boolean {
+    return this.detected.get(catalog)?.has(id) ?? false;
+  }
+
+  /** True when detection found something beyond the always-on core, i.e. this looks like a real project. */
+  hasDetectedStack(): boolean {
+    return this.catalogs.some((catalog) =>
+      [...(this.detected.get(catalog) ?? [])].some((id) => !catalog.modules.get(id)?.detect?.always),
+    );
+  }
+
   moduleState(catalog: SourceCatalog, id: string): ModuleState {
+    if (this.manifest?.excludeModules[catalog.source.id]?.includes(id)) return 'off';
     const selection = this.selections.get(catalog)?.get(id);
     if (selection?.direct) return 'added';
+    if (selection?.detected) return 'auto';
     if (selection) return 'required';
-    return this.detected.get(catalog)?.has(id) ? 'detected' : 'available';
+    return this.isDetected(catalog, id) ? 'detected' : 'available';
   }
 
   requiredBy(catalog: SourceCatalog, id: string): string[] {
     return [...(this.selections.get(catalog)?.get(id)?.requiredBy ?? [])];
   }
 
-  /** Detected modules that aren't in the manifest yet, with their dependencies resolved. */
+  /** Detected modules not in use yet (manual mode, or turned on after the manifest was written). */
   suggestedModules(catalog: SourceCatalog): string[] {
     return [...(this.detected.get(catalog) ?? [])].filter((id) => this.moduleState(catalog, id) === 'detected');
   }
@@ -133,7 +172,8 @@ export class Library implements vscode.Disposable {
     if (installed?.source === catalog.source.id) {
       return ours && installed.version !== entry.version ? 'outdated' : 'installed';
     }
-    return ours ? 'pending' : 'available';
+    if (ours) return 'pending';
+    return this.plan.skipped.get(key)?.catalog === catalog ? 'skipped' : 'available';
   }
 
   /** Estimated tokens the chosen skills' descriptions add to every Claude session. */
@@ -152,20 +192,25 @@ export class Library implements vscode.Disposable {
     return { skills, agents, tokens };
   }
 
-  /** Index-only estimate for modules not chosen yet, including what they require. */
-  estimate(catalog: SourceCatalog, ids: string[]): { modules: number; skills: number; tokens: number } {
+  /** What adding these modules would install in this project, after per-skill detection. */
+  async preview(catalog: SourceCatalog, ids: string[]): Promise<{ modules: number; skills: number; tokens: number }> {
     const already = this.selections.get(catalog) ?? new Map();
-    const resolved = resolveSelection(catalog, ids, []);
+    const excluded = new Set(this.manifest?.excludeModules[catalog.source.id] ?? []);
+    const resolved = resolveSelection(catalog, { direct: ids, detected: [], excluded }, []);
+    const exclude = new Set(this.manifest?.exclude ?? []);
+    const include = new Set(this.manifest?.include ?? []);
+    let modules = 0;
     let skills = 0;
     let tokens = 0;
-    let modules = 0;
     for (const id of resolved.keys()) {
       if (already.has(id)) continue;
-      const module = catalog.modules.get(id);
-      if (!module) continue;
       modules++;
-      skills += module.skills.length;
-      tokens += module.listingTokens;
+      for (const skill of (await catalog.detail(id)).skills) {
+        if (exclude.has(skill.name) || this.plan.desired.has(itemKey('skill', skill.name))) continue;
+        if (skill.detect && !include.has(skill.name) && !(await this.inspector?.matches(skill.detect))) continue;
+        skills++;
+        tokens += skill.listingTokens;
+      }
     }
     return { modules, skills, tokens };
   }
@@ -178,10 +223,11 @@ export class Library implements vscode.Disposable {
   }
 
   /** Changes the manifest (creating it from the current libraries if needed) and recomputes the plan. */
-  async editManifest(change: (manifest: Manifest) => void): Promise<void> {
+  async editManifest(change: (manifest: Manifest) => void, { autoDetect = false } = {}): Promise<void> {
     const location = this.requireLocation();
-    const manifest = this.manifest ?? newManifest(this.sources);
+    const manifest = this.manifest ?? newManifest(this.sources, autoDetect);
     change(manifest);
+    this.lastOwnWrite = Date.now();
     await writeManifest(location, manifest);
     this.manifest = manifest;
     await this.refresh();
@@ -190,6 +236,7 @@ export class Library implements vscode.Disposable {
   async sync(report: (message: string, increment: number) => void): Promise<{ changed: number; failures: string[] }> {
     const location = this.requireLocation();
     const changed = this.plan.install.length + this.plan.update.length + this.plan.remove.length;
+    this.lastOwnWrite = Date.now();
     try {
       const result = await applyPlan(location, this.plan, this.lock, report);
       await writeLock(location, result.lock);
@@ -197,6 +244,19 @@ export class Library implements vscode.Disposable {
     } finally {
       await this.refresh();
     }
+  }
+
+  /** Removes everything this extension installed, plus the manifest and lock file. */
+  async teardown(): Promise<void> {
+    const location = this.requireLocation();
+    this.lastOwnWrite = Date.now();
+    this.plan = { ...emptyPlan(), remove: Object.values(this.lock.items) };
+    await applyPlan(location, this.plan, this.lock, () => undefined);
+    for (const file of [location.manifestFile, location.lockFile]) {
+      await vscode.workspace.fs.delete(file).then(undefined, () => undefined);
+    }
+    this.manifest = undefined;
+    await this.reload();
   }
 
   dispose(): void {

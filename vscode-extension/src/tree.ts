@@ -25,7 +25,9 @@ const LAYER_ICON: Record<string, string> = {
 
 const MODULE_ICON: Record<ModuleState, string> = {
   added: 'pass-filled',
+  auto: 'pass-filled',
   required: 'link',
+  off: 'circle-slash',
   detected: 'lightbulb',
   available: 'package',
 };
@@ -34,6 +36,7 @@ const ITEM_DESCRIPTION: Record<ItemState, string> = {
   installed: 'installed',
   outdated: 'update available',
   pending: 'not installed yet',
+  skipped: 'not used in this project',
   local: 'hand-made copy, not managed',
   excluded: 'excluded',
   available: '',
@@ -43,6 +46,7 @@ const ITEM_ICON: Record<ItemState, string> = {
   installed: 'check',
   outdated: 'arrow-circle-up',
   pending: 'cloud-download',
+  skipped: 'dash',
   local: 'file',
   excluded: 'circle-slash',
   available: 'circle-outline',
@@ -159,8 +163,10 @@ export class LibraryTree implements vscode.TreeDataProvider<LibraryNode>, vscode
 
   private moduleDescription(catalog: SourceCatalog, module: ModuleSummary, state: ModuleState): string {
     if (state === 'added') return 'added';
+    if (state === 'auto') return 'detected · in use';
+    if (state === 'off') return 'turned off';
     if (state === 'required') return `required by ${this.library.requiredBy(catalog, module.id).join(', ')}`;
-    if (state === 'detected') return 'detected in this project';
+    if (state === 'detected') return 'detected · not added';
     return `${module.skills.length} skills`;
   }
 
@@ -189,7 +195,7 @@ export class LibraryTree implements vscode.TreeDataProvider<LibraryNode>, vscode
     if (hidden) {
       nodes.push({
         kind: 'message',
-        text: 'Nothing detected yet. Use "Find Module", "Apply Preset" or "Show All Modules".',
+        text: 'Nothing detected yet. Use "Set Up This Project", "Find Module" or "Show All Modules".',
         icon: 'search',
       });
     }

@@ -3,19 +3,14 @@ import { addModules, guarded, pickModules, syncNow } from './actions';
 import { setShowAllModules } from './config';
 import { entryFileUri } from './installer';
 import type { Library } from './library';
-import { suggestModules } from './suggest';
+import { setUpProject, suggestModules } from './suggest';
 import type { LibraryNode } from './tree';
 
 async function removeModule(library: Library, node: LibraryNode | undefined): Promise<void> {
   if (node?.kind !== 'module') return;
   const { catalog, module } = node;
   if (library.moduleState(catalog, module.id) !== 'added') {
-    const requiredBy = library.requiredBy(catalog, module.id);
-    vscode.window.showInformationMessage(
-      requiredBy.length
-        ? `${module.name} is required by ${requiredBy.join(', ')}. Remove those first.`
-        : `${module.name} isn't added to this project.`,
-    );
+    await setModuleOff(library, node, true);
     return;
   }
 
@@ -31,13 +26,42 @@ async function removeModule(library: Library, node: LibraryNode | undefined): Pr
   await syncNow(library);
 }
 
+/** Turns a module off for the project (or back on): it stays off even when detected or required. */
+async function setModuleOff(library: Library, node: LibraryNode | undefined, off: boolean): Promise<void> {
+  if (node?.kind !== 'module') return;
+  const { catalog, module } = node;
+  const sourceId = catalog.source.id;
+  if (off) {
+    const requiredBy = library.requiredBy(catalog, module.id);
+    const warning = requiredBy.length ? ` ${requiredBy.join(', ')} require it, so some of their guidance may refer to it.` : '';
+    const choice = await vscode.window.showWarningMessage(
+      `Turn off ${module.name} for this project? Its skills are removed.${warning}`,
+      { modal: true },
+      'Turn Off',
+    );
+    if (choice !== 'Turn Off') return;
+  }
+  await library.editManifest((manifest) => {
+    const list = (manifest.excludeModules[sourceId] ?? []).filter((id) => id !== module.id);
+    if (off) list.push(module.id);
+    manifest.excludeModules[sourceId] = list.sort();
+    if (off) manifest.modules[sourceId] = (manifest.modules[sourceId] ?? []).filter((id) => id !== module.id);
+  });
+  await syncNow(library, { quiet: true });
+}
+
+/** Excludes an item, or brings back an excluded one / installs a skipped one anyway. */
 async function setExcluded(library: Library, node: LibraryNode | undefined, excluded: boolean): Promise<void> {
   if (node?.kind !== 'item') return;
   const name = node.entry.name;
+  const skipped = library.itemState(node.catalog, node.itemKind, node.entry) === 'skipped';
   await library.editManifest((manifest) => {
     manifest.exclude = manifest.exclude.filter((existing) => existing !== name);
+    manifest.include = manifest.include.filter((existing) => existing !== name);
     if (excluded) manifest.exclude.push(name);
+    else if (skipped) manifest.include.push(name);
     manifest.exclude.sort();
+    manifest.include.sort();
   });
   await syncNow(library, { quiet: true });
 }
@@ -63,16 +87,13 @@ async function findModule(library: Library): Promise<void> {
 
 async function applyPreset(library: Library): Promise<void> {
   const picks = library.catalogs.flatMap((catalog) =>
-    catalog.presets.map((preset) => {
-      const estimate = library.estimate(catalog, preset.modules);
-      return {
-        label: preset.name,
-        description: `${estimate.modules} new modules · ${estimate.skills} skills · ~${estimate.tokens} tokens`,
-        detail: preset.description,
-        catalog,
-        preset,
-      };
-    }),
+    catalog.presets.map((preset) => ({
+      label: preset.name,
+      description: `${preset.modules.length} modules`,
+      detail: preset.description,
+      catalog,
+      preset,
+    })),
   );
   if (picks.length === 0) {
     vscode.window.showInformationMessage('None of your libraries define presets.');
@@ -100,6 +121,17 @@ export function registerCommands(context: vscode.ExtensionContext, library: Libr
     if (node?.kind === 'module') return addModules(library, node.catalog, [node.module.id]);
   });
   register('claudeSkills.removeModule', (node?: LibraryNode) => removeModule(library, node));
+  register('claudeSkills.turnOffModule', (node?: LibraryNode) => setModuleOff(library, node, true));
+  register('claudeSkills.turnOnModule', (node?: LibraryNode) => setModuleOff(library, node, false));
+  register('claudeSkills.setUpProject', () => setUpProject(context, library));
+  register('claudeSkills.removeAll', async () => {
+    const choice = await vscode.window.showWarningMessage(
+      'Remove every skill and agent Claude Skills installed in this project, plus skills.json and the lock file? Hand-made skills are kept.',
+      { modal: true },
+      'Remove All',
+    );
+    if (choice === 'Remove All') await library.teardown();
+  });
   register('claudeSkills.excludeItem', (node?: LibraryNode) => setExcluded(library, node, true));
   register('claudeSkills.includeItem', (node?: LibraryNode) => setExcluded(library, node, false));
 

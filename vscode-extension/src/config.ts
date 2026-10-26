@@ -37,8 +37,11 @@ export function getInstallScope(): InstallScope {
   return settings().get<InstallScope>('installScope', 'workspace');
 }
 
-export function getAutoSuggest(): boolean {
-  return settings().get<boolean>('autoSuggest', true);
+/** auto: set up and keep skills in sync without asking; ask: confirm first; manual: only on request. */
+export type SetupMode = 'auto' | 'ask' | 'manual';
+
+export function getSetupMode(): SetupMode {
+  return settings().get<SetupMode>('setupMode', 'auto');
 }
 
 export function getBudgetWarningTokens(): number {

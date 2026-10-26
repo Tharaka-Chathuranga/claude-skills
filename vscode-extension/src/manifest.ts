@@ -12,7 +12,17 @@ export interface ManifestSource {
 /** `.claude/skills.json`: the modules a project (or user) chose, committed so teammates get the same set. */
 export interface Manifest {
   sources: Record<string, ManifestSource>;
+  /**
+   * Follow the project: every module whose detect rule matches is used, and inside modules only the
+   * skills whose own rule matches. The lists below are overrides on top of that.
+   */
+  autoDetect: boolean;
+  /** Modules to use even when they aren't detected, per library. */
   modules: Record<string, string[]>;
+  /** Modules to leave out even when detected or required, per library. */
+  excludeModules: Record<string, string[]>;
+  /** Skill or agent names to install even when their own detect rule doesn't match. */
+  include: string[];
   /** Skill or agent names to leave out even though a chosen module contains them. */
   exclude: string[];
 }
@@ -26,8 +36,10 @@ export interface ScopeLocation {
 }
 
 export interface ModuleSelection {
-  /** Chosen in the manifest, rather than only pulled in by another module. */
+  /** Listed in the manifest's `modules`. */
   direct: boolean;
+  /** Chosen because it was detected in the project (auto mode). */
+  detected: boolean;
   requiredBy: Set<string>;
 }
 
@@ -75,21 +87,42 @@ export async function readManifest(location: ScopeLocation): Promise<Manifest | 
       sources[id] = { url: normalizeUrl(source.url), auth: source.auth === 'github' ? 'github' : undefined };
     }
   }
-  const modules: Record<string, string[]> = {};
-  for (const [id, list] of Object.entries(raw.modules ?? {})) {
-    if (Array.isArray(list)) modules[id] = list.filter((item): item is string => typeof item === 'string');
-  }
-  const exclude = Array.isArray(raw.exclude) ? raw.exclude.filter((name) => typeof name === 'string') : [];
-  return { sources, modules, exclude };
+  return {
+    sources,
+    autoDetect: raw.autoDetect === true,
+    modules: readModuleLists(raw.modules),
+    excludeModules: readModuleLists(raw.excludeModules),
+    include: readNames(raw.include),
+    exclude: readNames(raw.exclude),
+  };
 }
+
+function readModuleLists(raw: unknown): Record<string, string[]> {
+  const lists: Record<string, string[]> = {};
+  for (const [id, list] of Object.entries((raw as Record<string, unknown>) ?? {})) {
+    if (Array.isArray(list)) lists[id] = list.filter((item): item is string => typeof item === 'string');
+  }
+  return lists;
+}
+
+const readNames = (raw: unknown): string[] =>
+  Array.isArray(raw) ? raw.filter((name): name is string => typeof name === 'string') : [];
+
+const nonEmpty = (lists: Record<string, string[]>) =>
+  Object.fromEntries(Object.entries(lists).filter(([, list]) => list.length > 0));
 
 export function writeManifest(location: ScopeLocation, manifest: Manifest): Promise<void> {
   const sources = Object.fromEntries(
     Object.entries(manifest.sources).map(([id, source]) => [id, source.auth ? source : { url: source.url }]),
   );
+  const modules = nonEmpty(manifest.modules);
+  const excludeModules = nonEmpty(manifest.excludeModules);
   return writeJson(location.manifestFile, {
     sources,
-    modules: manifest.modules,
+    ...(manifest.autoDetect ? { autoDetect: true } : {}),
+    ...(Object.keys(modules).length ? { modules } : {}),
+    ...(Object.keys(excludeModules).length ? { excludeModules } : {}),
+    ...(manifest.include.length ? { include: manifest.include } : {}),
     ...(manifest.exclude.length ? { exclude: manifest.exclude } : {}),
   });
 }
@@ -98,36 +131,51 @@ export function manifestSources(manifest: Manifest): SkillSource[] {
   return Object.entries(manifest.sources).map(([id, source]) => ({ id, name: id, ...source }));
 }
 
-export function newManifest(sources: SkillSource[]): Manifest {
+export function newManifest(sources: SkillSource[], autoDetect: boolean): Manifest {
   return {
     sources: Object.fromEntries(sources.map((source) => [source.id, { url: source.url, auth: source.auth }])),
+    autoDetect,
     modules: {},
+    excludeModules: {},
+    include: [],
     exclude: [],
   };
+}
+
+export interface SelectionInput {
+  /** Listed in the manifest. */
+  direct: string[];
+  /** Detected in the project (only used in auto mode). */
+  detected: string[];
+  /** Turned off; never selected, even when required. */
+  excluded: Set<string>;
 }
 
 /** Chosen modules plus everything they require, transitively, within one library. */
 export function resolveSelection(
   catalog: SourceCatalog,
-  chosen: string[],
+  input: SelectionInput,
   problems: string[],
 ): Map<string, ModuleSelection> {
   const selection = new Map<string, ModuleSelection>();
-  const visit = (id: string, requiredBy?: string) => {
+  const visit = (id: string, reason: 'direct' | 'detected' | { requiredBy: string }) => {
+    if (input.excluded.has(id)) return;
     const module = catalog.modules.get(id);
     if (!module) {
-      problems.push(`${catalog.source.name}: unknown module "${id}"${requiredBy ? ` (required by ${requiredBy})` : ''}`);
+      const via = typeof reason === 'object' ? ` (required by ${reason.requiredBy})` : '';
+      problems.push(`${catalog.source.name}: unknown module "${id}"${via}`);
       return;
     }
-    const existing = selection.get(id);
-    if (existing) {
-      if (requiredBy) existing.requiredBy.add(requiredBy);
-      else existing.direct = true;
-      return;
-    }
-    selection.set(id, { direct: !requiredBy, requiredBy: new Set(requiredBy ? [requiredBy] : []) });
-    for (const required of module.requires) visit(required, id);
+    let entry = selection.get(id);
+    const isNew = !entry;
+    entry ??= { direct: false, detected: false, requiredBy: new Set() };
+    if (reason === 'direct') entry.direct = true;
+    else if (reason === 'detected') entry.detected = true;
+    else entry.requiredBy.add(reason.requiredBy);
+    selection.set(id, entry);
+    if (isNew) for (const required of module.requires) visit(required, { requiredBy: id });
   };
-  for (const id of chosen) visit(id);
+  input.direct.forEach((id) => visit(id, 'direct'));
+  input.detected.forEach((id) => visit(id, 'detected'));
   return selection;
 }
