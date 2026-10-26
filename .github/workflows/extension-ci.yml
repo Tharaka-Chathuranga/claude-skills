@@ -1,0 +1,31 @@
+name: Build extension
+
+on:
+  push:
+    branches: [main]
+    paths: ['vscode-extension/**', '.github/workflows/extension-ci.yml']
+  pull_request:
+    paths: ['vscode-extension/**', '.github/workflows/extension-ci.yml']
+
+defaults:
+  run:
+    working-directory: vscode-extension
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: vscode-extension/package-lock.json
+      - run: npm ci
+      # Packaging compiles and checks the manifest, so this catches what would break a release.
+      - run: npx vsce package --out claude-skills.vsix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: claude-skills-vsix
+          path: vscode-extension/claude-skills.vsix
+          retention-days: 14
