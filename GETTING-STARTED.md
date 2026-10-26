@@ -67,6 +67,10 @@ the skills that match it.
   only if an LLM SDK is a dependency, `amplify-lambda` only if `amplify/functions/` exists,
   `react-forms` only if the code uses react-hook-form or Formik.
 
+Skills are also **placed by folder**: Amplify skills go into `amplify/.claude/skills/` and frontend
+skills into `src/.claude/skills/`. Claude Code loads those only when it reads or edits a file in that
+folder, so a frontend task never pays for backend skills. Core skills stay in `.claude/skills/`.
+
 A notification shows what was set up, with **Review** and **Undo**:
 
 > Claude Skills set up 33 skills for Next.js, Amplify Gen 2, MUI, next-intl, Jest, Storybook
@@ -146,7 +150,7 @@ managed** and a warning. Decide per skill:
 ### 3.6 Commit
 
 ```bash
-git add .claude/skills.json .claude/claude-skills.lock.json .claude/skills .claude/agents
+git add .claude/ amplify/.claude/ src/.claude/
 git commit -m "chore(claude): add shared Claude skills"
 ```
 
