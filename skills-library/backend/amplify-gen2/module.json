@@ -17,13 +17,6 @@
     "amplify"
   ],
   "skills": {
-    "amplify-lambda": {
-      "detect": {
-        "anyFiles": [
-          "amplify/functions"
-        ]
-      }
-    },
     "amplify-data-model": {
       "detect": {
         "anyFiles": [

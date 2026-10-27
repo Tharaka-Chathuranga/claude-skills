@@ -241,7 +241,7 @@
       "placement": [
         "amplify"
       ],
-      "version": "60dd93fc6f87",
+      "version": "12e2643580ad",
       "skills": [
         "amplify-backend-standards",
         "amplify-data-model",
@@ -250,7 +250,7 @@
         "appsync-js-resolver"
       ],
       "agents": [],
-      "listingTokens": 297
+      "listingTokens": 296
     },
     {
       "id": "backend/aws-lambda",

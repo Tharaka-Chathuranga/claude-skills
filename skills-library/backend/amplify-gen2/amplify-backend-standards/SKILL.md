@@ -1,6 +1,6 @@
 ---
 name: amplify-backend-standards
-description: Non-negotiable rules for code under amplify/: folder-per-unit with tests, interface-typed DI, repository data access, zod input, CloudFormation cycles, secrets. Use when writing or reviewing any file under amplify/.
+description: Non-negotiable rules under amplify/: function folder layout (services, repositories, builders, utils), shared code, interface DI, zod input, cycles, secrets. Use when writing or reviewing any file under amplify/.
 user-invocable: false
 paths: ["amplify/**"]
 ---
@@ -21,6 +21,47 @@ and override the defaults here.
 2. **Imports cross folder boundaries through `index.ts` only.** Named exports, no default exports.
 3. **Match the existing function** when extending one; new functions follow `amplify-lambda`.
 4. **Files stay small** — split a file well before it reaches the project's line cap.
+
+## Function layout
+
+Every function has this shape — Cognito triggers too. Start new ones with the `amplify-lambda` scaffolder.
+
+```
+amplify/functions/<name>/                 (Cognito triggers: amplify/auth/<name>/, Amplify's convention)
+├── resource.ts  handler.ts  constants.ts
+├── types/index.ts
+├── services/<name>-service/              <name>.service.ts  <name>.service.test.ts  index.ts  interfaces/
+├── repositories/<entity>-repository/     <entity>.repository.ts  <entity>.repository.test.ts  index.ts  interfaces/
+├── builders/<thing>-builder/             <thing>.builder.ts  .test.ts  index.ts   (pure: input → record/payload)
+└── utils/<fn>/                           <fn>.ts  <fn>.test.ts  index.ts           (pure helpers for this function)
+```
+
+- Units are grouped by role under `services/`, `repositories/`, `builders/`, `utils/` — never loose
+  next to `handler.ts`.
+- File names carry the role as a dot suffix: `user-profile.repository.ts`, `create-profile.service.ts`.
+- One repository per entity it owns; a service orchestrates, builders shape data, utils stay pure.
+
+## Shared code
+
+All shared code lives inside the Amplify project, in `amplify/shared/`:
+
+```
+amplify/shared/
+├── common/            types, constants, zod schemas, pure helpers — safe for frontend AND backend
+└── <area>/            repositories, clients, logger, services — backend only
+```
+
+- **Reuse before writing.** Before adding a repository, client, logger or helper, search
+  `amplify/shared/` and use what exists.
+- **Second use moves it.** Code a second function needs goes to `amplify/shared/<area>/` instead of
+  being copied. Code the frontend needs too goes to `amplify/shared/common/`.
+- **`common/` stays pure**: no AWS SDK, no `@aws-amplify/backend`, no Node-only APIs, and no imports
+  from other `amplify/shared/` areas — the frontend bundles it.
+- The frontend imports only `amplify/shared/common/` and `import type` from `amplify/data/resource`;
+  never repositories or clients.
+- Shared units keep the same shape (folder, `index.ts`, `interfaces/`, colocated test) and receive
+  their clients through the constructor.
+- If the project already keeps shared code elsewhere (stated in CLAUDE.md), follow the project.
 
 ## Dependencies
 

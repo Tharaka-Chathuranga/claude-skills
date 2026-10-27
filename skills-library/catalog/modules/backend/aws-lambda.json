@@ -11,26 +11,7 @@
         "reference/retries-and-idempotency.md"
       ],
       "manualOnly": false,
-      "listingTokens": 74,
-      "detect": {
-        "anyOf": [
-          {
-            "anyFiles": [
-              "amplify/functions"
-            ]
-          },
-          {
-            "anyDependencies": [
-              "@types/aws-lambda",
-              "aws-lambda",
-              "@aws-lambda-powertools/*",
-              "@middy/core",
-              "serverless",
-              "aws-cdk-lib"
-            ]
-          }
-        ]
-      }
+      "listingTokens": 74
     },
     {
       "name": "llm-functions",

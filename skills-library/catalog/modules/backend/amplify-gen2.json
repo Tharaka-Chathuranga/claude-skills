@@ -1,11 +1,11 @@
 {
   "id": "backend/amplify-gen2",
-  "version": "60dd93fc6f87",
+  "version": "12e2643580ad",
   "skills": [
     {
       "name": "amplify-backend-standards",
-      "description": "Non-negotiable rules for code under amplify/: folder-per-unit with tests, interface-typed DI, repository data access, zod input, CloudFormation cycles, secrets. Use when writing or reviewing any file under amplify/.",
-      "version": "01923f486a44",
+      "description": "Non-negotiable rules under amplify/: function folder layout (services, repositories, builders, utils), shared code, interface DI, zod input, cycles, secrets. Use when writing or reviewing any file under amplify/.",
+      "version": "78e5555dea19",
       "files": [
         "SKILL.md"
       ],
@@ -42,22 +42,18 @@
     },
     {
       "name": "amplify-lambda",
-      "description": "Adds or changes an Amplify Gen 2 Lambda in amplify/functions: scaffold, handler, service, repository, tests, registration. Use when asked to \"add a lambda\", \"add an API endpoint\", \"add an SQS/EventBridge consumer\".",
-      "version": "65fda68520ba",
+      "description": "Adds or changes an Amplify Gen 2 Lambda or Cognito trigger: scaffold, handler, services, repositories, tests, registration. Use for \"add a lambda\", \"post-confirmation trigger\", \"API endpoint\", \"SQS consumer\".",
+      "version": "b0f5c9d78221",
       "files": [
         "SKILL.md",
         "reference/handler-and-services.md",
         "reference/resource-and-registration.md",
         "reference/testing.md",
-        "scripts/scaffold-lambda.mjs"
+        "scripts/scaffold-lambda.mjs",
+        "scripts/templates/auth-trigger.mjs"
       ],
       "manualOnly": false,
-      "listingTokens": 72,
-      "detect": {
-        "anyFiles": [
-          "amplify/functions"
-        ]
-      }
+      "listingTokens": 71
     },
     {
       "name": "appsync-js-resolver",

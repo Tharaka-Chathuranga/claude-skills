@@ -2,20 +2,31 @@
 // Scaffolds an Amplify Gen 2 Lambda function: resource.ts, a composition-root handler.ts, one service
 // and one repository (each a folder with interface, index and colocated test), and shared types.
 // Node built-ins only. Usage:
-//   node scaffold-lambda.mjs <function-name> [--trigger graphql|sqs|eventbridge|schedule]
+//   node scaffold-lambda.mjs <function-name> [--trigger graphql|sqs|eventbridge|schedule|auth]
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import {
+  authHandlerTs,
+  authManualSteps,
+  authRepositoryInterfaceTs,
+  authRepositoryTestTs,
+  authRepositoryTs,
+  authServiceTestTs,
+  authServiceTs,
+  authTypesTs,
+} from './templates/auth-trigger.mjs';
 
-const TRIGGERS = ['graphql', 'sqs', 'eventbridge', 'schedule'];
+const TRIGGERS = ['graphql', 'sqs', 'eventbridge', 'schedule', 'auth'];
 const KEBAB = /^[a-z][a-z0-9]*(-[a-z0-9]+)*$/;
 // Amplify prefixes the physical Lambda name with app/branch ids; AWS caps names at 64 characters.
 const MAX_NAME_LENGTH = 40;
 // AppSync gives a Lambda resolver at most 30 s; the other values are starting points to tune.
-const TIMEOUT_SECONDS = { graphql: 30, sqs: 60, eventbridge: 120, schedule: 300 };
+// Cognito waits at most 5 seconds for a trigger, so auth triggers get a short timeout.
+const TIMEOUT_SECONDS = { graphql: 30, sqs: 60, eventbridge: 120, schedule: 300, auth: 5 };
 
 function fail(message) {
   console.error(`error: ${message}`);
-  console.error('usage: node scaffold-lambda.mjs <function-name> [--trigger graphql|sqs|eventbridge|schedule]');
+  console.error('usage: node scaffold-lambda.mjs <function-name> [--trigger graphql|sqs|eventbridge|schedule|auth]');
   process.exit(1);
 }
 
@@ -29,7 +40,7 @@ function parseArgs(argv) {
     } else if (arg.startsWith('--trigger=')) {
       args.trigger = arg.slice('--trigger='.length);
     } else if (arg === '-h' || arg === '--help') {
-      console.log('usage: node scaffold-lambda.mjs <function-name> [--trigger graphql|sqs|eventbridge|schedule]');
+      console.log('usage: node scaffold-lambda.mjs <function-name> [--trigger graphql|sqs|eventbridge|schedule|auth]');
       process.exit(0);
     } else if (arg.startsWith('-')) {
       fail(`unknown option "${arg}"`);
@@ -81,6 +92,10 @@ function resourceTs({ name, camelName, trigger }) {
   if (trigger === 'graphql') {
     extra.push("  // Resolver functions live in the data stack; any other group creates a circular dependency.");
     extra.push("  resourceGroupName: 'data',");
+  }
+  if (trigger === 'auth') {
+    extra.push('  // Cognito triggers live in the auth stack; any other group creates a circular dependency.');
+    extra.push("  resourceGroupName: 'auth',");
   }
   if (trigger === 'schedule') extra.push("  schedule: 'every 1h', // or a cron expression: 'cron(0 2 * * ? *)'");
   return `import { defineFunction } from '@aws-amplify/backend';
@@ -421,6 +436,13 @@ ${lg.perRequest}
 // ---------------------------------------------------------------------------------------------
 
 function manualSteps({ name, camelName, pascalName, trigger }) {
+  if (trigger === 'auth') {
+    return [
+      ...authManualSteps({ name, camelName }),
+      `Replace the TODO model and fields with the real ones, and follow the amplify-backend-standards skill.`,
+      'Typecheck, run the new tests, then validate the stack (amplify-deploy) before reporting done.',
+    ].map((step, i) => `  ${i + 1}. ${step}`).join('\n');
+  }
   const lambda = `backend.${camelName}.resources.lambda`;
   const steps = [];
   steps.push(`Register in amplify/backend.ts (match the import style already used there, e.g. a .js suffix):
@@ -474,8 +496,9 @@ function manualSteps({ name, camelName, pascalName, trigger }) {
   if (trigger === 'schedule') {
     steps.push(`Adjust the schedule expression in resource.ts. No other wiring is needed.`);
   }
+  const groupHint = trigger === 'graphql' ? '' : " and set resourceGroupName: 'data' in resource.ts to avoid a circular dependency";
   steps.push(`If the function calls the Data API, add allow.resource(${camelName}) to the schema authorization in
-     amplify/data/resource.ts${trigger === 'graphql' ? '' : " and set resourceGroupName: 'data' in resource.ts to avoid a circular dependency"}.`);
+     amplify/data/resource.ts${groupHint}.`);
   steps.push(`Replace the TODO in services/${name}-service with the business logic, rename the input and record types in
      types/index.ts, and follow the amplify-backend-standards skill.`);
   steps.push('Typecheck, run the new tests, then validate the stack (amplify-deploy) before reporting done.');
@@ -490,7 +513,8 @@ const { name, trigger } = parseArgs(process.argv.slice(2));
 const root = findProjectRoot(process.cwd());
 if (!root) fail('no amplify/ folder with a package.json found here or in any parent. Run from the project root.');
 
-const fnDir = path.join(root, 'amplify', 'functions', name);
+// Auth triggers follow Amplify's convention (amplify/auth/<name>/); every other function lives in amplify/functions/.
+const fnDir = trigger === 'auth' ? path.join(root, 'amplify', 'auth', name) : path.join(root, 'amplify', 'functions', name);
 if (existsSync(fnDir)) {
   fail(`${path.relative(root, fnDir)} already exists. Pick another name or extend the existing function by hand.`);
 }
@@ -511,12 +535,13 @@ const ctx = {
 
 const serviceDir = `services/${name}-service`;
 const repositoryDir = `repositories/${name}-repository`;
+const isAuth = trigger === 'auth';
 const files = {
   'resource.ts': resourceTs(ctx),
-  'handler.ts': handlerTs(ctx),
-  'types/index.ts': typesTs(ctx),
-  [`${serviceDir}/${name}.service.ts`]: serviceTs(ctx),
-  [`${serviceDir}/${name}.service.test.ts`]: serviceTestTs(ctx),
+  'handler.ts': isAuth ? authHandlerTs({ ...ctx, lg: loggerBlock(ctx) }) : handlerTs(ctx),
+  'types/index.ts': isAuth ? authTypesTs(ctx) : typesTs(ctx),
+  [`${serviceDir}/${name}.service.ts`]: isAuth ? authServiceTs(ctx) : serviceTs(ctx),
+  [`${serviceDir}/${name}.service.test.ts`]: isAuth ? authServiceTestTs(ctx) : serviceTestTs(ctx),
   [`${serviceDir}/index.ts`]: unitIndexTs({
     className: `${ctx.pascalName}Service`,
     interfaceName: `I${ctx.pascalName}Service`,
@@ -527,8 +552,8 @@ const files = {
     file: `${name}-service.interface`,
   }),
   [`${serviceDir}/interfaces/${name}-service.interface.ts`]: serviceInterfaceTs(ctx),
-  [`${repositoryDir}/${name}.repository.ts`]: repositoryTs(ctx),
-  [`${repositoryDir}/${name}.repository.test.ts`]: repositoryTestTs(ctx),
+  [`${repositoryDir}/${name}.repository.ts`]: isAuth ? authRepositoryTs(ctx) : repositoryTs(ctx),
+  [`${repositoryDir}/${name}.repository.test.ts`]: isAuth ? authRepositoryTestTs(ctx) : repositoryTestTs(ctx),
   [`${repositoryDir}/index.ts`]: unitIndexTs({
     className: `${ctx.pascalName}Repository`,
     interfaceName: `I${ctx.pascalName}Repository`,
@@ -538,7 +563,7 @@ const files = {
     interfaceName: `I${ctx.pascalName}Repository`,
     file: `${name}-repository.interface`,
   }),
-  [`${repositoryDir}/interfaces/${name}-repository.interface.ts`]: repositoryInterfaceTs(ctx),
+  [`${repositoryDir}/interfaces/${name}-repository.interface.ts`]: isAuth ? authRepositoryInterfaceTs(ctx) : repositoryInterfaceTs(ctx),
 };
 
 try {
@@ -551,15 +576,13 @@ try {
   fail(`could not write files under ${fnDir}: ${error.message}`);
 }
 
-console.log(`Created amplify/functions/${name}/ (trigger: ${trigger})`);
+console.log(`Created ${path.relative(root, fnDir)}/ (trigger: ${trigger})`);
 for (const rel of Object.keys(files)) console.log(`  ${rel}`);
 
-const missing = [
-  ['zod', 'zod'],
-  ['@aws-sdk/lib-dynamodb', '@aws-sdk/lib-dynamodb'],
-  ['@aws-sdk/client-dynamodb', '@aws-sdk/client-dynamodb'],
-  ['@types/aws-lambda', '@types/aws-lambda'],
-].filter(([dep]) => !deps.has(dep));
+const needed = isAuth
+  ? ['zod', 'aws-amplify', '@types/aws-lambda']
+  : ['zod', '@aws-sdk/lib-dynamodb', '@aws-sdk/client-dynamodb', '@types/aws-lambda'];
+const missing = needed.filter((dep) => !deps.has(dep)).map((dep) => [dep, dep]);
 if (missing.length) {
   console.log(`\nMissing from package.json (the generated code imports them): ${missing.map(([, pkg]) => pkg).join(', ')}`);
   console.log(`  npm install ${missing.map(([, pkg]) => pkg).join(' ')}`);

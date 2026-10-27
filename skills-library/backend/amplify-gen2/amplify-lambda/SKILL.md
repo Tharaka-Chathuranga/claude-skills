@@ -1,7 +1,7 @@
 ---
 name: amplify-lambda
-description: Adds or changes an Amplify Gen 2 Lambda in amplify/functions: scaffold, handler, service, repository, tests, registration. Use when asked to "add a lambda", "add an API endpoint", "add an SQS/EventBridge consumer".
-argument-hint: <function-name> [--trigger graphql|sqs|eventbridge|schedule]
+description: Adds or changes an Amplify Gen 2 Lambda or Cognito trigger: scaffold, handler, services, repositories, tests, registration. Use for "add a lambda", "post-confirmation trigger", "API endpoint", "SQS consumer".
+argument-hint: <function-name> [--trigger graphql|sqs|eventbridge|schedule|auth]
 ---
 
 # Amplify Lambda
@@ -25,10 +25,13 @@ Copy this checklist and tick it off:
 **2. Scaffold.** From the project root:
 
 ```bash
-node ${CLAUDE_SKILL_DIR}/scripts/scaffold-lambda.mjs <function-name> --trigger graphql|sqs|eventbridge|schedule
+node ${CLAUDE_SKILL_DIR}/scripts/scaffold-lambda.mjs <function-name> --trigger graphql|sqs|eventbridge|schedule|auth
 ```
 
-It creates `amplify/functions/<function-name>/` and refuses to overwrite an existing folder:
+It creates `amplify/functions/<function-name>/` — or `amplify/auth/<function-name>/` for `--trigger auth`
+(Cognito triggers such as post-confirmation, Amplify's convention) — and refuses to overwrite an existing folder.
+**Always scaffold; don't hand-write the layout.** Auth triggers get a Data API repository and are registered in
+`defineAuth({ triggers })`, not `defineBackend`:
 
 ```
 resource.ts                     defineFunction: runtime 22, arm64, timeout per trigger
