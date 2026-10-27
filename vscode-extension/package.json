@@ -2,7 +2,7 @@
   "name": "claude-skills",
   "displayName": "Claude Skills Library",
   "description": "Pick Claude Code skill modules for your tech stack from shared libraries, with dependencies, presets and a token budget.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "publisher": "TharakaChathuranga",
   "license": "MIT",
   "icon": "media/icon.png",
